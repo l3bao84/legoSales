@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+  <title>Home | LEGO Shop</title>
+</head>
+<body>
+
+    <div class="overlay" id="myOverlay"></div>
+
+    <header>
+      <div class="contact">
+        <i class="fa-solid fa-arrow-left-long"></i>
+        <button>
+          <a th:href="@{https://www.facebook.com/l3bao84}">CONTACT ME</a>
+        </button>
+      </div>
+      <div class="account">
+        <a href="">
+          <img th:src="@{https://i.pinimg.com/564x/66/0c/9c/660c9cb9f3d01e975df3835b5c98bc58.jpg}" alt="">
+          <span>Account</span>
+        </a>
+      </div>
+    </header>
+    <div class="header">
+      <div class="logo-menu">
+        <div class="logo">
+          <a href="">
+            <img class="header-logo" th:src="@{https://assets.lego.com/logos/v4.5.0/brand-lego.svg}" alt="">
+          </a>
+        </div>
+        <div class="menu">
+          <button class="shop" href="" >SHOP</button>
+          <button class="dis" href="" >DISCOVER</button>
+          <button class="help" href="" >HELP</button>
+        </div>
+        <div class="hidden-menu">
+          <button class="btn-exit">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="search-bar">
+        <button onclick="showSearchBar()" class="search">
+          <a href="">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </a>
+        </button>
+        <div class="hidden-search">
+          <button class="hidden-search-icon">
+            <a href="">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+          </button>
+          <input class="hidden-search-keyword" type="text" placeholder="Search...">
+          <button class="hidden-search-close-btn">
+            <a href="">
+              <i class="fa-solid fa-xmark"></i>
+            </a>
+          </button>
+        </div>
+        
+      </div>
+      <div class="utility-section">
+        <div class="wishlist">
+          <a href="">
+            <i class="fa-regular fa-heart"></i>
+          </a>
+        </div>
+        <div class="cart">
+          <a href="">
+            <i class="fa-solid fa-bag-shopping"></i>
+          </a>
+          <p>(0)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slides">
+      <div class="slide active">
+        <div class="image-slide">
+          <img th:src="@{'445228.png'}" alt="">
+        </div>
+        <div class="overlay-text">
+          Top Selling Items
+        </div>
+      </div>
+      <div th:each="tpProduct : ${topPickProducts}" class="slide">
+        <div class="trending-pro-infor">
+          <div class="trending-pro-infor-detail">
+            <div class="infor-detail-name" th:text="${tpProduct.getProductName()}"></div>
+            <div class="infor-detail-price" th:text="${'$' + tpProduct.getPrice()}"></div>
+            <div class="infor-detail-action">
+              <button class="see-more">
+                See more
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+              <button class="buy-now">
+                Buy now 
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="trending-pro-img">
+          <div class="brick-1"></div>
+          <div class="brick-2"></div>
+          <div class="brick-3"></div>
+          <div class="brick-4"></div>
+          <div class="brick-5"></div>
+          <div class="brick-6"></div>
+          <img th:src="@{'/product/' + ${tpProduct.getProductId()}}" alt="">
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <ul class="category-items">
+        <li class="category-item">
+          <div class="category-item-infor">
+            <a href="">
+              <img src="https://www.lego.com/cdn/cs/set/assets/blt4adc5a9b68979056/novelty-2020-06-Quicklink.jpg?fit=crop&format=webply&quality=80&width=80&height=65&dpr=1.5" alt="">
+              <span>New</span>
+            </a>
+          </div>
+        </li>
+        <li class="category-item">
+          <div class="category-item-infor">
+            <a href="">
+              <img src="https://www.lego.com/cdn/cs/set/assets/blt985c185e9456faed/Generic-Site-Wave-1-Exclusive-202208-Quicklink.png?fit=crop&format=webply&quality=80&width=80&height=65&dpr=1.5" alt="">
+              <span>Exclusives</span>
+            </a>
+           
+          </div>
+        </li>
+        <li class="category-item">
+          <div class="category-item-infor">
+            <a href="">
+              <img src="https://www.lego.com/cdn/cs/set/assets/bltce6744d92b141146/Offers-QL-202306-Quicklink.png?fit=crop&format=webply&quality=80&width=80&height=65&dpr=1.5" alt="">
+              <span>Offers</span>
+            </a>
+            
+          </div>
+        </li>
+        <li th:each="cat : ${randomCat}" class="category-item">
+          <div class="category-item-infor">
+            <a href="">
+              <img th:src="@{${cat.getImage()}}" alt="">
+              <span th:text="${cat.getCategoryName()}"></span>
+            </a>
+          </div>
+        </li>
+        <li class="category-item">
+          <div class="category-item-infor">
+            <a href="">
+              <img src="https://www.lego.com/cdn/cs/set/assets/bltd291172dfec6f025/VIP-QL-202306-Quicklink.png?fit=crop&format=webply&quality=80&width=80&height=65&dpr=1.5" alt="">
+              <span>VIP</span>
+            </a>
+            
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="recommen">
+      <div class="recommen-title">
+        Recommended For You
+      </div>
+      <div class="recommen-pro">
+        <div class="prev-btn">
+          <button class="prev hide">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+        </div>
+        <div class="product-wrapper">
+          <div th:each="product : ${products}"  class="product-item">
+            <div class="product-item-img">
+                <div class="add-wishlist">
+                  <button>
+                    <a href=""><i class="fa-regular fa-heart"></i></a>
+                  </button>
+                </div>
+                <div class="img">
+                  <a href="">
+                    <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
+                  </a>
+                </div>
+                <div class="new">
+                  <span>New</span>
+                </div>
+            </div>
+            <div class="product-item-name">
+              <a href="">
+                <span th:text="${product.getProductName()}"></span>
+              </a>
+            </div>
+            <div class="product-item-rating">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="product-item-price" th:text="${'$' + product.getPrice()}"></div>
+            <div class="product-item-btn">
+              <button class="add-bag">
+                <a href="">Add to Bag</a>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="next-btn">
+          <button class="next">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="news">
+      <div class="news-content">
+        <div class="news-content-title">
+          See more LEGO® DREAMZzz™ sets
+        </div>
+        <div class="news-content-pro">
+          <div class="news-content-pro-item">
+              <div class="img-wrapper">
+                <a href="">
+                  <img src="https://www.lego.com/cdn/cs/set/assets/blt915583f71e0c3e36/1823-Titan-Homepage-202308-Block-Standard-2.jpg?fit=crop&format=webply&quality=80&width=635&height=440&dpr=1.5" alt="">
+                </a>
+              </div>
+              <div class="text-wrapper">
+                <div class="text-wrapper-name">
+                  Fantastical Tree House
+                </div>
+                <div class="text-wrapper-dis">
+                  Escape into homebase of the LEGO® DREAMZzz™ heroes.
+                </div>
+                <div class="text-wrapper-act">
+                  <a href="">Shop now <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+              </div>
+          </div>
+          <div class="news-content-pro-item">
+            <div class="img-wrapper">
+              <a href="">
+                <img src="https://www.lego.com/cdn/cs/set/assets/blteaf824ddd1faf12a/1823-Titan-Homepage-202308-Block-Standard-3.jpg?fit=crop&format=webply&quality=80&width=635&height=440&dpr=1.5" alt="">
+              </a>
+            </div>
+            <div class="text-wrapper">
+              <div class="text-wrapper-name">
+                Stable of Dream Creatures
+              </div>
+              <div class="text-wrapper-dis">
+                Create and care for mythical LEGO® DREAMZzz™ creatures.
+              </div>
+              <div class="text-wrapper-act">
+                <a href="">Shop now <i class="fa-solid fa-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="news-content-pro-item">
+            <div class="img-wrapper">
+              <a href="">
+                <img src="https://www.lego.com/cdn/cs/set/assets/bltdfa7b412d2fa1d0f/1823-Titan-Homepage-202308-Block-Standard-4.jpg?fit=crop&format=webply&quality=80&width=635&height=440&dpr=1.5" alt="">
+              </a>
+            </div>
+            <div class="text-wrapper">
+              <div class="text-wrapper-name">
+                Nightmare Shark Ship
+              </div>
+              <div class="text-wrapper-dis">
+                Dive into the LEGO® DREAMZzz™ world and build a vehicle 2 ways.
+              </div>
+              <div class="text-wrapper-act">
+                <a href="">Shop now <i class="fa-solid fa-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="news-content-pro-item">
+            <div class="img-wrapper">
+              <a href="">
+                <img src="https://www.lego.com/cdn/cs/set/assets/blt7e7a8954978320ba/1823-Titan-Homepage-202308-Block-Standard-5.jpg?fit=crop&format=webply&quality=80&width=635&height=440&dpr=1.5" alt="">
+              </a>
+            </div>
+            <div class="text-wrapper">
+              <div class="text-wrapper-name">
+                Mr. Oz’s Spacebus
+              </div>
+              <div class="text-wrapper-dis">
+                Blast off to adventure in the LEGO® DREAMZzz™ universe.
+              </div>
+              <div class="text-wrapper-act">
+                <a href="">Shop now <i class="fa-solid fa-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spotlights">
+      <div class="spotlight-content">
+        <div class="spotlight-title">
+          Spotlight on
+        </div>
+        <div class="spotlight-product">
+          <div class="spotlight-product-item">
+            <div class="spotlight-product-item-text">
+              <span>Bring home the wonder</span>
+              <p>Celebrate 100 years of Disney movie magic with the new LEGO® ǀ Disney: Disney Castle.</p>
+              <div class="text-shop-now">
+                <a href="">Shop now <i class="fa-solid fa-chevron-right"></i></a>
+              </div>
+            </div>
+            <div class="spotlight-product-item-img">
+              <img th:src="'43222-Exclusive-202306-SL-Block-Mixed-Large.png'" alt="">
+            </div>
+            <div class="spotlight-product-item-logo-disney">
+              <img th:src="'Disney-100-logo-pos-600w.png'" alt="">
+            </div>
+          </div>
+          <div class="spotlight-product-item">
+            <div class="spotlight-product-item-text-1">
+              <span>Take a voyage to Mars</span>
+              <p>Inspire a passion for technology with new LEGO® Technic™ sets.</p>
+              <div class="text-shop-now">
+                <a href="">Shop now <i class="fa-solid fa-chevron-right"></i></a>
+              </div>
+            </div>
+            <div class="spotlight-product-item-img">
+              <img th:src="'42158-HS-202306-PS-Block-Mixed-Large.png'" alt="">
+            </div>
+            <div class="spotlight-product-item-logo-technic">
+              <img th:src="'technic_logo_pos_100h.png'" alt="">
+            </div>
+            <div class="spotlight-product-item-logo-technic-1">
+              <img th:src="'marsperseverance-logo.png'" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-1">
+        <div class="footer-section">
+          <div class="footer-section-wrapper">
+            <div class="wrapper-logo-region">
+              <div class="logo-region">
+                <div class="logo-img2">
+                  <img src="https://assets.lego.com/logos/v4.5.0/brand-lego.svg" alt="">
+                </div>
+                <div class="region">
+                  <button>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Viet Nam
+                  </button>
+                </div>
+              </div>
+              <div class="gift-cards">
+                <a href="">
+                  <span>Gift Cards</span>
+                </a>
+                <a href="">
+                  <span>LEGO Catalogs</span>
+                </a>
+                <a href="">
+                  <span>Find a LEGO Store</span>
+                </a>
+              </div>
+            </div>
+            <div class="wrapper-supports">
+              <div class="support">
+                <h2 class="support-title">ABOUT US</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">About the LEGO Group</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO® News</a></li>
+                  <li class="support-list-item"><a class="" href="">Sustainability</a></li>
+                  <li class="support-list-item"><a class="" href="">Supply Chain Transparency Statement</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Product Certification</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Jobs</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Compliance Line</a></li>
+                </ul>
+              </div>
+              <div class="support">
+                <h2 class="support-title">SUPPORT</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">Contact Us</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO® NewsLEGO® News</a></li>
+                  <li class="support-list-item"><a class="" href="">Replacement Parts</a></li>
+                  <li class="support-list-item"><a class="" href="">Shipping and Returns</a></li>
+                  <li class="support-list-item"><a class="" href="">Payment Methods</a></li>
+                  <li class="support-list-item"><a class="" href="">Terms & Conditions</a></li>
+                  <li class="support-list-item"><a class="" href="">Product Recalls</a></li>
+                </ul>
+              </div>
+              <div class="support">
+                <h2 class="support-title">ATTRACTIONS</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">LEGO® House</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGOLAND® Parks</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGOLAND Discovery Centers</a></li>
+                </ul>
+              </div>
+              <div class="support">
+                <h2 class="support-title">MORE FROM US</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">LEGO® LIFE</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Education</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Ideas</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Foundation</a></li>
+                  <li class="support-list-item"><a class="" href="">Affiliate Program</a></li>
+                  <li class="support-list-item"><a class="" href="">Student Offers</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO® Braille Bricks</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-2">
+        <div class="email-social">
+          <div class="email-sub">
+            <div class="email-sub-content">
+              <span>SUBSCRIBE TO LEGO® SHOP EMAILS</span>
+              <div class="email-input-container">
+                <div class="input-button">
+                  <div class="email">
+                    <input type="text" name="" id="emailInput" placeholder="Your email address">
+                    <div class="email-sub-error">
+                      <span class="email-sub-error-status"></span>
+                    </div>
+                  </div>
+                  <a href="" class="btn-go">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="social">
+            <div class="social-icon">
+              <span>FOLLOW US</span>
+              <div class="social-button">
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-facebook-f"></i></a></div>
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-twitter"></i></a></div>
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-instagram"></i></a></div>
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-youtube"></i></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-3">
+        <div class="privacies">
+          <ul class="privacy-list">
+            <li class="privacy-list-item"><a href="">Privacy Policy</a></li>
+            <li class="privacy-list-item"><a href="">Cookies</a></li>
+            <li class="privacy-list-item"><a href="">Legal Notice</a></li>
+            <li class="privacy-list-item"><a href="">Terms of Use</a></li>
+            <li class="privacy-list-item"><a href="">Digital Wellbeing</a></li>
+            <li class="privacy-list-item"><a href="">Accessibility</a></li>
+            <li class="privacy-list-item"><a href="">Cookie Settings</a></li>
+            <li class="privacy-list-item"><a href="">Privacy Settings for residents of CA, VA, CT and CO</a></li>
+          </ul>
+          <p>LEGO System A/S, DK-7190 Billund, Denmark. Must be 18 years or older to purchase online. LEGO, the LEGO logo, the Minifigure, DUPLO, LEGENDS OF CHIMA, NINJAGO, BIONICLE, MINDSTORMS and MIXELS are trademarks and copyrights of the LEGO Group. ©2022 The LEGO Group. All rights reserved. Use of this site signifies your agreement to the terms of use.</p>
+        </div>
+      </div>
+    </footer>
+    <script th:src="@{/js/home.js}" defer></script>
+
+</body>
+</html>
