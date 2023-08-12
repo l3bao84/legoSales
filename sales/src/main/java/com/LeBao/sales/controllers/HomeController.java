@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class HomeController {
@@ -38,9 +39,9 @@ public class HomeController {
         Collections.reverse(products);
         List<Product> recommendedProducts = new ArrayList<>();
         List<Product> topPickProducts = new ArrayList<>();
-
-        List<Category> randomCat = new ArrayList<>();
-        randomCat = categoryRepository.findAll();
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        List<Category> allCats = new ArrayList<>();
+        allCats = categoryRepository.findAll();
 
         for (int i = 0; i < 12; i++) {
             recommendedProducts.add(products.get(i));
@@ -51,7 +52,14 @@ public class HomeController {
         topPickProducts.add(productRepository.findById(15L).get());
         topPickProducts.add(productRepository.findById(6L).get());
 
-        randomCat.remove(0);
+        allCats.remove(0);
+        List<Category> randomCat = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i <= 3; i++) {
+            int randomPosition = random.nextInt(allCats.size());
+            randomCat.add(allCats.get(randomPosition));
+            allCats.remove(randomPosition);
+        }
         modelMap.addAttribute("products", recommendedProducts);
         modelMap.addAttribute("topPickProducts", topPickProducts);
         modelMap.addAttribute("randomCat", randomCat);

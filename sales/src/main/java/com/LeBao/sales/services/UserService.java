@@ -6,6 +6,7 @@ import com.LeBao.sales.models.User;
 import com.LeBao.sales.repositories.ShippingAddressRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +20,14 @@ import org.springframework.validation.BindingResult;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    private final ShippingAddressRepository shippingAddressRepository;
+    @Autowired
+    private ShippingAddressRepository shippingAddressRepository;
 
 
     public String getCurrentUsername() {

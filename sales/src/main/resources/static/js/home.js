@@ -18,6 +18,7 @@ function showSearchBar() {
 
 openOverlay.addEventListener('click', () => {
     openOverlay.style.display = 'none'
+    openOverlay.style.zIndex = '2'
     for (let i = 0; i < search.length; i++) {
         search[i].style.display = 'flex';
     }
@@ -27,8 +28,8 @@ openOverlay.addEventListener('click', () => {
     for(let i = 0; i < hiddenMenu.length; i++) {
         hiddenMenu[i].style.display = 'none'
     }
-    btnInMenu.forEach(element => {
-        element.style.textDecoration = "";
+    menuContent.forEach(element => {
+        element.menu.style.textDecoration = "";
     })
     logo.style.positon = ''
     logo.style.zIndex = ''
@@ -141,30 +142,45 @@ emailInput.addEventListener('input', function() {
 
 // Mở menu con
 
-const menu = document.querySelector('.menu')
-const btnInMenu = menu.querySelectorAll("*")
 const hiddenMenu = document.getElementsByClassName('hidden-menu')
 const btnExit = document.querySelector('.btn-exit')
 const logo = document.querySelector('.header-logo')
 var body = document.body
 
-btnInMenu.forEach(element => {
-    element.addEventListener('click', () => {
+var menuContent = [
+    {
+        menu: document.querySelector('.shop'),
+        submenu: document.querySelector('.content-1'),
+    },
+    {
+        menu: document.querySelector('.dis'),
+        submenu: document.querySelector('.content-2'),
+    },
+    {
+        menu: document.querySelector('.help'),
+        submenu: document.querySelector('.content-3'),
+    },
+  ];
 
-        btnInMenu.forEach(item => {
-            item.style.textDecoration = '';
+menuContent.forEach(element => {
+    element.menu.addEventListener('click', () => {
+
+        menuContent.forEach(item => {
+            item.menu.style.textDecoration = '';
+            item.submenu.style.display = 'none'
         });
 
         openOverlay.style.display = 'block';
         for(let i = 0; i < hiddenMenu.length; i++) {
             hiddenMenu[i].style.display = 'block';
         }
-        element.style.textDecoration = "underline";
+        element.submenu.style.display = 'block'
+        element.menu.style.textDecoration = "underline";
         logo.style.position = 'relative'
         logo.style.zIndex = '4'
         body.classList.add('no-scroll')
     });
-});
+})
 
 
 btnExit.addEventListener('click', () => {
@@ -172,10 +188,46 @@ btnExit.addEventListener('click', () => {
     for(let i = 0; i < hiddenMenu.length; i++) {
         hiddenMenu[i].style.display = 'none'
     }
-    btnInMenu.forEach(element => {
-        element.style.textDecoration = "";
+    menuContent.forEach(element => {
+        element.menu.style.textDecoration = "";
     })
     logo.style.positon = ''
     logo.style.zIndex = ''
     body.classList.remove('no-scroll')
 })
+
+const menuItems = document.querySelectorAll('.count')
+const menuContentList = document.querySelector('.menu-content-list')
+
+document.addEventListener("DOMContentLoaded", () => {
+    if(menuItems.length >= 12) {
+        menuContentList.style.columns = '2'
+    }else {
+        menuContentList.style.columns = '1'
+    }
+})
+  
+// Mở overlay đăng nhập hoặc đăng ký
+
+const openAccount = document.querySelector('.openAccount')
+const accountPanel = document.querySelector('.account-panel')
+const offPanel = document.querySelector('.exit-account-modal')
+
+openAccount.addEventListener('click', () => {
+    accountPanel.style.display = 'flex'
+    body.classList.add('no-scroll')
+})
+
+offPanel.addEventListener('click', () => {
+    accountPanel.style.display = 'none'
+    body.classList.remove('no-scroll')
+})
+
+function switchOffPanel() {
+    accountPanel.style.display = 'none'
+    body.classList.remove('no-scroll')
+}
+
+function preventEventPropagation(event) {
+    event.stopPropagation();
+}

@@ -22,10 +22,10 @@
         </button>
       </div>
       <div class="account">
-        <a href="">
+        <button class="openAccount">
           <img th:src="@{https://i.pinimg.com/564x/66/0c/9c/660c9cb9f3d01e975df3835b5c98bc58.jpg}" alt="">
           <span>Account</span>
-        </a>
+        </button>
       </div>
     </header>
     <div class="header">
@@ -44,6 +44,66 @@
           <button class="btn-exit">
             <i class="fa-solid fa-xmark"></i>
           </button>
+          <div class="hidden-menu-content">
+            <div class="content-1">
+              <a href="">SEE ALL THEMES</a>
+              <ul class="menu-content-list count">
+                <li th:each="theme : ${allThemes}" class="menu-content-item">
+                  <a href="" th:text="${theme.getCategoryName()}"></a>
+                </li>
+              </ul>
+            </div>
+            <div class="content-2">
+              <ul class="menu-content-list">
+                <li class="menu-content-item">
+                  <a href="">About Us</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">All LEGO Interests</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Adults Welcome</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">For Families</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">VIP Reward Program</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">LEGO® Mosaic Maker</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">LEGO® Gift Ideas</a>
+                </li>
+              </ul>
+            </div>
+            <div class="content-3">
+              <ul class="menu-content-list">
+                <li class="menu-content-item">
+                  <a href="">Check Order Status</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Delivery & Returns</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Find a LEGO Store</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Find Building Instructions</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Common Questions</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Contact Us</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Replacement Parts</a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="search-bar">
@@ -343,6 +403,30 @@
             <div class="spotlight-product-item-logo-technic-1">
               <img th:src="'marsperseverance-logo.png'" alt="">
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:onclick="switchOffPanel()" class="account-panel">
+      <div th:onclick="preventEventPropagation(event)" class="account-modal">
+        <button class="exit-account-modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="account-modal-container">
+          <div class="title-wrapper">
+            <img th:src="@{https://assets.lego.com/logos/v4.5.0/brand-lego.svg}" alt="">
+            <h2>Sign In to your LEGO® Account</h2>
+          </div>
+          <a th:href="@{'/login'}" class="login-btn">Sign In</a>
+          <div class="space"></div>
+          <div class="register-btn">
+            <span>Don't have an account?</span>
+            <a th:href="@{'/login'}" >Register</a>
+          </div>
+          <div class="oder-status">
+            <img src="https://www.lego.com/_next/static/images/orderStatus-04af015821d59ffa6ce06de624f1bff4.png" alt="">
+            <a href="">Check Order Status</a>
           </div>
         </div>
       </div>

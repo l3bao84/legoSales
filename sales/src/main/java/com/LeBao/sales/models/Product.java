@@ -49,6 +49,9 @@ public class Product {
     private Set<CartItem> cartItems;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<WishlistProduct> wishlistProducts;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<OrderDetail> orderDetails;
 
     @OneToMany(mappedBy = "product")

@@ -47,6 +47,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Cart> carts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Wishlist> wishlists;
+
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews;
 
