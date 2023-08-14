@@ -31,7 +31,7 @@
     <div class="header">
       <div class="logo-menu">
         <div class="logo">
-          <a href="">
+          <a th:href="@{'/home'}">
             <img class="header-logo" th:src="@{https://assets.lego.com/logos/v4.5.0/brand-lego.svg}" alt="">
           </a>
         </div>
@@ -247,7 +247,7 @@
                   </button>
                 </div>
                 <div class="img">
-                  <a href="">
+                  <a th:href="@{'/product/getProduct/' + ${product.getProductId()}}">
                     <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
                   </a>
                 </div>
@@ -256,7 +256,7 @@
                 </div>
             </div>
             <div class="product-item-name">
-              <a href="">
+              <a th:href="@{'/product/getProduct/' + ${product.getProductId()}}">
                 <span th:text="${product.getProductName()}"></span>
               </a>
             </div>
