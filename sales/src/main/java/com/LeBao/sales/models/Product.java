@@ -3,6 +3,7 @@ package com.LeBao.sales.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,9 @@ public class Product {
 
     @Column(name = "stock")
     private Integer stock;
+
+    @Column(name = "pieces")
+    private Integer pieces;
 
     @Lob
     @Column(name = "image", length = 200)
@@ -103,6 +107,22 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(Integer pieces) {
+        this.pieces = pieces;
+    }
+
+    public Set<WishlistProduct> getWishlistProducts() {
+        return wishlistProducts;
+    }
+
+    public void setWishlistProducts(Set<WishlistProduct> wishlistProducts) {
+        this.wishlistProducts = wishlistProducts;
     }
 
     public Category getCategory() {

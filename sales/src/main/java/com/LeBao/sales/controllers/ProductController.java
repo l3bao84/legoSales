@@ -41,38 +41,23 @@ public class ProductController {
 
     @GetMapping("/getProduct/{productId}")
     public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
-        List<Product> products = productRepository.findAll();
-        Collections.reverse(products);
         List<Product> recommendedProducts = new ArrayList<>();
-        List<Product> topPickProducts = new ArrayList<>();
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        List<Category> allCats = new ArrayList<>();
-        allCats = categoryRepository.findAll();
-
         for (int i = 0; i < 12; i++) {
-            recommendedProducts.add(products.get(i));
-        }
-
-        topPickProducts.add(productRepository.findById(1L).get());
-        topPickProducts.add(productRepository.findById(14L).get());
-        topPickProducts.add(productRepository.findById(15L).get());
-        topPickProducts.add(productRepository.findById(6L).get());
-
-        allCats.remove(0);
-        List<Category> randomCat = new ArrayList<>();
-        Random random = new Random();
-        for(int i = 0; i <= 3; i++) {
-            int randomPosition = random.nextInt(allCats.size());
-            randomCat.add(allCats.get(randomPosition));
-            allCats.remove(randomPosition);
+            recommendedProducts.add(productRepository.findAll().get(i));
         }
         modelMap.addAttribute("products", recommendedProducts);
-        modelMap.addAttribute("topPickProducts", topPickProducts);
-        modelMap.addAttribute("randomCat", randomCat);
-        modelMap.addAttribute("productName", productRepository.findById(productId).get().getProductName());
+        modelMap.addAttribute("product", productRepository.findById(productId).get());
+        modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
+        modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
         return "detailProduct";
     }
 
+    @GetMapping("/getAllByThemeId/{categoryId}")
+    public String getAllByThemeId(@PathVariable Long categoryId, ModelMap modelMap) {
+        List<Product> products = productService.getAllByThemeId(categoryId);
+        return "";
+    }
 
     @PostMapping("/addProduct")
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
@@ -82,9 +67,9 @@ public class ProductController {
 
 
     @PostMapping("/addImage")
-    public ResponseEntity<String> addImage(@RequestParam("file") MultipartFile file) throws IOException {
-        String filePath = storageService.uploadFileToFileSystem(file);
-        return ResponseEntity.ok(filePath);
+    public ResponseEntity<List<String>> addImage(@RequestParam("file") MultipartFile[] files) throws IOException {
+        List<String> filePaths = storageService.uploadFileToFileSystem(files);
+        return ResponseEntity.ok(filePaths);
     }
 
     @GetMapping("/{productId}")

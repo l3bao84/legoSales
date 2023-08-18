@@ -261,6 +261,7 @@ ul {
 .cart > p {
     padding-left: 4px;
     font-size: 12px;
+    margin-bottom: -3px;
 }
 .overlay {
     position: fixed;
@@ -628,6 +629,14 @@ ul {
     outline: none;
     border-radius: 50%;
     background-color: rgb(241, 238, 238);
+}
+.wish-list-title {
+    left: 18%;
+    font-family: 'Cera pro', sans-serif;
+    font-weight: 550;
+    font-size: 12px;
+    position: absolute;
+    top: 32%;
 }
 .add-wishlist > button > a {
     color: rgba(0, 109, 183, 1);

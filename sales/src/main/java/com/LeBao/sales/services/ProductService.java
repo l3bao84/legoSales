@@ -31,6 +31,13 @@ public class ProductService {
         return null;
     }
 
+    public List<Product> getAllByThemeId(Long categoryId) {
+        if(categoryRepository.findById(categoryId).isPresent()) {
+            return productRepository.findAllByCategoryId(categoryId);
+        }
+        return null;
+    }
+
     public String addProduct(Product product) {
         product.setImage("C:\\Users\\HELLO\\OneDrive\\Documents\\Projects\\sales\\sales\\src\\main\\resources\\images\\228a6b12-71df-4ab3-8951-5a7eab8ab06c.png");
         if(categoryRepository.findById(1L).isPresent()) {

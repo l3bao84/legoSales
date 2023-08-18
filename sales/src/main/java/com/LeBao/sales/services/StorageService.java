@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,10 +29,14 @@ public class StorageService {
         return UUID.randomUUID().toString() + "." + extension;
     }
 
-    public String uploadFileToFileSystem(MultipartFile file) throws IOException {
-        String filePath = FOLDER_PATH + generateNewFileName(file);
-        file.transferTo(new File(filePath));
-        return filePath;
+    public List<String> uploadFileToFileSystem(MultipartFile[] files) throws IOException {
+        List<String> filePaths = new ArrayList<>();
+        for (MultipartFile file:files) {
+            String filePath = FOLDER_PATH + generateNewFileName(file);
+            file.transferTo(new File(filePath));
+            filePaths.add(filePath);
+        }
+        return filePaths;
     }
 
     public byte[] downloadImageFromFileSystem(Long productId) throws IOException {
