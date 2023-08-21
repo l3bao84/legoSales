@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
+
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -23,6 +26,8 @@ public class Review {
 
     @Column(nullable = false)
     private int rating;
+
+    private LocalDate reviewDate;
 
     @JsonIgnore
     @ManyToOne

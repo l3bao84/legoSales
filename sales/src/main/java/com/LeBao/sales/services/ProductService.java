@@ -8,10 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,17 +36,18 @@ public class ProductService {
         return null;
     }
 
-    public String addProduct(Product product) {
-        product.setImage("C:\\Users\\HELLO\\OneDrive\\Documents\\Projects\\sales\\sales\\src\\main\\resources\\images\\228a6b12-71df-4ab3-8951-5a7eab8ab06c.png");
-        if(categoryRepository.findById(1L).isPresent()) {
-            product.setCategory(categoryRepository.findById(1L).get());
-            productRepository.save(product);
-            categoryRepository.findById(1L).get().getProducts().add(product);
-            categoryRepository.save(categoryRepository.findById(1L).get());
-            return "Add successfully";
-        }
-        return "Add failed";
-    }
+//    public String addProduct(Product product) {
+//        List<Image>
+//        product.setImage("C:\\Users\\HELLO\\OneDrive\\Documents\\Projects\\sales\\sales\\src\\main\\resources\\images\\228a6b12-71df-4ab3-8951-5a7eab8ab06c.png");
+//        if(categoryRepository.findById(1L).isPresent()) {
+//            product.setCategory(categoryRepository.findById(1L).get());
+//            productRepository.save(product);
+//            categoryRepository.findById(1L).get().getProducts().add(product);
+//            categoryRepository.save(categoryRepository.findById(1L).get());
+//            return "Add successfully";
+//        }
+//        return "Add failed";
+//    }
 
     public void updateProduct(Long productId, Product product) {
         if(productRepository.findById(productId).isPresent()) {
@@ -87,5 +86,13 @@ public class ProductService {
         categoryRepository.save(categoryRepository.findById(categoryId).get());
 
         productRepository.deleteById(productId);
+    }
+
+    public List<String> imagesFileName(Long productId) {
+        List<String> imagesFileName = new ArrayList<>();
+        for (String filePath:productRepository.findById(productId).get().getImages()) {
+            imagesFileName.add(Paths.get(filePath).getFileName().toString());
+        }
+        return imagesFileName;
     }
 }

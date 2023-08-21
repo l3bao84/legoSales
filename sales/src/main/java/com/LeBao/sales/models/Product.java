@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,9 +41,9 @@ public class Product {
     @Column(name = "pieces")
     private Integer pieces;
 
-    @Lob
-    @Column(name = "image", length = 200)
-    private String image;
+    @ElementCollection
+    @Column(length = 200)
+    private List<String> images;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -101,12 +102,12 @@ public class Product {
         this.stock = stock;
     }
 
-    public String getImage() {
-        return image;
+    public List<String> getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public Integer getPieces() {

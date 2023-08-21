@@ -36,27 +36,6 @@ openOverlay.addEventListener('click', () => {
     body.classList.remove('no-scroll')
 })
 
-// Slide tự chuyển động
-
-// const slides = document.querySelectorAll('.slide');
-
-
-// let currentSlide = 0;
-
-// function showSlide() {
-//   slides.forEach((slide) => {
-//     slide.classList.remove('active');
-//   });
-
-//   slides[currentSlide].classList.add('active');
-// }
-
-// //Tự động chuyển slide sau mỗi 5 giây
-// setInterval(() => {
-//     currentSlide = (currentSlide + 1) % slides.length;
-//     showSlide()
-// }, 5000);
-
 // Next và Prev các sản phẩm được gợi ý
 
 const products = document.querySelectorAll('.product-item')
@@ -276,30 +255,95 @@ plusButton.addEventListener('click', () => {
     }
 })
 
-// Mở introductions & descriptions
+// Mở introductions, descriptions & Reviews
 
-const toggleButton1 = document.querySelector('.product-accordion-toggle-button')
-const toggleButton2 = document.querySelector('.product-accordion-toggle-button-reviews')
-const animate1 = document.querySelector('.animate-height-wrapper')
-const animate2 = document.querySelector('.animate-height-wrapper-reviews')
+const toggleButton = document.querySelector('.product-accordion-toggle-button')
+const toggleButtonRV = document.querySelector('.product-accordion-toggle-button-reviews')
+const animate = document.querySelector('.animate-height-wrapper')
+const animateRV = document.querySelector('.animate-height-wrapper-reviews')
 const icon = document.querySelector('.plus-minus-icon')
 
-toggleButton1.addEventListener('click', () => {
+toggleButton.addEventListener('click', () => {
     icon.style.setProperty("--after-transform", "translate(-50%, -50%) rotate(-360deg)")
     icon.style.setProperty("--before-transform", "translate(-50%, -50%) rotate(-90deg)")
-    if(animate1.style.display == 'none') {
-        animate1.style.display == 'block'
+    if(animate.style.display == 'none') {
+        animate.style.display = 'block'
     }else {
-        animate1.style.display == 'none'
+        animate.style.display = 'none'
     }
 })
 
-// toggleButton2.addEventListener('click', () => {
-//     icon.style.setProperty("--after-transform", "translate(-50%, -50%) rotate(-360deg)")
-//     icon.style.setProperty("--before-transform", "translate(-50%, -50%) rotate(-90deg)")
-//     if(animate2.style.display == 'none') {
-//         animate2.style.display == 'block'
-//     }else {
-//         animate2.style.display == 'none'
-//     }
-// })
+toggleButtonRV.addEventListener('click', () => {
+    icon.style.setProperty("--after-transform", "translate(-50%, -50%) rotate(-360deg)")
+    icon.style.setProperty("--before-transform", "translate(-50%, -50%) rotate(-90deg)")
+    if(animateRV.style.display == 'none') {
+        animateRV.style.display = 'block'
+    }else {
+        animateRV.style.display = 'none'
+    }
+})
+
+// Chọn ảnh từ gallery thumbnail
+
+const images = document.querySelectorAll('.gallery-thumbnails-img')
+const imgSource = document.querySelector('.media-wrapper-img')
+const counter = document.querySelector('.product-counter-galley')
+const nextDetailBtn = document.querySelector('.control-button-next')
+const prevDetailBtn = document.querySelector('.control-button-prev')
+
+let currentImg = 0
+images.forEach((img,index) => {
+    img.addEventListener('click', () => {
+        currentImg = index
+        if(currentImg == 0) {
+            prevDetailBtn.style.pointerEvents = 'none'
+            prevDetailBtn.style.backgroundColor = '#a9a9a9'
+        }else {
+            prevDetailBtn.style.pointerEvents = 'auto'
+            prevDetailBtn.style.backgroundColor = '#000000ab'
+        }
+        if(currentImg == images.length - 1) {
+            nextDetailBtn.style.pointerEvents = 'none'
+            nextDetailBtn.style.backgroundColor = '#a9a9a9'
+        }else {
+            nextDetailBtn.style.pointerEvents = 'auto'
+            nextDetailBtn.style.backgroundColor = '#000000ab'
+        }
+        showImage(currentImg)
+        counter.textContent = (currentImg + 1) + '/' + images.length
+    })
+})
+
+function showImage(index) {
+    imgSource.src = images[index].src
+}
+
+prevDetailBtn.addEventListener('click', () => {
+    currentImg--;
+    counter.textContent = (currentImg + 1) + '/' + images.length
+    if(currentImg == 0) {
+        prevDetailBtn.style.pointerEvents = 'none'
+        prevDetailBtn.style.backgroundColor = '#a9a9a9'
+    }else {
+        prevDetailBtn.style.pointerEvents = 'auto'
+        prevDetailBtn.style.backgroundColor = '#000000ab'
+        nextDetailBtn.style.pointerEvents = 'auto'
+        nextDetailBtn.style.backgroundColor = '#000000ab'
+    }
+    showImage(currentImg);
+})
+
+nextDetailBtn.addEventListener('click', () => {
+    currentImg++;
+    counter.textContent = (currentImg + 1) + '/' + images.length
+    if(currentImg == images.length - 1) {
+        nextDetailBtn.style.pointerEvents = 'none'
+        nextDetailBtn.style.backgroundColor = '#a9a9a9'
+    }else {
+        prevDetailBtn.style.pointerEvents = 'auto'
+        prevDetailBtn.style.backgroundColor = '#000000ab'
+        nextDetailBtn.style.pointerEvents = 'auto'
+        nextDetailBtn.style.backgroundColor = '#000000ab'
+    }
+    showImage(currentImg)
+})

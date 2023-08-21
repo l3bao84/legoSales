@@ -516,7 +516,7 @@ ul {
 .product-item {
     height: 100%;
     width: 23%;
-    display: none;
+    display: none; 
 }
 .product-item.active {
     display: block;
@@ -1122,7 +1122,6 @@ footer {
     height: auto;
     -ms-interpolation-mode: bicubic;
     display: inline-block;
-    vertical-align: middle;
 }
 .title-wrapper > h2 {
     margin: 0px;
@@ -1251,10 +1250,12 @@ footer {
 .media-wrapper {
     height: 100%;
     width: 100%;
-    /* overflow: scroll hidden;
-    scroll-snap-type: x mandatory; */
     white-space: nowrap;
     position: relative;
+}
+.image-viewport:hover .control-button-wrapper-next,
+.image-viewport:hover .control-button-wrapper-prev {
+    opacity: 1;
 }
 .media-wrapper > img {
     width: 100%;
@@ -1536,12 +1537,6 @@ footer {
 .add-to-bag-sticky-container {
     position: relative;
 }
-.add-to-bag-container-content-holder {
-
-}
-.add-to-bag-container-holder {
-
-}
 .add-to-cart-button {
     display: block;
     width: 100%;
@@ -1559,14 +1554,14 @@ footer {
     position: relative;
     border-width: 2px;
 }
+.add-to-cart-button:focus {
+    outline: none;
+}
 .add-to-cart-button > a {
     color: rgb(0, 0, 0);
 }
 .add-to-cart-button > a:hover {
     text-decoration: none;
-}
-.add-to-wishlist-button-wrapper {
-
 }
 .wish-list-floating-wrapper {
     position: relative;
@@ -1765,15 +1760,6 @@ footer {
     flex-basis: 60%;
     padding-right: 1.5625rem;
 }
-.product-intro-des-copy-text {
-
-}
-.markup {
-
-}
-.markup > p {
-
-}
 .product-intro-des-cta {
     width: 40%;
     flex: 1 1 0%;
@@ -1814,4 +1800,138 @@ footer {
 }
 .rating-container > i {
     color: #ffd500;
+}
+.shop-more-like-this-container {
+    width: 100%;
+    max-width: 82.5rem;
+    margin: 0px auto;
+    border-bottom: 1px solid rgb(224, 224, 224);
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: baseline;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 2.5rem 1.25rem;
+}
+.shop-more-like-this-list {
+    display: flex;
+    flex-direction: row;
+    gap: 1.25rem;
+    list-style: none;
+}
+.category {
+    font-weight: 500;
+    letter-spacing: 0;
+    font-size: clamp(.875rem,.163265vw + .836735rem,1rem);
+    line-height: 1.5;
+    border: none;
+    background-clip: padding-box;
+    background-color: transparent;
+    border-radius: 30rem;
+    border: .125rem transparent solid;
+    color: #141414;
+    min-width: max-content;
+    outline: none!important;
+    box-shadow: inset 0 0 0 .125rem #0067b2;
+    padding: 0 1rem;
+    height: calc(2.5rem + 2 * .125rem);
+}
+.category:hover {
+    background-color: #005595;
+    color: #fff;
+    box-shadow: none;
+}
+.category > span {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.gallery-thumbnails {
+    list-style: none;
+    overflow-y: scroll;
+    padding: 0.9375rem;
+    opacity: 1;
+    height: auto;
+    width: 100%;
+    min-width: 140px;
+    max-width: 160px;
+    background-color: #f2f2f2;
+    overflow-x: hidden;
+    margin: 0;
+}
+.gallery-thumbnails-item {
+    height: 16%;
+    margin-bottom: 0.9375rem;
+}
+.gallery-thumbnails-item-btn {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    border: none;
+}
+.gallery-thumbnails-item-btn:focus {
+    outline: none;
+    border: 2px solid #006db7;
+}
+.gallery-thumbnails-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.product-counter-galley {
+    position: absolute;
+    top: 0.9375rem;
+    left: 0.9375rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: #fff;
+    background: #000;
+    opacity: .7;
+    padding: 0.3125rem 0.625rem;
+    z-index: 1;
+    border-radius: 100px;
+}
+.control-button-wrapper-prev {
+    z-index: 2;
+    position: absolute;
+    padding: 0px 0.9375rem;
+    top: 45%;
+    opacity: 0;
+    transition: all 0.5s ease 0s;
+    left: 0px;
+}
+.control-button-wrapper-next {
+    z-index: 2;
+    position: absolute;
+    padding: 0px 0.9375rem;
+    top: 45%;
+    opacity: 0;
+    transition: all 0.5s ease 0s;
+    right: 0px;
+}
+.control-button-next,
+.control-button-prev {
+    width: calc(3rem + 2 * 0.125rem);
+    height: calc(3rem + 2 * 0.125rem);
+    border: none;
+    border-radius: 30rem;
+    background-color: #000000ab;
+}
+.control-button-prev {
+    pointer-events: none;
+    background-color: #a9a9a9;
+}
+.control-button-next:focus,
+.control-button-prev:focus {
+    outline: none;
+}
+.icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon-wrapper > i {
+    font-size: 22px;
+    color: #fff;
 }

@@ -41,10 +41,11 @@ public class StorageService {
 
     public byte[] downloadImageFromFileSystem(Long productId) throws IOException {
         Product dbImageData = productRepository.findById(productId).get();
-        String filePath = dbImageData.getImage();
+        String filePath = dbImageData.getImages().get(0);
         byte[] images = Files.readAllBytes(new File(filePath).toPath());
         return images;
     }
+
 
     public byte[] downloadImageFromFileSystemByFileName(String fileName) throws IOException {
         String filePath = FOLDER_PATH + fileName;

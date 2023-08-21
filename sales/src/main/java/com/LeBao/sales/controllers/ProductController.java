@@ -50,8 +50,10 @@ public class ProductController {
         modelMap.addAttribute("product", productRepository.findById(productId).get());
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
         modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
+        modelMap.addAttribute("imageList", productService.imagesFileName(productId));
         return "detailProduct";
     }
+
 
     @GetMapping("/getAllByThemeId/{categoryId}")
     public String getAllByThemeId(@PathVariable Long categoryId, ModelMap modelMap) {
@@ -59,18 +61,21 @@ public class ProductController {
         return "";
     }
 
-    @PostMapping("/addProduct")
-    public ResponseEntity<String> addProduct(@RequestBody Product product) {
-        String status = productService.addProduct(product);
-        return ResponseEntity.ok(status);
-    }
+//    @PostMapping("/addProduct")
+//    public ResponseEntity<String> addProduct(@RequestBody Product product) {
+//        String status = productService.addProduct(product);
+//        return ResponseEntity.ok(status);
+//    }
 
-
-    @PostMapping("/addImage")
-    public ResponseEntity<List<String>> addImage(@RequestParam("file") MultipartFile[] files) throws IOException {
-        List<String> filePaths = storageService.uploadFileToFileSystem(files);
-        return ResponseEntity.ok(filePaths);
-    }
+//    @PostMapping("/addImage")
+//    public ResponseEntity<List<String>> addImage(@RequestParam("files") MultipartFile[] files) throws IOException {
+//        return ResponseEntity.ok(storageService.uploadFileToFileSystem(files));
+//    }
+//
+//    @PostMapping("/addImageToProduct/{productId}")
+//    public ResponseEntity<String> addImageToProduct(@PathVariable Long productId) {
+//        return ResponseEntity.ok(productService.addImageToProduct(productId));
+//    }
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable Long productId) throws IOException {

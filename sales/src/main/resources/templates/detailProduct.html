@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" th:href="@{/css/detailProduct.css}">
   <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
-  <title th:text="${product.getProductName() + ' | LEGO Shop'}"> | LEGO Shop</title>
+  <title th:text="${product.getProductName() + ' | LEGO Shop'}"></title>
 </head>
 <body >
 
@@ -162,9 +162,31 @@
       <div class="product-detail-layout">
         <div class="product-detail-gallery">
           <div class="galley-container">
+            <ul class="gallery-thumbnails">
+              <li th:each="image : ${imageList}" class="gallery-thumbnails-item">
+                <button class="gallery-thumbnails-item-btn">
+                  <img th:src="@{'http://localhost:8080/' + ${image}}" alt="" class="gallery-thumbnails-img">
+                </button>
+              </li>
+            </ul>
             <div class="image-viewport">
+              <span class="product-counter-galley" th:text="${'1/' + #lists.size(imageList)}"></span>
+              <div class="control-button-wrapper-prev">
+                <button class="control-button-prev">
+                  <div class="icon-wrapper">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </div>
+                </button>
+              </div>
+              <div class="control-button-wrapper-next">
+                <button class="control-button-next">
+                  <div class="icon-wrapper">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+                </button>
+              </div>
               <div class="media-wrapper">
-                <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
+                <img class="media-wrapper-img" th:src="@{'http://localhost:8080/' + ${imageList[0]}}" alt="">
               </div>
             </div>
           </div>
@@ -359,6 +381,17 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="shop-more-like-this-container">
+      Shop more like this:
+      <ul class="shop-more-like-this-list">
+        <li>
+          <button class="category">
+            <span th:text="${product.getCategory.getCategoryName()}"></span>
+          </button>
+        </li>
+      </ul>
     </div>
 
     <div class="recommen">
