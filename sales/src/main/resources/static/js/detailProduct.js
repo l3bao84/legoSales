@@ -261,26 +261,28 @@ const toggleButton = document.querySelector('.product-accordion-toggle-button')
 const toggleButtonRV = document.querySelector('.product-accordion-toggle-button-reviews')
 const animate = document.querySelector('.animate-height-wrapper')
 const animateRV = document.querySelector('.animate-height-wrapper-reviews')
-const icon = document.querySelector('.plus-minus-icon')
+const iconIntro = document.querySelector('.plus-minus-icon-intro')
+const iconReview = document.querySelector('.plus-minus-icon-reviews')
+const fills = document.querySelectorAll('.fill')
 
 toggleButton.addEventListener('click', () => {
-    icon.style.setProperty("--after-transform", "translate(-50%, -50%) rotate(-360deg)")
-    icon.style.setProperty("--before-transform", "translate(-50%, -50%) rotate(-90deg)")
-    if(animate.style.display == 'none') {
-        animate.style.display = 'block'
-    }else {
-        animate.style.display = 'none'
-    }
+    iconIntro.classList.toggle('activeRotate')
+    animate.classList.toggle('show')
 })
 
+
 toggleButtonRV.addEventListener('click', () => {
-    icon.style.setProperty("--after-transform", "translate(-50%, -50%) rotate(-360deg)")
-    icon.style.setProperty("--before-transform", "translate(-50%, -50%) rotate(-90deg)")
-    if(animateRV.style.display == 'none') {
-        animateRV.style.display = 'block'
-    }else {
-        animateRV.style.display = 'none'
-    }
+    iconReview.classList.toggle('activeRotate')
+    animateRV.classList.toggle('show')
+    fills.forEach((element) => {
+        const fillValue = element.getAttribute('fill')
+        element.style.width = fillValue + '%';
+        if(fillValue == 0) {
+            element.closest('button').style.opacity = '0.5'
+            element.closest('button').style.fontStyle = 'italic'
+            element.closest('button').style.cursor = 'no-drop'
+        }
+    })
 })
 
 // Chọn ảnh từ gallery thumbnail
@@ -347,3 +349,82 @@ nextDetailBtn.addEventListener('click', () => {
     }
     showImage(currentImg)
 })
+
+// Check điều kiện nội dung review
+
+const textArea = document.querySelector('.text-area-review > textarea')
+const requiredText = document.querySelector('.check-required')
+const textAreaStatus = document.querySelector('.text-area-status')
+
+textArea.addEventListener('input', () => {
+    if(textArea.value.length < 50) {
+        requiredText.textContent = "You must write at least 50 characters for this field."
+        textAreaStatus.style.display = 'block'
+        textAreaStatus.style.backgroundColor = 'rgb(208, 2, 27)'
+    }else {
+        requiredText.textContent = ""
+        textAreaStatus.style.backgroundColor = 'rgb(0, 133, 55)'
+    }
+})
+
+// Chọn file ảnh review
+
+const fileButton = document.querySelector('.choose-image-button')
+const fileInput = document.querySelector('.image-review-upload')
+
+fileButton.addEventListener('click', () => {
+    fileInput.click();
+})
+
+// Vote sao
+
+const stars = document.querySelectorAll('.star')
+
+stars.forEach((star) => {
+    star.addEventListener('mouseover', () => {
+        const rating = star.getAttribute("data-rating")
+        stars.forEach((s) => {
+            s.style.color = '#d7d6d6'
+        })
+        for(let i = 1; i <= rating; i++) {
+            stars[i - 1].style.color = '#ffd500'
+        }
+    })
+})
+
+// Hiển thị ảnh sau khi được chọn và xóa ảnh được chọn
+
+const imagesFileInput = document.querySelector('.image-review-upload')
+const imageWrapper = document.querySelector('.image-reviews')
+// const removeBtn = document.querySelectorAll('.remove-image')
+
+imagesFileInput.addEventListener('change', (event) => {
+    const files = event.target.files
+    for(const file of files) {
+        const li = document.createElement('li');
+        const img = document.createElement('img');
+        const removeButton = document.createElement('button');
+        
+        img.src = URL.createObjectURL(file);
+        removeButton.classList.add('remove-image');
+        removeButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 kBQgfx" data-di-res-id="29d199db-3481e91" data-di-rand="1692711741192">
+                <path d="M10.377 8.142l5.953-5.954-2.234-2.234-5.954 5.954L2.188-.046-.046 2.188l5.954 5.954-5.954 5.954 2.234 2.234 5.954-5.953 5.954 5.953 2.234-2.234z" fill="currentColor" fill-rule="evenodd"></path>
+            </svg>
+        `;
+        li.classList.add('image-preview-container');
+        li.appendChild(img);
+        li.appendChild(removeButton);
+        imageWrapper.appendChild(li);
+    }
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+    const removeBtn = document.querySelectorAll('.remove-image');
+    removeBtn.forEach(button => {
+        button.addEventListener('click', () => {
+            const listItem = button.closest('.image-preview-container');
+            listItem.remove();
+        });
+    });
+});

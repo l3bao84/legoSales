@@ -312,7 +312,7 @@
             <div class="product-accordion-title-row">
               <h2>Introductions & Descriptions</h2>
             </div>
-            <div class="plus-minus-icon">    
+            <div class="plus-minus-icon-intro">    
             </div>
           </div>
         </div>
@@ -358,7 +358,7 @@
                 </div>
               </span>
             </div>
-            <div class="plus-minus-icon">    
+            <div class="plus-minus-icon-reviews">    
             </div>
           </div>
         </div>
@@ -366,17 +366,164 @@
       <div class="animate-height-wrapper-reviews">
         <div class="accordian-content">
           <div class="max-width-container">
-            <div class="product-intro-des-body">
-              <div class="product-intro-des-copy">
-                <div class="product-intro-des-copy-text">
-                  <span class="markup">
-                    <p th:text="${product.getProductDescription()}"></p>
-                  </span>
+            <div class="product-review-wrapper">
+              <div class="product-review-stats-wrapper">
+                <div class="overall-rating">
+                  <div class="overall-rating-bar">
+                    <span class="rating-bar-label">Overall Rating</span>
+                    <div class="rating-container-detail">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <span class="rating-bar-text">5</span>
+                    </div>
+                  </div>
+                  <div class="overall-rating-count">
+                    <span class="product-review-count">(59 Reviews)</span>
+                  </div>
+                </div>
+                <div class="breakdown-wrapper">
+                  <div class="rating-detail">
+                    <h3 class="rating-detail-title">Rating</h3>
+                    <button class="rating-box">
+                      <span class="star-count">5 stars</span>
+                      <div class="percentage-bar-wrapper">
+                        <div class="progress-bar-wrapper">
+                          <div class="track-wrapper">
+                            <div class="track">
+                              <div fill="112.00000000000001" class="fill"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      28 Reviews
+                    </button>
+                    <button class="rating-box">
+                      <span class="star-count">4 stars</span>
+                      <div class="percentage-bar-wrapper">
+                        <div class="progress-bar-wrapper">
+                          <div class="track-wrapper">
+                            <div class="track">
+                              <div fill="16" class="fill"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      28 Reviews
+                    </button>
+                    <button class="rating-box">
+                      <span class="star-count">3 stars</span>
+                      <div class="percentage-bar-wrapper">
+                        <div class="progress-bar-wrapper">
+                          <div class="track-wrapper">
+                            <div class="track">
+                              <div fill="12" class="fill"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      28 Reviews
+                    </button>
+                    <button class="rating-box">
+                      <span class="star-count">2 stars</span>
+                      <div class="percentage-bar-wrapper">
+                        <div class="progress-bar-wrapper">
+                          <div class="track-wrapper">
+                            <div class="track">
+                              <div fill="0" class="fill"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      28 Reviews
+                    </button>
+                    <button class="rating-box">
+                      <span class="star-count">1 stars</span>
+                      <div class="percentage-bar-wrapper">
+                        <div class="progress-bar-wrapper">
+                          <div class="track-wrapper">
+                            <div class="track">
+                              <div fill="0" class="fill"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      28 Reviews
+                    </button>
+                  </div>
+                  <div class="write-review-form">
+                    <h3 class="rating-detail-title">Write a Review</h3>
+                    <div class="review-rating-set">
+                      <div class="review-field-rating">
+                        <p class="review-field-rating-title">Overall rating</p>
+                        <div class="styled-rating-bar">
+                          <div class="rating-bar-container">
+                            <button class="rating-segment">
+                              <div class="segment-container">
+                                <i data-rating="1" class="star fa-solid fa-star"></i>
+                              </div>
+                            </button>
+                            <button class="rating-segment">
+                              <div class="segment-container">
+                                <i data-rating="2" class="star fa-solid fa-star"></i>
+                              </div>
+                            </button>
+                            <button class="rating-segment">
+                              <div class="segment-container">
+                                <i data-rating="3" class="star fa-solid fa-star"></i>
+                              </div>
+                            </button>
+                            <button class="rating-segment">
+                              <div class="segment-container">
+                                <i data-rating="4" class="star fa-solid fa-star"></i>
+                              </div>
+                            </button>
+                            <button class="rating-segment">
+                              <div class="segment-container">
+                                <i data-rating="5" class="star fa-solid fa-star"></i>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="review-content-field">
+                      <p class="review-field-rating-title">Write your review</p>
+                      <label for="" class="text-area-review">
+                        <textarea name="reviewContent" id="" cols="30" rows="10"></textarea>
+                        <span class="check-required"></span>
+                        <div class="text-area-status"></div>
+                      </label>
+                    </div>
+                    <div class="choose-image">
+                      <p class="review-field-rating-title">Share a photo</p>
+                      <button class="choose-image-button">
+                        Upload an image
+                        <input type="file" name="iamgeReview" accept="image/png, image/jpeg" class="image-review-upload" multiple>
+                      </button>
+                      <div class="feedback-container"></div>
+                      <ul class="image-reviews">
+                        <!-- <li class="image-preview-container">
+                          <img src="" alt="">
+                          <button class="remove-image">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 kBQgfx" data-di-res-id="29d199db-3481e91" data-di-rand="1692711741192">
+                              <path d="M10.377 8.142l5.953-5.954-2.234-2.234-5.954 5.954L2.188-.046-.046 2.188l5.954 5.954-5.954 5.954 2.234 2.234 5.954-5.953 5.954 5.953 2.234-2.234z" fill="currentColor" fill-rule="evenodd"></path>
+                            </svg>
+                          </button>
+                        </li> -->
+                      </ul>
+                    </div>
+                    <div class="send-review-container">
+                      <button type="submit">Submit Your Review</button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="product-intro-des-cta">
-                <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
-              </div>
+              <!-- <div class="product-review-write-review-button">
+                <button class="write-button">Write a Review</button>
+              </div> -->
             </div>
           </div>
         </div>

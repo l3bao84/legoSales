@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,13 +22,18 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @Column(nullable = false)
     private int rating;
 
     private LocalDate reviewDate;
+
+    @ElementCollection
+    @Column(length = 200)
+    private List<String> imageReviews;
 
     @JsonIgnore
     @ManyToOne
