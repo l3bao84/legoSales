@@ -372,7 +372,8 @@ textArea.addEventListener('input', () => {
 const fileButton = document.querySelector('.choose-image-button')
 const fileInput = document.querySelector('.image-review-upload')
 
-fileButton.addEventListener('click', () => {
+fileButton.addEventListener('click', (event) => {
+    event.preventDefault()
     fileInput.click();
 })
 
@@ -396,7 +397,6 @@ stars.forEach((star) => {
 
 const imagesFileInput = document.querySelector('.image-review-upload')
 const imageWrapper = document.querySelector('.image-reviews')
-// const removeBtn = document.querySelectorAll('.remove-image')
 
 imagesFileInput.addEventListener('change', (event) => {
     const files = event.target.files
@@ -423,8 +423,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeBtn = document.querySelectorAll('.remove-image');
     removeBtn.forEach(button => {
         button.addEventListener('click', () => {
-            const listItem = button.closest('.image-preview-container');
-            listItem.remove();
+            const listItem = button.closest(".image-preview-container")
+            if(listItem) {
+                listItem.remove();
+            }
         });
     });
 });
+
+// review function
+
+const likeButton = document.querySelector('.rating-button-like');
+const dislikeButton = document.querySelector('.rating-button-dislike');
+const likeSpan = document.querySelector('.markup-counter-like')
+const dislikeSpan = document.querySelector('.markup-counter-dislike')
+const likeValue = parseInt(likeSpan.textContent)
+const dislikeValue = parseInt(dislikeSpan.textContent)
+
+
+likeButton.addEventListener('click', () => {
+    if(likeButton.querySelector('path').getAttribute('fill') === '#CACACA') {
+        likeButton.querySelector('path').style.fill = '#006db7'
+        likeSpan.textContent = parseInt(likeSpan.textContent) + 1
+        dislikeButton.querySelector('path').style.fill = '#CACACA'
+        
+        if(dislikeValue > parseInt(dislikeSpan.textContent) - 1) {
+            dislikeSpan.textContent = dislikeValue
+        }else {
+            dislikeSpan.textContent = parseInt(dislikeSpan.textContent) - 1
+        }
+        likeButton.disabled = true
+        dislikeButton.disabled = false
+    }
+})
+
+dislikeButton.addEventListener('click', () => {
+    if(dislikeButton.querySelector('path').getAttribute('fill') === '#CACACA') {
+        dislikeButton.querySelector('path').style.fill = '#006db7'
+        dislikeSpan.textContent = parseInt(dislikeSpan.textContent) + 1
+        likeButton.querySelector('path').style.fill = '#CACACA'
+        if(likeValue > parseInt(likeSpan.textContent) - 1) {
+            likeSpan.textContent = likeValue
+        }else {
+            likeSpan.textContent = parseInt(likeSpan.textContent) - 1
+        }
+        likeButton.disabled = false
+        dislikeButton.disabled = true
+    }
+})
