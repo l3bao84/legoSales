@@ -393,6 +393,12 @@ stars.forEach((star) => {
     })
 })
 
+stars.forEach((star) => {
+    star.addEventListener('click', (event) => {
+        event.preventDefault()
+    })
+})
+
 // Hiển thị ảnh sau khi được chọn và xóa ảnh được chọn
 
 const imagesFileInput = document.querySelector('.image-review-upload')
@@ -433,41 +439,122 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // review function
 
-const likeButton = document.querySelector('.rating-button-like');
-const dislikeButton = document.querySelector('.rating-button-dislike');
-const likeSpan = document.querySelector('.markup-counter-like')
-const dislikeSpan = document.querySelector('.markup-counter-dislike')
-const likeValue = parseInt(likeSpan.textContent)
-const dislikeValue = parseInt(dislikeSpan.textContent)
-
-
-likeButton.addEventListener('click', () => {
-    if(likeButton.querySelector('path').getAttribute('fill') === '#CACACA') {
-        likeButton.querySelector('path').style.fill = '#006db7'
-        likeSpan.textContent = parseInt(likeSpan.textContent) + 1
-        dislikeButton.querySelector('path').style.fill = '#CACACA'
-        
-        if(dislikeValue > parseInt(dislikeSpan.textContent) - 1) {
-            dislikeSpan.textContent = dislikeValue
-        }else {
-            dislikeSpan.textContent = parseInt(dislikeSpan.textContent) - 1
-        }
-        likeButton.disabled = true
-        dislikeButton.disabled = false
-    }
+const likeButton = document.querySelectorAll('.rating-button-like');
+const dislikeButton = document.querySelectorAll('.rating-button-dislike');
+const likeSpans = document.querySelectorAll('.markup-counter-like')
+const likeValues = []
+likeSpans.forEach(span => {
+    likeValues.push(parseInt(span.textContent))
 })
 
-dislikeButton.addEventListener('click', () => {
-    if(dislikeButton.querySelector('path').getAttribute('fill') === '#CACACA') {
-        dislikeButton.querySelector('path').style.fill = '#006db7'
-        dislikeSpan.textContent = parseInt(dislikeSpan.textContent) + 1
-        likeButton.querySelector('path').style.fill = '#CACACA'
-        if(likeValue > parseInt(likeSpan.textContent) - 1) {
-            likeSpan.textContent = likeValue
-        }else {
-            likeSpan.textContent = parseInt(likeSpan.textContent) - 1
-        }
-        likeButton.disabled = false
-        dislikeButton.disabled = true
-    }
+const dislikeSpans = document.querySelectorAll('.markup-counter-dislike')
+const dislikeValues = []
+dislikeSpans.forEach(span => {
+    dislikeValues.push(parseInt(span.textContent))
 })
+
+
+likeButton.forEach((button, index) => {
+    button.addEventListener('click', () => {
+        if(button.querySelector('path').getAttribute('fill') === '#CACACA') {
+            button.querySelector('path').style.fill = '#006db7'
+            button.querySelector('.markup-counter-like').textContent = parseInt(button.querySelector('.markup-counter-like').textContent) + 1
+            const dislikeButton = button.closest('.product-review-container').querySelector('.rating-button-dislike')
+            dislikeButton.querySelector('path').style.fill = '#CACACA'
+            const decreaseValue = parseInt(dislikeButton.querySelector('.markup-counter-dislike').textContent) - 1
+            if(dislikeValues[index] >= decreaseValue) {
+                dislikeButton.querySelector('.markup-counter-dislike').textContent = dislikeValues[index]
+            }else {
+                dislikeButton.querySelector('.markup-counter-dislike').textContent = decreaseValue
+            }
+            button.disabled = true
+            dislikeButton.disabled = false
+        }
+    })
+})
+
+dislikeButton.forEach((button, index) => {
+    button.addEventListener('click', () => {
+        if(button.querySelector('path').getAttribute('fill') === '#CACACA') {
+            button.querySelector('path').style.fill = '#006db7'
+            button.querySelector('.markup-counter-dislike').textContent = parseInt(button.querySelector('.markup-counter-dislike').textContent) + 1
+            const likeButton = button.closest('.product-review-container').querySelector('.rating-button-like')
+            likeButton.querySelector('path').style.fill = '#CACACA'
+            const decreaseValue = parseInt(likeButton.querySelector('.markup-counter-like').textContent) - 1
+            if(likeValues[index] >= decreaseValue) {
+                likeButton.querySelector('.markup-counter-like').textContent = likeValues[index]
+            }else {
+                likeButton.querySelector('.markup-counter-like').textContent = decreaseValue
+            }
+            button.disabled = true
+            likeButton.disabled = false
+        }
+    })
+})
+
+// Nút hiển thị thêm nội dung review
+
+const readMoreButton = document.querySelectorAll('.read-more-button')
+const reviewContent = document.querySelectorAll('.product-review-infor-lineclamp')
+
+readMoreButton.forEach((button) => {
+    button.addEventListener('click', () => {
+        if(button.textContent === "Read more") {
+            button.textContent = "Show less"
+            button.closest('.product-review-container')
+            .querySelector('.product-review-infor-lineclamp').style.maxHeight = "none"
+        }else {
+            button.textContent = "Read more"
+            button.closest('.product-review-container')
+            .querySelector('.product-review-infor-lineclamp').style.maxHeight = "7.5rem"
+        }
+    })
+})
+
+// Hiển thị thêm số lượng reviews
+
+const reviewItems = document.querySelectorAll('.product-review-container')
+const loadMoreButton = document.querySelector('.load-more-review-button')
+const hideLessButton = document.querySelector('.hide-less-review-button')
+
+let currentQuantity = 0
+const rvPerPage = 5
+
+function showReview(index) {
+    for(let i = index; i < index + rvPerPage; i++) {
+        if(reviewItems[i]) {
+            reviewItems[i].classList.add('active')
+        }
+    }
+    var contains = true
+    for(let i = 0; i < reviewItems.length; i++) {
+        if(!reviewItems[i].classList.contains('active')) {
+            contains = false
+        }
+    }
+    if(contains == true) {
+        loadMoreButton.style.display = 'none'
+        hideLessButton.style.display = 'block'
+    }
+}
+
+loadMoreButton.addEventListener('click', () => {
+    currentQuantity += 5
+    showReview(currentQuantity)
+})
+
+hideLessButton.addEventListener('click', () => {
+    reviewItems.forEach((item) => {
+        item.classList.remove('active')
+    })
+    for(let i = 0; i < rvPerPage; i++) {
+        if(reviewItems[i]) {
+            reviewItems[i].classList.add('active')
+        }
+    }
+    loadMoreButton.style.display = 'block'
+    hideLessButton.style.display = 'none'
+    currentQuantity = 0
+})
+
+showReview(currentQuantity)

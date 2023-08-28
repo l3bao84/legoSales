@@ -1998,12 +1998,16 @@ footer {
 .control-button-prev:focus {
     outline: none;
 }
-.icon-wrapper {
-    display: flex;
+.icon-wrapper-button {
+    margin: auto;
+    height: 1.75rem!important;
+    width: 1.75rem!important;
     justify-content: center;
     align-items: center;
+    display: flex;
+    color: #000;
 }
-.icon-wrapper > i {
+.icon-wrapper-button > i {
     font-size: 22px;
     color: #fff;
 }
@@ -2360,6 +2364,8 @@ footer {
     outline: none;
 }
 .reviews-title {
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
     color: inherit;
     font-size: 1.125rem;
     line-height: 1.75rem;
@@ -2373,6 +2379,10 @@ footer {
     border-top: 1px solid #ccc;
     padding-top: 1.5625rem;
     padding-bottom: 1.5625rem;
+    display: none;
+}
+.product-review-container.active {
+    display: block;
 }
 .product-review-text {
     color: inherit;
@@ -2544,4 +2554,59 @@ footer {
     line-height: 1.75rem;
     font-weight: 500;
     text-transform: inherit;
+}
+.load-more-review {
+    display: block;
+    padding: 1.125rem;
+}
+.pagination-container {
+    display: flex;
+    /* flex-direction: column;
+    -webkit-box-align: center; */
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin-top: 1.875rem;
+    margin-bottom: 1.25rem;
+}
+.pagination-load-more {
+    max-width: 60%;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    font-weight: 500;
+    line-height: 1.5625rem;
+}
+.load-more-review-container {
+    overflow-x: hidden;
+    display: flex;
+    flex-wrap: nowrap;
+    flex: 1 1 auto;
+    min-width: 3.75rem;
+    padding: 0.625rem 0px;
+}
+.hide-less-review-button,
+.load-more-review-button {
+    color: #006db7;
+    flex: 0 0 auto;
+    text-align: center;
+    background: transparent;
+    border: none;
+    font-weight: 500;
+}
+.hide-less-review-button:focus,
+.load-more-review-button:focus {
+    outline: none;
+}
+.hide-less-review-button:hover,
+.load-more-review-button:hover {
+    text-decoration: underline;
+}
+.load-more-review-button {
+    display: block;
+}
+.hide-less-review-button {
+    display: none;
 }
