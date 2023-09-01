@@ -4,22 +4,22 @@ import com.LeBao.sales.models.Category;
 import com.LeBao.sales.models.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
+import com.LeBao.sales.services.HomeService;
 import com.LeBao.sales.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -32,6 +32,9 @@ public class HomeController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private HomeService homeService;
 
     @GetMapping("/home")
     public String hello(ModelMap modelMap) {
@@ -64,6 +67,41 @@ public class HomeController {
         modelMap.addAttribute("topPickProducts", topPickProducts);
         modelMap.addAttribute("randomCat", randomCat);
         return "home";
+    }
+
+    @GetMapping("/search")
+    public String searchResultPage(ModelMap modelMap,
+                                   @RequestParam("search") String keyword,
+                                   @RequestParam(defaultValue = "0", required = false) int page,
+                                   @RequestParam(value = "sort", required = false) String sortValue) {
+
+        if(sortValue != null) {
+            Page<Product> productPage = homeService.searchProducts(keyword,sortValue,page);
+//            List<Product> sortedList = productPage.getContent();
+//            if(sortValue.equalsIgnoreCase("Price: Low to High")) {
+//                Collections.sort(sortedList, Comparator.comparing(Product::getPrice));
+//            }else if(sortValue.equalsIgnoreCase("Price: High to Low")) {
+//                Collections.sort(sortedList, Comparator.comparing(Product::getPrice).reversed());
+//            }else if(sortValue.equalsIgnoreCase("A-Z")) {
+//                Collections.sort(sortedList, Comparator.comparing(Product::getProductName));
+//            }
+            modelMap.addAttribute("allCats", categoryRepository.findAll());
+            modelMap.addAttribute("products", productPage.getContent());
+            modelMap.addAttribute("keyword", keyword);
+            modelMap.addAttribute("allThemes", categoryRepository.findAll());
+            modelMap.addAttribute("currentPage", page);
+            modelMap.addAttribute("totalPages", productPage.getTotalPages());
+            return "searchResult";
+        }
+        Page<Product> productPage = homeService.searchProducts(keyword,"",page);
+
+        modelMap.addAttribute("allCats", categoryRepository.findAll());
+        modelMap.addAttribute("products", productPage.getContent());
+        modelMap.addAttribute("keyword", keyword);
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        modelMap.addAttribute("currentPage", page);
+        modelMap.addAttribute("totalPages", productPage.getTotalPages());
+        return "searchResult";
     }
 
     @GetMapping("/{fileName}")

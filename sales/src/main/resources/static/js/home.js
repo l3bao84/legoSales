@@ -231,3 +231,22 @@ function switchOffPanel() {
 function preventEventPropagation(event) {
     event.stopPropagation();
 }
+
+// chặn hành vi của button ẩn thanh tìm kiếm
+
+const closeButton = document.querySelector('.hidden-search-close-btn')
+
+closeButton.addEventListener('click', (event) => {
+    openOverlay.style.display = 'none'
+    openOverlay.style.zIndex = '2'
+    for (let i = 0; i < search.length; i++) {
+        search[i].style.display = 'flex';
+    }
+    for (let i = 0; i < hiddenSearch.length; i++) {
+        hiddenSearch[i].style.display = 'none';
+    }
+    for(let i = 0; i < hiddenMenu.length; i++) {
+        hiddenMenu[i].style.display = 'none'
+    }
+    event.preventDefault()
+})

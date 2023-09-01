@@ -112,20 +112,21 @@
             <i class="fa-solid fa-magnifying-glass"></i>
           </a>
         </button>
-        <div class="hidden-search">
-          <button class="hidden-search-icon">
-            <a href="">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </a>
-          </button>
-          <input class="hidden-search-keyword" type="text" placeholder="Search...">
-          <button class="hidden-search-close-btn">
-            <a href="">
-              <i class="fa-solid fa-xmark"></i>
-            </a>
-          </button>
-        </div>
-        
+        <form th:action="@{/search}" method="get">
+          <div class="hidden-search">
+            <button class="hidden-search-icon" type="submit">
+              <a href="">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </a>
+            </button>
+            <input name="search" class="hidden-search-keyword" type="text" placeholder="Search...">
+            <button class="hidden-search-close-btn" type="reset">
+              <a href="">
+                <i class="fa-solid fa-xmark"></i>
+              </a>
+            </button>
+          </div>
+        </form>
       </div>
       <div class="utility-section">
         <div class="wishlist">

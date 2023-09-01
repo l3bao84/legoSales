@@ -1,9 +1,9 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: 'Cera Pro', sans-serif;
 }
 html {
-    font-family: 'Cera Pro', sans-serif;
     box-sizing: border-box;
     height: 100%;
 }
