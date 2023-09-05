@@ -284,14 +284,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(currentUrl)
     const pageValue = urlParams.get("sort")
 
-    
-
+    var checked = true
     selectedRadio.forEach((radio) => {
-        if(radio.value === pageValue) {
-            document.querySelector('.selected-value').textContent = radio.value
-        }   
-        selectedRadio.forEach((radio) => {
-            radio.checked = false
-        })
+        if(radio.checked) {
+            checked = false
+        }
     })
+
+    if(checked) {
+        selectedRadio[0].checked = true
+        document.querySelector('.selected-value').textContent = selectedRadio[0].value
+    }else {
+        selectedRadio.forEach((radio) => {
+            if(radio.value === pageValue) {
+                document.querySelector('.selected-value').textContent = radio.value
+            }   
+            selectedRadio.forEach((radio) => {
+                radio.checked = false
+            })
+        })
+    }
 })
