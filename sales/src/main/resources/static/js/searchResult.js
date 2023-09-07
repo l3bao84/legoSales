@@ -167,7 +167,7 @@ openSort.addEventListener('click', () => {
 
 dropdownItems.forEach((item) => {
     item.addEventListener('click', () => {
-        selectedValue.textContent = item.querySelector("span").textContent
+        // selectedValue.textContent = item.querySelector("span").textContent
         openSort.classList.toggle('open')
         openSort.querySelector("svg").classList.toggle('rotate-chevron')
         dropDown.classList.toggle("down")
@@ -283,15 +283,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentUrl = window.location.href;
     const urlParams = new URLSearchParams(currentUrl)
     const pageValue = urlParams.get("sort")
-
-    var checked = true
-    selectedRadio.forEach((radio) => {
-        if(radio.checked) {
-            checked = false
-        }
-    })
-
-    if(checked) {
+    
+    if(pageValue == null) {
         selectedRadio[0].checked = true
         document.querySelector('.selected-value').textContent = selectedRadio[0].value
     }else {

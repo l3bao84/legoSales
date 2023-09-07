@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -83,5 +84,38 @@ public class Review {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    public List<String> getImageReviews() {
+        return imageReviews;
+    }
+
+    public void setImageReviews(List<String> imageReviews) {
+        this.imageReviews = imageReviews;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Review other = (Review) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

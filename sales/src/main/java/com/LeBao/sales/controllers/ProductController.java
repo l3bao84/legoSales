@@ -1,9 +1,13 @@
 package com.LeBao.sales.controllers;
 
+import com.LeBao.sales.DTO.ReviewDTO;
 import com.LeBao.sales.models.Category;
 import com.LeBao.sales.models.Product;
+import com.LeBao.sales.models.Review;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
+import com.LeBao.sales.repositories.ReviewRepository;
+import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.services.ProductService;
 import com.LeBao.sales.services.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +45,59 @@ public class ProductController {
     @Autowired
     private StorageService storageService;
 
+
     @GetMapping("/getProduct/{productId}")
     public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
+        List<Product> recommendedProducts = new ArrayList<>();
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        for (int i = 0; i < 12; i++) {
+            recommendedProducts.add(productRepository.findAll().get(i));
+        }
+        modelMap.addAttribute("products", recommendedProducts);
+        modelMap.addAttribute("product", productService.imageReviewsFileName(productRepository.findById(productId).get()));
+        modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
+        modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
+        modelMap.addAttribute("imageList", productService.imagesFileName(productId));
+        modelMap.addAttribute("avgRating", productService.decialFormat(
+                productRepository.findById(productId).get().getReviews()
+                        .stream()
+                        .mapToDouble(review -> review.getRating())
+                        .average()
+                        .orElse(0.0)));
+        modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
+        modelMap.addAttribute("review", new ReviewDTO());
+        return "detailProduct";
+    }
+
+    @PostMapping("/addReview/{productId}")
+    public String addReview(ModelMap modelMap,
+                            @PathVariable Long productId,
+                            @ModelAttribute("review") ReviewDTO reviewDTO,
+                            BindingResult bindingResult,
+                            @RequestParam("files") MultipartFile[] files) throws IOException {
+        if(bindingResult.hasErrors()) {
+            List<Product> recommendedProducts = new ArrayList<>();
+            modelMap.addAttribute("allThemes", categoryRepository.findAll());
+            for (int i = 0; i < 12; i++) {
+                recommendedProducts.add(productRepository.findAll().get(i));
+            }
+            modelMap.addAttribute("products", recommendedProducts);
+            modelMap.addAttribute("product", productRepository.findById(productId).get());
+            modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
+            modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
+            modelMap.addAttribute("imageList", productService.imagesFileName(productId));
+            modelMap.addAttribute("avgRating", productService.decialFormat(
+                    productRepository.findById(productId).get().getReviews()
+                            .stream()
+                            .mapToDouble(review -> review.getRating())
+                            .average()
+                            .orElse(0.0)));
+            modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
+            modelMap.addAttribute("review", new ReviewDTO());
+            return "redirect:/product/getProduct/" + productId;
+        }else {
+            productService.addReview(productId,reviewDTO,files);
+        }
         List<Product> recommendedProducts = new ArrayList<>();
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         for (int i = 0; i < 12; i++) {
@@ -51,9 +108,16 @@ public class ProductController {
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
         modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
         modelMap.addAttribute("imageList", productService.imagesFileName(productId));
-        return "detailProduct";
+        modelMap.addAttribute("avgRating", productService.decialFormat(
+                productRepository.findById(productId).get().getReviews()
+                .stream()
+                .mapToDouble(review -> review.getRating())
+                .average()
+                .orElse(0.0)));
+        modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
+        modelMap.addAttribute("review", new ReviewDTO());
+        return "redirect:/product/getProduct/" + productId;
     }
-
 
     @GetMapping("/getAllByThemeId/{categoryId}")
     public String getAllByThemeId(@PathVariable Long categoryId, ModelMap modelMap) {

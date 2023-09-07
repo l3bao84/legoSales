@@ -268,13 +268,14 @@
                 <span th:text="${product.getProductName()}"></span>
               </a>
             </div>
-            <div class="product-item-rating">
+            <div th:if="${not #lists.isEmpty(product.reviews)}" class="product-item-rating">
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
             </div>
+            <div th:unless="${not #lists.isEmpty(product.reviews)}" class="product-item-rating"></div>
             <div class="product-item-price" th:text="${'$' + product.getPrice()}"></div>
             <div class="product-item-btn">
               <button class="add-bag">

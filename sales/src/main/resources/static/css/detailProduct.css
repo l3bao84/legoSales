@@ -2089,6 +2089,7 @@ footer {
 .rating-box:focus {
     outline: none;
 }
+.review-count,
 .star-count {
     color: inherit;
     font-size: 1rem;
@@ -2369,7 +2370,7 @@ footer {
     color: inherit;
     font-size: 1.125rem;
     line-height: 1.75rem;
-    font-weight: 500;
+    font-weight: 550;
     text-transform: inherit;
 }
 .review-list {
@@ -2379,7 +2380,7 @@ footer {
     border-top: 1px solid #ccc;
     padding-top: 1.5625rem;
     padding-bottom: 1.5625rem;
-    display: none;
+    display: block;
 }
 .product-review-container.active {
     display: block;

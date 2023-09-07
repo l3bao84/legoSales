@@ -77,30 +77,17 @@ public class HomeController {
 
         if(sortValue != null) {
             Page<Product> productPage = homeService.searchProducts(keyword,sortValue,page);
-//            List<Product> sortedList = productPage.getContent();
-//            if(sortValue.equalsIgnoreCase("Price: Low to High")) {
-//                Collections.sort(sortedList, Comparator.comparing(Product::getPrice));
-//            }else if(sortValue.equalsIgnoreCase("Price: High to Low")) {
-//                Collections.sort(sortedList, Comparator.comparing(Product::getPrice).reversed());
-//            }else if(sortValue.equalsIgnoreCase("A-Z")) {
-//                Collections.sort(sortedList, Comparator.comparing(Product::getProductName));
-//            }
-            modelMap.addAttribute("allCats", categoryRepository.findAll());
             modelMap.addAttribute("products", productPage.getContent());
-            modelMap.addAttribute("keyword", keyword);
-            modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            modelMap.addAttribute("currentPage", page);
             modelMap.addAttribute("totalPages", productPage.getTotalPages());
-            return "searchResult";
+        }else {
+            Page<Product> productPage = homeService.searchProducts(keyword,"",page);
+            modelMap.addAttribute("products", productPage.getContent());
+            modelMap.addAttribute("totalPages", productPage.getTotalPages());
         }
-        Page<Product> productPage = homeService.searchProducts(keyword,"",page);
-
         modelMap.addAttribute("allCats", categoryRepository.findAll());
-        modelMap.addAttribute("products", productPage.getContent());
         modelMap.addAttribute("keyword", keyword);
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("currentPage", page);
-        modelMap.addAttribute("totalPages", productPage.getTotalPages());
         return "searchResult";
     }
 

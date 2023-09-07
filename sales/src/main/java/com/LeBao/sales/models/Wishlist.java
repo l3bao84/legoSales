@@ -30,6 +30,6 @@ public class Wishlist {
     @Column(name = "added_date")
     private LocalDate addedDate;
 
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<WishlistProduct> wishlistProducts;
 }

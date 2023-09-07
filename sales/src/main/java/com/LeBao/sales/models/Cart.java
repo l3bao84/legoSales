@@ -32,7 +32,7 @@ public class Cart {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CartItem> cartItems;
 
     // Constructors, getters and setters

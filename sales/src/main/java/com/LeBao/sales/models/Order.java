@@ -39,7 +39,7 @@ public class Order {
     @Column(name = "order_status")
     private String orderStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<OrderDetail> orderDetails;
 
     // Constructors, getters and setters

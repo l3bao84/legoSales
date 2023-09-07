@@ -30,7 +30,7 @@ public class Category {
     @Column(name = "image", length = 200)
     private String image;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products;
 
     // Constructors, getters and setters

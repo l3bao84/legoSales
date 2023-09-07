@@ -263,7 +263,7 @@ const animate = document.querySelector('.animate-height-wrapper')
 const animateRV = document.querySelector('.animate-height-wrapper-reviews')
 const iconIntro = document.querySelector('.plus-minus-icon-intro')
 const iconReview = document.querySelector('.plus-minus-icon-reviews')
-const fills = document.querySelectorAll('.fill')
+
 
 toggleButton.addEventListener('click', () => {
     iconIntro.classList.toggle('activeRotate')
@@ -274,15 +274,29 @@ toggleButton.addEventListener('click', () => {
 toggleButtonRV.addEventListener('click', () => {
     iconReview.classList.toggle('activeRotate')
     animateRV.classList.toggle('show')
-    fills.forEach((element) => {
-        const fillValue = element.getAttribute('fill')
-        element.style.width = fillValue + '%';
-        if(fillValue == 0) {
-            element.closest('button').style.opacity = '0.5'
-            element.closest('button').style.fontStyle = 'italic'
-            element.closest('button').style.cursor = 'no-drop'
-        }
-    })
+})
+
+// hiển thị % vote 
+
+const totalReview = document.querySelector('.review-button')
+const ratingBoxes = document.querySelectorAll('.rating-box')
+
+document.addEventListener("DOMContentLoaded", () => {
+    if(totalReview !== null) {
+        const totalReviewValue = parseInt(totalReview.textContent)
+        ratingBoxes.forEach((box) => {
+            const rvValue =  parseInt(box.querySelector('.review-count').textContent.split(' ')[0])
+            const fillValue = (rvValue / totalReviewValue) * 100
+            if(fillValue == 0) {
+                box.style.opacity = '0.5'
+                box.style.fontStyle = 'italic'
+                box.style.cursor = 'no-drop'
+                box.querySelector('.fill').style.width = '0%'
+            }else {
+                box.querySelector('.fill').style.width = (fillValue * 112.00000000000001) / 100 + '%'
+            }
+        })
+    }
 })
 
 // Chọn ảnh từ gallery thumbnail
@@ -384,6 +398,8 @@ const stars = document.querySelectorAll('.star')
 stars.forEach((star) => {
     star.addEventListener('mouseover', () => {
         const rating = star.getAttribute("data-rating")
+        const ratingInput = document.querySelector("input[name='rating']");
+        ratingInput.value = rating
         stars.forEach((s) => {
             s.style.color = '#d7d6d6'
         })
@@ -409,33 +425,33 @@ imagesFileInput.addEventListener('change', (event) => {
     for(const file of files) {
         const li = document.createElement('li');
         const img = document.createElement('img');
-        const removeButton = document.createElement('button');
+        // const removeButton = document.createElement('button');
         
         img.src = URL.createObjectURL(file);
-        removeButton.classList.add('remove-image');
-        removeButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 kBQgfx" data-di-res-id="29d199db-3481e91" data-di-rand="1692711741192">
-                <path d="M10.377 8.142l5.953-5.954-2.234-2.234-5.954 5.954L2.188-.046-.046 2.188l5.954 5.954-5.954 5.954 2.234 2.234 5.954-5.953 5.954 5.953 2.234-2.234z" fill="currentColor" fill-rule="evenodd"></path>
-            </svg>
-        `;
+        // removeButton.classList.add('remove-image');
+        // removeButton.innerHTML = `
+        //     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 kBQgfx" data-di-res-id="29d199db-3481e91" data-di-rand="1692711741192">
+        //         <path d="M10.377 8.142l5.953-5.954-2.234-2.234-5.954 5.954L2.188-.046-.046 2.188l5.954 5.954-5.954 5.954 2.234 2.234 5.954-5.953 5.954 5.953 2.234-2.234z" fill="currentColor" fill-rule="evenodd"></path>
+        //     </svg>
+        // `;
         li.classList.add('image-preview-container');
         li.appendChild(img);
-        li.appendChild(removeButton);
+        // li.appendChild(removeButton);
         imageWrapper.appendChild(li);
     }
 })
 
-document.addEventListener('DOMContentLoaded', () => {
-    const removeBtn = document.querySelectorAll('.remove-image');
-    removeBtn.forEach(button => {
-        button.addEventListener('click', () => {
-            const listItem = button.closest(".image-preview-container")
-            if(listItem) {
-                listItem.remove();
-            }
-        });
-    });
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     const removeBtn = document.querySelectorAll('.remove-image');
+//     removeBtn.forEach(button => {
+//         button.addEventListener('click', () => {
+//             const listItem = button.closest(".image-preview-container")
+//             if(listItem) {
+//                 listItem.remove();
+//             }
+//         });
+//     });
+// });
 
 // review function
 
@@ -513,51 +529,61 @@ readMoreButton.forEach((button) => {
 
 // Hiển thị thêm số lượng reviews
 
-const reviewItems = document.querySelectorAll('.product-review-container')
-const loadMoreButton = document.querySelector('.load-more-review-button')
-const hideLessButton = document.querySelector('.hide-less-review-button')
+document.addEventListener("DOMContentLoaded", () => {
+    const reviewItems = document.querySelectorAll('.product-review-container')
 
-let currentQuantity = 0
-const rvPerPage = 5
+    if(reviewItems.length >= 5) {
+        reviewItems.forEach(item => {
+            item.style.display = 'none'
+        })
 
-function showReview(index) {
-    for(let i = index; i < index + rvPerPage; i++) {
-        if(reviewItems[i]) {
-            reviewItems[i].classList.add('active')
+        const loadMoreButton = document.querySelector('.load-more-review-button')
+        const hideLessButton = document.querySelector('.hide-less-review-button')
+
+        if(loadMoreButton !== null && hideLessButton !== null) {
+            let currentQuantity = 0
+            const rvPerPage = 5
+
+            function showReview(index) {
+                for(let i = index; i < index + rvPerPage; i++) {
+                    if(reviewItems[i]) {
+                        reviewItems[i].classList.add('active')
+                    }
+                }
+                var contains = true
+                for(let i = 0; i < reviewItems.length; i++) {
+                    if(!reviewItems[i].classList.contains('active')) {
+                        contains = false
+                    }
+                }
+                if(contains == true) {
+                    loadMoreButton.style.display = 'none'
+                    hideLessButton.style.display = 'block'
+                }
+            }
+
+            loadMoreButton.addEventListener('click', () => {
+                currentQuantity += 5
+                showReview(currentQuantity)
+            })
+
+            hideLessButton.addEventListener('click', () => {
+                reviewItems.forEach((item) => {
+                    item.classList.remove('active')
+                })
+                for(let i = 0; i < rvPerPage; i++) {
+                    if(reviewItems[i]) {
+                        reviewItems[i].classList.add('active')
+                    }
+                }
+                loadMoreButton.style.display = 'block'
+                hideLessButton.style.display = 'none'
+                currentQuantity = 0
+            })
+            showReview(currentQuantity)
         }
     }
-    var contains = true
-    for(let i = 0; i < reviewItems.length; i++) {
-        if(!reviewItems[i].classList.contains('active')) {
-            contains = false
-        }
-    }
-    if(contains == true) {
-        loadMoreButton.style.display = 'none'
-        hideLessButton.style.display = 'block'
-    }
-}
-
-loadMoreButton.addEventListener('click', () => {
-    currentQuantity += 5
-    showReview(currentQuantity)
 })
-
-hideLessButton.addEventListener('click', () => {
-    reviewItems.forEach((item) => {
-        item.classList.remove('active')
-    })
-    for(let i = 0; i < rvPerPage; i++) {
-        if(reviewItems[i]) {
-            reviewItems[i].classList.add('active')
-        }
-    }
-    loadMoreButton.style.display = 'block'
-    hideLessButton.style.display = 'none'
-    currentQuantity = 0
-})
-
-showReview(currentQuantity)
 
 // chặn hành vi của button ẩn thanh tìm kiếm
 
@@ -576,4 +602,71 @@ closeButton.addEventListener('click', (event) => {
         hiddenMenu[i].style.display = 'none'
     }
     event.preventDefault()
+})
+
+// hiện màu sao dựa vào trung bình vote
+
+const avgRating = document.querySelector('.rating-bar-text')
+const rvStars1 = document.querySelector('.review-rating-star')
+const rvStars2 = document.querySelector('.rating-container')
+const rvStars3 = document.querySelector('.rating-container-detail')
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    if(rvStars1 !== null && rvStars2 !== null && rvStars3 !== null && avgRating !== null) {
+        const avgValue = Math.round(parseFloat(avgRating.textContent))
+        const star1 = rvStars1.querySelectorAll("i")
+        const star2 = rvStars2.querySelectorAll("i")
+        const star3 = rvStars3.querySelectorAll("i")
+        for(let i = avgValue; i <= 5; i++) {
+            star1[i].style.color = "#cacaca"
+            star2[i].style.color = "#cacaca"
+            star3[i].style.color = "#cacaca"
+        }
+    }
+})
+
+// đổi định dạng ngày tháng 
+
+var dateSpan = document.querySelectorAll('.date')
+
+document.addEventListener("DOMContentLoaded", () => {
+    dateSpan.forEach((date) => {
+        const dateConvert = new Date(date.textContent);
+        const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+        ];
+
+        const day = dateConvert.getDate();
+        const month = dateConvert.getMonth();
+        const year = dateConvert.getFullYear();
+
+        const daySuffix = "th";
+        if (day === 1 || day === 21 || day === 31) {
+        daySuffix = "st";
+        } else if (day === 2 || day === 22) {
+        daySuffix = "nd";
+        } else if (day === 3 || day === 23) {
+        daySuffix = "rd";
+        }
+
+        const formattedDate = months[month] + " " + day + daySuffix + ", " + year;
+        date.textContent = formattedDate
+    })
+})
+
+// hiện sao review chi tiết
+
+const reviewDetailStars = document.querySelector('.review-detail-star')
+
+document.addEventListener("DOMContentLoaded", () => {
+    if(reviewDetailStars !== null) {
+        const detailStar = reviewDetailStars.querySelectorAll("i")
+        const reviewDetailValue = reviewDetailStars.querySelector('.rating-bar-text')
+        const avgValue = Math.round(parseFloat(reviewDetailValue.textContent))
+        for(let i = avgValue; i <= 5; i++) {
+            detailStar[i].style.color = "#cacaca"
+        }
+    }
 })

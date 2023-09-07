@@ -30,13 +30,17 @@ public class StorageService {
     }
 
     public List<String> uploadFileToFileSystem(MultipartFile[] files) throws IOException {
-        List<String> filePaths = new ArrayList<>();
-        for (MultipartFile file:files) {
-            String filePath = FOLDER_PATH + generateNewFileName(file);
-            file.transferTo(new File(filePath));
-            filePaths.add(filePath);
+        if(files != null && files.length > 1) {
+            List<String> filePaths = new ArrayList<>();
+            for (MultipartFile file:files) {
+                String filePath = FOLDER_PATH + generateNewFileName(file);
+                file.transferTo(new File(filePath));
+                filePaths.add(filePath);
+            }
+            return filePaths;
+        }else {
+            return null;
         }
-        return filePaths;
     }
 
     public byte[] downloadImageFromFileSystem(Long productId) throws IOException {
