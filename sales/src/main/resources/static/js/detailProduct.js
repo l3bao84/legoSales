@@ -178,13 +178,23 @@ document.addEventListener("DOMContentLoaded", () => {
   
 // Mở overlay đăng nhập hoặc đăng ký
 
-const openAccount = document.querySelector('.openAccount')
 const accountPanel = document.querySelector('.account-panel')
 const offPanel = document.querySelector('.exit-account-modal')
 
-openAccount.addEventListener('click', () => {
-    accountPanel.style.display = 'flex'
-    body.classList.add('no-scroll')
+document.addEventListener("DOMContentLoaded", () => {
+    const account = document.querySelector('.openAccount')
+    if(account !== null) {
+        account.addEventListener('click', () => {
+            var newUrl = `/my-account`;
+            window.location.href = newUrl
+        })
+    }else {
+        const openSignIn = document.querySelector('.sign-in')
+        openSignIn.addEventListener('click', () => {
+            accountPanel.style.display = 'flex'
+            body.classList.add('no-scroll')
+        })
+    }
 })
 
 offPanel.addEventListener('click', () => {
@@ -396,7 +406,7 @@ fileButton.addEventListener('click', (event) => {
 const stars = document.querySelectorAll('.star')
 
 stars.forEach((star) => {
-    star.addEventListener('mouseover', () => {
+    star.addEventListener('click', () => {
         const rating = star.getAttribute("data-rating")
         const ratingInput = document.querySelector("input[name='rating']");
         ratingInput.value = rating
@@ -409,11 +419,6 @@ stars.forEach((star) => {
     })
 })
 
-stars.forEach((star) => {
-    star.addEventListener('click', (event) => {
-        event.preventDefault()
-    })
-})
 
 // Hiển thị ảnh sau khi được chọn và xóa ảnh được chọn
 
@@ -607,22 +612,30 @@ closeButton.addEventListener('click', (event) => {
 // hiện màu sao dựa vào trung bình vote
 
 const avgRating = document.querySelector('.rating-bar-text')
-const rvStars1 = document.querySelector('.review-rating-star')
-const rvStars2 = document.querySelector('.rating-container')
-const rvStars3 = document.querySelector('.rating-container-detail')
+const rvStars = document.querySelector('.review-rating-star')
+const rvStarOverall = document.querySelector('.rating-container-detail')
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    if(rvStars1 !== null && rvStars2 !== null && rvStars3 !== null && avgRating !== null) {
-        const avgValue = Math.round(parseFloat(avgRating.textContent))
-        const star1 = rvStars1.querySelectorAll("i")
-        const star2 = rvStars2.querySelectorAll("i")
-        const star3 = rvStars3.querySelectorAll("i")
-        for(let i = avgValue; i <= 5; i++) {
-            star1[i].style.color = "#cacaca"
-            star2[i].style.color = "#cacaca"
-            star3[i].style.color = "#cacaca"
-        }
+    if(rvStars !== null && rvStarOverall !== null && avgRating !== null) {
+        const avgValue = Math.floor(parseFloat(avgRating.textContent))
+        const stars = rvStars.querySelectorAll("i")
+        const starOverall = rvStarOverall.querySelectorAll("i")
+        stars.forEach((star,index) => {
+            if(index < avgValue) {
+                star.style.color = "#ffd500"
+            }else {
+                star.style.color = "#cacaca"
+            }
+        })
+
+        starOverall.forEach((star,index) => {
+            if(index < avgValue) {
+                star.style.color = "#ffd500"
+            }else {
+                star.style.color = "#cacaca"
+            }
+        })
     }
 })
 
@@ -662,11 +675,15 @@ const reviewDetailStars = document.querySelector('.review-detail-star')
 
 document.addEventListener("DOMContentLoaded", () => {
     if(reviewDetailStars !== null) {
-        const detailStar = reviewDetailStars.querySelectorAll("i")
+        const detailStars = reviewDetailStars.querySelectorAll("i")
         const reviewDetailValue = reviewDetailStars.querySelector('.rating-bar-text')
-        const avgValue = Math.round(parseFloat(reviewDetailValue.textContent))
-        for(let i = avgValue; i <= 5; i++) {
-            detailStar[i].style.color = "#cacaca"
-        }
+        const avgValue = Math.floor(parseFloat(reviewDetailValue.textContent))
+        detailStars.forEach((star,index) => {
+            if(index < avgValue) {
+                star.style.color = "#ffd500"
+            }else {
+                star.style.color = "#cacaca"
+            }
+        })
     }
 })

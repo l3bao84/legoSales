@@ -1,17 +1,24 @@
 package com.LeBao.sales.services;
 
+import com.LeBao.sales.models.Category;
 import com.LeBao.sales.models.Product;
 import com.LeBao.sales.models.Review;
+import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class HomeService {
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -32,5 +39,40 @@ public class HomeService {
         }
         pageable = PageRequest.of(page, pageSize);
         return productRepository.findAll(pageable);
+    }
+
+    public List<Product> getRecommendedProducts() {
+        List<Product> products = productRepository.findAll();
+        Collections.reverse(products);
+        List<Product> recommendedProducts = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            recommendedProducts.add(products.get(i));
+        }
+        return recommendedProducts;
+    }
+
+    public List<Product> getTopPickProducts() {
+        List<Product> products = productRepository.findAll();
+        List<Product> toppickProducts = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i <= 3; i++) {
+            int randomPosition = random.nextInt(products.size());
+            toppickProducts.add(products.get(randomPosition));
+            products.remove(randomPosition);
+        }
+        return toppickProducts;
+    }
+
+    public List<Category> getRandomCategory() {
+        List<Category> allCats = categoryRepository.findAll();
+        allCats.remove(0);
+        List<Category> randomCat = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i <= 3; i++) {
+            int randomPosition = random.nextInt(allCats.size());
+            randomCat.add(allCats.get(randomPosition));
+            allCats.remove(randomPosition);
+        }
+        return randomCat;
     }
 }

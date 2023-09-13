@@ -8,6 +8,7 @@ import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.ReviewRepository;
 import com.LeBao.sales.repositories.UserRepository;
+import com.LeBao.sales.services.HomeService;
 import com.LeBao.sales.services.ProductService;
 import com.LeBao.sales.services.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -45,15 +46,14 @@ public class ProductController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private HomeService homeService;
+
 
     @GetMapping("/getProduct/{productId}")
     public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
-        List<Product> recommendedProducts = new ArrayList<>();
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        for (int i = 0; i < 12; i++) {
-            recommendedProducts.add(productRepository.findAll().get(i));
-        }
-        modelMap.addAttribute("products", recommendedProducts);
+        modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("product", productService.imageReviewsFileName(productRepository.findById(productId).get()));
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
         modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
@@ -76,12 +76,8 @@ public class ProductController {
                             BindingResult bindingResult,
                             @RequestParam("files") MultipartFile[] files) throws IOException {
         if(bindingResult.hasErrors()) {
-            List<Product> recommendedProducts = new ArrayList<>();
             modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            for (int i = 0; i < 12; i++) {
-                recommendedProducts.add(productRepository.findAll().get(i));
-            }
-            modelMap.addAttribute("products", recommendedProducts);
+            modelMap.addAttribute("products", homeService.getRecommendedProducts());
             modelMap.addAttribute("product", productRepository.findById(productId).get());
             modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
             modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
@@ -98,12 +94,8 @@ public class ProductController {
         }else {
             productService.addReview(productId,reviewDTO,files);
         }
-        List<Product> recommendedProducts = new ArrayList<>();
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        for (int i = 0; i < 12; i++) {
-            recommendedProducts.add(productRepository.findAll().get(i));
-        }
-        modelMap.addAttribute("products", recommendedProducts);
+        modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("product", productRepository.findById(productId).get());
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
         modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());

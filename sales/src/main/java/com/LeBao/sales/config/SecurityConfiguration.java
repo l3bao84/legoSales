@@ -39,7 +39,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll())
                 .formLogin(login -> login
-                        .loginPage("/login"));
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home"));
         return httpSecurity.build();
     }
 }

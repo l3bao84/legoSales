@@ -28,22 +28,4 @@ public class CustomerInforController {
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.FOUND).body(userService.getUserById(userId));
     }
-
-    @PostMapping("/addShippingAddress")
-    public ResponseEntity<String> addShippingAddress(@RequestBody ShippingAddress shippingAddress) {
-        userService.addShippingAddress(shippingAddress);
-        return ResponseEntity.ok("Add shipping address successfully");
-    }
-
-    @PostMapping("/updateShippingAddress/{shippingAddressId}")
-    public ResponseEntity<String> updateShippingAddress(@PathVariable Long shippingAddressId, @RequestBody ShippingAddress shippingAddress) {
-        userService.updateShippingAddress(shippingAddressId, shippingAddress);
-        return ResponseEntity.ok("Update shipping address successfully");
-    }
-
-    @PostMapping("/deleteShippingAddress/{shippingAddressId}")
-    public ResponseEntity<String> deleteShippingAddress(@PathVariable Long shippingAddressId) {
-        userService.deleteShippingAddress(shippingAddressId);
-        return ResponseEntity.ok("Delete shipping address successfully");
-    }
 }

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/myAccount.css}">
+  <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+  <title>My Account | LEGO Shop</title>
+</head>
+<body >
+
+    <div class="overlay" id="myOverlay"></div>
+
+    <header>
+      <div class="contact">
+        <i class="fa-solid fa-arrow-left-long"></i>
+        <button>
+          <a th:href="@{https://www.facebook.com/l3bao84}">CONTACT ME</a>
+        </button>
+      </div>
+      <div class="account">
+        <button class="openAccount">
+          <svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon__StyledSVG-lm07h6-0 cnHyRF UtilityBarstyles__AccountIcon-sc-1uwh8t8-5 KHcEY" data-di-res-id="897589a8-22c9110" data-di-rand="1694094881368"><g transform="translate(1 1)" fill-rule="nonzero" fill="none"><rect stroke="#2C2C2C" stroke-width="1.5" fill="#FFCF00" x="4.875" width="8.25" height="6.038" rx=".729"></rect><rect stroke="#2C2C2C" stroke-width="1.2" fill="#FFCF00" x="3.75" y="14.34" width="10.5" height="5.66" rx=".729"></rect><path d="M14.25 17.736H3.75C0 17.736 0 14.717 0 14.717v-8.68S0 3.02 3.75 3.02h10.5C18 3.019 18 6.038 18 6.038v8.679s0 3.019-3.75 3.019z" stroke="#2C2C2C" stroke-width="1.5" fill="#FFCF00"></path><path d="M7.125 8.868a.94.94 0 00-.938-.943.94.94 0 00-.937.943c0 .52.42.943.938.943a.94.94 0 00.937-.943zm4.688-.943a.94.94 0 00-.938.943c0 .52.42.943.938.943a.94.94 0 00.937-.943.94.94 0 00-.938-.943zm.293 3.86a.452.452 0 00-.649.21c-.005.008-.461.84-2.463.84-1.953 0-2.437-.793-2.462-.84a.446.446 0 00-.638-.234.618.618 0 00-.215.761c.063.147.69 1.446 3.315 1.446s3.25-1.299 3.313-1.446a.609.609 0 00-.201-.738z" fill="#2C2C2C"></path></g></svg>
+          <span>Account</span>
+        </button>
+      </div>
+    </header>
+    <div class="header">
+      <div class="logo-menu">
+        <div class="logo">
+          <a th:href="@{'/home'}">
+            <img class="header-logo" th:src="@{https://assets.lego.com/logos/v4.5.0/brand-lego.svg}" alt="">
+          </a>
+        </div>
+        <div class="menu">
+          <button class="shop" href="" >SHOP</button>
+          <button class="dis" href="" >DISCOVER</button>
+          <button class="help" href="" >HELP</button>
+        </div>
+        <div class="hidden-menu">
+          <button class="btn-exit">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <div class="hidden-menu-content">
+            <div class="content-1">
+              <a href="">SEE ALL THEMES</a>
+              <ul class="menu-content-list count">
+                <li th:each="theme : ${allThemes}" class="menu-content-item">
+                  <a href="" th:text="${theme.getCategoryName()}"></a>
+                </li>
+              </ul>
+            </div>
+            <div class="content-2">
+              <ul class="menu-content-list">
+                <li class="menu-content-item">
+                  <a href="">About Us</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">All LEGO Interests</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Adults Welcome</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">For Families</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">VIP Reward Program</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">LEGO® Mosaic Maker</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">LEGO® Gift Ideas</a>
+                </li>
+              </ul>
+            </div>
+            <div class="content-3">
+              <ul class="menu-content-list">
+                <li class="menu-content-item">
+                  <a href="">Check Order Status</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Delivery & Returns</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Find a LEGO Store</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Find Building Instructions</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Common Questions</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Contact Us</a>
+                </li>
+                <li class="menu-content-item">
+                  <a href="">Replacement Parts</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="search-bar">
+        <button onclick="showSearchBar()" class="search">
+          <a href="">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </a>
+        </button>
+        <form th:action="@{/search}" method="get">
+            <div class="hidden-search">
+              <button class="hidden-search-icon" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+              <input id="searchInput" name="search" class="hidden-search-keyword" type="text" placeholder="Search...">
+              <button class="hidden-search-close-btn" type="reset">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+        </form>
+        
+      </div>
+      <div class="utility-section">
+        <div class="wishlist">
+          <a href="">
+            <i class="fa-regular fa-heart"></i>
+          </a>
+        </div>
+        <div class="cart">
+          <a href="">
+            <i class="fa-solid fa-bag-shopping"></i>
+          </a>
+          <p>(0)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bread-crumb-wrapper">
+      <div class="bread-crumb-item">
+        <a th:href="@{'/home'}">Home</a>
+      </div>
+      <div class="bread-crumb-item direct">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+      <div class="bread-crumb-item back-link">Account Overview</div>
+    </div>
+
+    <div class="content-container">
+        <ul class="side-menu-bar">
+            <li class="side-menu-bar-item">
+                <a th:href="@{'/my-account'}" class="side-menu-bar-item-link">
+                    <span class="side-menu-bar-item-label">Account Overview</span>
+                </a>
+            </li>
+            <li class="side-menu-bar-item">
+                <a th:href="@{'/my-account/orders'}" class="side-menu-bar-item-link">
+                    <span class="side-menu-bar-item-label">My Orders</span>
+                </a>
+            </li>
+            <li class="side-menu-bar-item">
+                <a th:href="@{'/my-account/personal'}" class="side-menu-bar-item-link">
+                    <span class="side-menu-bar-item-label">Personal & Address Details</span>
+                </a>
+            </li>
+            <li class="side-menu-bar-item">
+                <a th:href="@{'/my-account/wishlist'}" class="side-menu-bar-item-link">
+                    <span class="side-menu-bar-item-label">Wish list</span>
+                </a>
+            </li>
+            <li class="side-menu-bar-item">
+              <!-- sec:authorize="isAuthenticated()" th:href="@{/logout}" -->
+                <a th:href="@{/logout}" class="side-menu-bar-item-link">
+                    <span sec:authorize="isAuthenticated()" class="side-menu-bar-item-label">Logout</span>
+                </a>
+            </li>
+        </ul>
+        <div class="inner-content-container account-overview" style="display: none;">
+            <h2 class="text-base">
+                <span>Personal & Address Details</span>
+            </h2>
+            <div class="personal-address-detail">
+                <span class="personal-address-detail-text">
+                    <span>Update your LEGO® Account or Address details</span>
+                </span>
+                <div class="common-button-container">
+                    <a th:href="@{'/my-account/personal'}">View Account Details</a>
+                </div>
+            </div>
+            <div class="latest-order-content-container">
+                <h2 class="text-base">
+                    <span>Latest Order</span>
+                </h2>
+                <div class="no-order-content-container">
+                    <span class="no-order-content-container-text">
+                        <span>You currently have no open orders.</span>
+                    </span>
+                    <a th:href="@{'/home'}" class="no-order-button-container">Start Shopping</a>
+                </div>
+            </div>
+            <div class="support-card-container">
+                <img src="https://www.lego.com/cdn/cs/set/assets/blt2182829b5a6ed782/supportImage_newSophia.png" alt="" class="support-block-image">
+                <span class="support-block-text">
+                    <span>Support</span>
+                </span>
+                <div class="support-block-horizontal-seperator"></div>
+                <div class="support-block-link-container">
+                    <div class="support-link-row">
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/page/shipping-handling">Deliveries and Returns</a>
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service">FAQs</a>
+                    </div>
+                    <div class="support-link-row">
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service/help">Contact</a>
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service/replacementparts">Replacement Parts and Instructions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inner-content-container orders" style="display: none;">
+            <div class="latest-order-content-container">
+                <h2 class="text-base">
+                    <span>My Order</span>
+                </h2>
+                <div class="no-order-content-container">
+                    <span class="no-order-content-container-text">
+                        <span>You currently have no open orders.</span>
+                    </span>
+                    <a th:href="@{'/home'}" class="no-order-button-container">Start Shopping</a>
+                </div>
+            </div>
+            <div class="support-card-container">
+                <img src="https://www.lego.com/cdn/cs/set/assets/blt2182829b5a6ed782/supportImage_newSophia.png" alt="" class="support-block-image">
+                <span class="support-block-text">
+                    <span>Support</span>
+                </span>
+                <div class="support-block-horizontal-seperator"></div>
+                <div class="support-block-link-container">
+                    <div class="support-link-row">
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/page/shipping-handling">Deliveries and Returns</a>
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service">FAQs</a>
+                    </div>
+                    <div class="support-link-row">
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service/help">Contact</a>
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service/replacementparts">Replacement Parts and Instructions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inner-content-container personal" style="display: none;">
+            <h1 class="text-base">
+                <span>Personal & Address Details</span>
+            </h1>
+            <div class="account-detail-block">
+                <h2 class="text-base">
+                    <span>LEGO® Account Details</span>
+                </h2>
+                <div class="account-detail-infor-container">
+                    <div class="account-detail-infor">
+                        <span class="account-detail-infor-email">
+                            <span sec:authentication="principal.email"></span>
+                        </span>
+                        <span class="account-detail-infor-email">
+                            <span sec:authentication="principal.firstName"></span> <span sec:authentication="principal.lastName"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <h2 class="text-base">
+                <span>My Addresses</span>
+            </h2>
+            <div class="address-container">
+                <div th:if="${not #lists.isEmpty(addresses)}">
+                  <div th:each="add : ${addresses}" class="saved-address-card-container">
+                    <div class="saved-address-content-container">
+                      <div class="simple-address-container">
+                        <span class="text-base-address fullname" th:text="${add.getFullName()}"></span>
+                        <span class="text-base-address phone" th:text="${add.getPhoneNumber()}"></span>
+                        <span class="text-base-address city" th:text="${add.getCity()}"></span>
+                        <span class="text-base-address detail-address" th:text="${add.getAddress()}"></span>
+                      </div>
+                      <div class="address-button-container">
+                        <button class="edit-address">
+                          <span class="edit-address-title">
+                            <span>Edit</span>
+                          </span>
+                        </button>
+                        <form th:action="@{'/my-account/personal/delAddress/' + ${add.getId()}}" method="post">
+                          <button class="delete-address">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="22" viewBox="0 0 17 22" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 jqALSe" data-di-res-id="bd698bfc-599a3e2f" data-di-rand="1694325866265"><g fill="currentColor" fill-rule="evenodd"><path d="M.773 5.5h15.454A.762.762 0 0017 4.75a.762.762 0 00-.773-.75H.773A.762.762 0 000 4.75c0 .414.346.75.773.75z"></path><path d="M5.744 4l.378-1.43c.08-.307.448-.607.742-.607h3.272c.294 0 .661.3.742.606L11.256 4 13 4.46l-.378-1.43C12.32 1.88 11.24.673 10.136.673H6.864C5.76.673 4.681 1.881 4.378 3.03L4 4.46 5.744 4z"></path><path d="M14.47 4.734l-.567 15.257a.515.515 0 01-.505.484H3.602a.516.516 0 01-.505-.484L2.53 4.734a.764.764 0 00-.793-.733.764.764 0 00-.736.79l.567 15.256A2.044 2.044 0 003.602 22h9.796c1.086 0 1.994-.87 2.034-1.953L16 4.791a.764.764 0 00-.736-.79.764.764 0 00-.793.733z"></path><path d="M8 8.532v8.945c0 .29.224.526.5.526s.5-.235.5-.526V8.532a.514.514 0 00-.5-.526c-.276 0-.5.236-.5.526zm3-.006v8.948c0 .29.224.526.5.526s.5-.236.5-.526V8.526A.514.514 0 0011.5 8c-.276 0-.5.236-.5.526zm-6 0v8.948c0 .29.224.526.5.526s.5-.236.5-.526V8.526A.514.514 0 005.5 8c-.276 0-.5.236-.5.526z"></path></g></svg>
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="edit-form">
+                      <div class="address-cancel-header">
+                          <div class="cancel-button-header-edit">
+                              <span class="cancel-button-header-text">
+                                  <span>Cancel</span>
+                              </span>
+                          </div>
+                      </div>
+                      <form th:object="${editAddress}" 
+                            th:action="@{'/my-account/personal/editAddress/' + ${add.getId()}}" 
+                            method="post" class="address-form-input">
+                          <div class="address-form-input-container">
+                              <div class="input-wrapper">
+                                  <label for="fullName" class="input-label">
+                                      <input th:field="*{fullName}" type="text" class="input-field fullname-input">
+                                      <span class="input-title">Full Name</span>
+                                  </label>
+                              </div>
+                          </div>
+                          <div class="address-form-input-container">
+                              <div class="input-wrapper">
+                                  <label for="phoneNumber" class="input-label">
+                                      <input th:field="*{phoneNumber}" type="text" class="input-field phone-input">
+                                      <span class="input-title">Phone number</span>
+                                  </label>
+                              </div>
+                          </div>
+                          <div class="address-form-input-container">
+                              <div class="input-wrapper">
+                                  <label for="city" class="input-label">
+                                      <input th:field="*{city}" type="text" class="input-field city-input">
+                                      <span class="input-title">City</span>
+                                  </label>
+                              </div>
+                          </div>
+                          <div class="address-form-input-container">
+                              <div class="input-wrapper">
+                                  <label for="address" class="input-label">
+                                      <input th:field="*{address}" type="text" class="input-field detail-input">
+                                      <span class="input-title">Detail address</span>
+                                  </label>
+                              </div>
+                          </div>
+                          <div class="address-form-button">
+                              <button type="submit" class="cancel-button-edit">Cancel</button>
+                              <button type="submit" class="save-button">Save</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <button class="add-address-button">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor" data-di-res-id="8437d97c-dcd2056d" data-di-rand="1694164380274"><path d="M33 18H22V7a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v11H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h11v11a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V22h11a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1Z"></path></svg>
+                    </div>
+                    <span class="add-address-button-text">
+                        <span>Add New Address</span>
+                    </span>
+                </button>
+                <div class="address-card-container">
+                    <div class="address-cancel-header">
+                        <div class="cancel-button-header">
+                            <span class="cancel-button-header-text">
+                                <span>Cancel</span>
+                            </span>
+                        </div>
+                    </div>
+                    <form th:object="${address}" 
+                          th:action="@{'/my-account/personal/addAddress'}" 
+                          method="post" class="address-form-input">
+                        <div class="address-form-input-container">
+                            <div class="input-wrapper">
+                                <label for="fullName" class="input-label">
+                                    <input th:field="*{fullName}" id="fullName" type="text" class="input-field">
+                                    <span class="input-title">Full Name</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="address-form-input-container">
+                            <div class="input-wrapper">
+                                <label for="phoneNumber" class="input-label">
+                                    <input th:field="*{phoneNumber}" id="phoneNumber" type="text" class="input-field">
+                                    <span class="input-title">Phone number</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="address-form-input-container">
+                            <div class="input-wrapper">
+                                <label for="city" class="input-label">
+                                    <input th:field="*{city}" type="text" id="city" class="input-field">
+                                    <span class="input-title">City</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="address-form-input-container">
+                            <div class="input-wrapper">
+                                <label for="address" class="input-label">
+                                    <input th:field="*{address}" id="address" type="text" class="input-field">
+                                    <span class="input-title">Detail address</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="address-form-button">
+                            <button type="submit" class="cancel-button">Cancel</button>
+                            <button type="submit" class="save-button">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="inner-content-container wishlist-menu" style="display: none;">
+            <h1 class="text-base">
+                <span>Wish list</span>
+            </h1>
+            <div class="create-wishlist-block">
+                <div class="create-wishlist-container">
+                    <img src="https://www.lego.com/cdn/cs/set/assets/blt18fe1a923543b717/fairy_girl.png?format=png&height=155&dpr=1.5" alt="">
+                    <div class="create-wishlist-inner-container">
+                        <div>
+                            <h1 class="text-base-nd">
+                                <span>Your wish is our command</span>
+                            </h1>
+                            <p class="description">
+                                <span>Create a new wish list or manage your current lists here. You can add or remove products, name the lists to make it easier to track, and even create and save separate wish lists for different occasions or events.</span>
+                            </p>
+                        </div>
+                        <div class="create-wishlist-button-container">
+                            <button>+ Create new list</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wishlist-summary"></div>
+            <div class="support-card-container">
+                <img src="https://www.lego.com/cdn/cs/set/assets/blt2182829b5a6ed782/supportImage_newSophia.png" alt="" class="support-block-image">
+                <span class="support-block-text">
+                    <span>Support</span>
+                </span>
+                <div class="support-block-horizontal-seperator"></div>
+                <div class="support-block-link-container">
+                    <div class="support-link-row">
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/page/shipping-handling">Deliveries and Returns</a>
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service">FAQs</a>
+                    </div>
+                    <div class="support-link-row">
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service/help">Contact</a>
+                        <a target="_blank" class="support-link" href="https://www.lego.com/en-us/service/replacementparts">Replacement Parts and Instructions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+      <div class="footer-1">
+        <div class="footer-section">
+          <div class="footer-section-wrapper">
+            <div class="wrapper-logo-region">
+              <div class="logo-region">
+                <div class="logo-img2">
+                  <img src="https://assets.lego.com/logos/v4.5.0/brand-lego.svg" alt="">
+                </div>
+                <div class="region">
+                  <button>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Viet Nam
+                  </button>
+                </div>
+              </div>
+              <div class="gift-cards">
+                <a href="">
+                  <span>Gift Cards</span>
+                </a>
+                <a href="">
+                  <span>LEGO Catalogs</span>
+                </a>
+                <a href="">
+                  <span>Find a LEGO Store</span>
+                </a>
+              </div>
+            </div>
+            <div class="wrapper-supports">
+              <div class="support">
+                <h2 class="support-title">ABOUT US</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">About the LEGO Group</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO® News</a></li>
+                  <li class="support-list-item"><a class="" href="">Sustainability</a></li>
+                  <li class="support-list-item"><a class="" href="">Supply Chain Transparency Statement</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Product Certification</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Jobs</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Compliance Line</a></li>
+                </ul>
+              </div>
+              <div class="support">
+                <h2 class="support-title">SUPPORT</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">Contact Us</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO® NewsLEGO® News</a></li>
+                  <li class="support-list-item"><a class="" href="">Replacement Parts</a></li>
+                  <li class="support-list-item"><a class="" href="">Shipping and Returns</a></li>
+                  <li class="support-list-item"><a class="" href="">Payment Methods</a></li>
+                  <li class="support-list-item"><a class="" href="">Terms & Conditions</a></li>
+                  <li class="support-list-item"><a class="" href="">Product Recalls</a></li>
+                </ul>
+              </div>
+              <div class="support">
+                <h2 class="support-title">ATTRACTIONS</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">LEGO® House</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGOLAND® Parks</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGOLAND Discovery Centers</a></li>
+                </ul>
+              </div>
+              <div class="support">
+                <h2 class="support-title">MORE FROM US</h2>
+                <ul class="support-list">
+                  <li class="support-list-item"><a class="" href="">LEGO® LIFE</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Education</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Ideas</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO Foundation</a></li>
+                  <li class="support-list-item"><a class="" href="">Affiliate Program</a></li>
+                  <li class="support-list-item"><a class="" href="">Student Offers</a></li>
+                  <li class="support-list-item"><a class="" href="">LEGO® Braille Bricks</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-2">
+        <div class="email-social">
+          <div class="email-sub">
+            <div class="email-sub-content">
+              <span>SUBSCRIBE TO LEGO® SHOP EMAILS</span>
+              <div class="email-input-container">
+                <div class="input-button">
+                  <div class="email">
+                    <input type="text" name="" id="emailInput" placeholder="Your email address">
+                    <div class="email-sub-error">
+                      <span class="email-sub-error-status"></span>
+                    </div>
+                  </div>
+                  <a href="" class="btn-go">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="social">
+            <div class="social-icon">
+              <span>FOLLOW US</span>
+              <div class="social-button">
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-facebook-f"></i></a></div>
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-twitter"></i></a></div>
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-instagram"></i></a></div>
+                <div class="social-button-icon"><a href=""><i class="fa-brands fa-youtube"></i></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-3">
+        <div class="privacies">
+          <ul class="privacy-list">
+            <li class="privacy-list-item"><a href="">Privacy Policy</a></li>
+            <li class="privacy-list-item"><a href="">Cookies</a></li>
+            <li class="privacy-list-item"><a href="">Legal Notice</a></li>
+            <li class="privacy-list-item"><a href="">Terms of Use</a></li>
+            <li class="privacy-list-item"><a href="">Digital Wellbeing</a></li>
+            <li class="privacy-list-item"><a href="">Accessibility</a></li>
+            <li class="privacy-list-item"><a href="">Cookie Settings</a></li>
+            <li class="privacy-list-item"><a href="">Privacy Settings for residents of CA, VA, CT and CO</a></li>
+          </ul>
+          <p>LEGO System A/S, DK-7190 Billund, Denmark. Must be 18 years or older to purchase online. LEGO, the LEGO logo, the Minifigure, DUPLO, LEGENDS OF CHIMA, NINJAGO, BIONICLE, MINDSTORMS and MIXELS are trademarks and copyrights of the LEGO Group. ©2022 The LEGO Group. All rights reserved. Use of this site signifies your agreement to the terms of use.</p>
+        </div>
+      </div>
+    </footer>
+    <script th:src="@{/js/myAccount.js}" defer></script>
+
+</body>
+</html>

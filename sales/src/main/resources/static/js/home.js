@@ -209,13 +209,23 @@ document.addEventListener("DOMContentLoaded", () => {
   
 // Mở overlay đăng nhập hoặc đăng ký
 
-const openAccount = document.querySelector('.openAccount')
 const accountPanel = document.querySelector('.account-panel')
 const offPanel = document.querySelector('.exit-account-modal')
 
-openAccount.addEventListener('click', () => {
-    accountPanel.style.display = 'flex'
-    body.classList.add('no-scroll')
+document.addEventListener("DOMContentLoaded", () => {
+    const account = document.querySelector('.openAccount')
+    if(account !== null) {
+        account.addEventListener('click', () => {
+            var newUrl = `/my-account`;
+            window.location.href = newUrl
+        })
+    }else {
+        const openSignIn = document.querySelector('.sign-in')
+        openSignIn.addEventListener('click', () => {
+            accountPanel.style.display = 'flex'
+            body.classList.add('no-scroll')
+        })
+    }
 })
 
 offPanel.addEventListener('click', () => {

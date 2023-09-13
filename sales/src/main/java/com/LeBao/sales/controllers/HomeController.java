@@ -38,58 +38,14 @@ public class HomeController {
 
     @GetMapping("/home")
     public String hello(ModelMap modelMap) {
-        List<Product> products = productRepository.findAll();
-        Collections.reverse(products);
-        List<Product> recommendedProducts = new ArrayList<>();
-        List<Product> topPickProducts = new ArrayList<>();
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        List<Category> allCats = new ArrayList<>();
-        allCats = categoryRepository.findAll();
-
-        for (int i = 0; i < 12; i++) {
-            recommendedProducts.add(products.get(i));
-        }
-
-        topPickProducts.add(productRepository.findById(1L).get());
-        topPickProducts.add(productRepository.findById(14L).get());
-        topPickProducts.add(productRepository.findById(15L).get());
-        topPickProducts.add(productRepository.findById(6L).get());
-
-        allCats.remove(0);
-        List<Category> randomCat = new ArrayList<>();
-        Random random = new Random();
-        for(int i = 0; i <= 3; i++) {
-            int randomPosition = random.nextInt(allCats.size());
-            randomCat.add(allCats.get(randomPosition));
-            allCats.remove(randomPosition);
-        }
-        modelMap.addAttribute("products", recommendedProducts);
-        modelMap.addAttribute("topPickProducts", topPickProducts);
-        modelMap.addAttribute("randomCat", randomCat);
+        modelMap.addAttribute("products", homeService.getRecommendedProducts());
+        modelMap.addAttribute("topPickProducts", homeService.getTopPickProducts());
+        modelMap.addAttribute("randomCat", homeService.getRandomCategory());
         return "home";
     }
 
-    @GetMapping("/search")
-    public String searchResultPage(ModelMap modelMap,
-                                   @RequestParam("search") String keyword,
-                                   @RequestParam(defaultValue = "0", required = false) int page,
-                                   @RequestParam(value = "sort", required = false) String sortValue) {
 
-        if(sortValue != null) {
-            Page<Product> productPage = homeService.searchProducts(keyword,sortValue,page);
-            modelMap.addAttribute("products", productPage.getContent());
-            modelMap.addAttribute("totalPages", productPage.getTotalPages());
-        }else {
-            Page<Product> productPage = homeService.searchProducts(keyword,"",page);
-            modelMap.addAttribute("products", productPage.getContent());
-            modelMap.addAttribute("totalPages", productPage.getTotalPages());
-        }
-        modelMap.addAttribute("allCats", categoryRepository.findAll());
-        modelMap.addAttribute("keyword", keyword);
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("currentPage", page);
-        return "searchResult";
-    }
 
     @GetMapping("/{fileName}")
     public ResponseEntity<?> downloadImageFromFileSystemByFileName(@PathVariable String fileName) throws IOException {

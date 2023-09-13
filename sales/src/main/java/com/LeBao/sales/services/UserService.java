@@ -80,40 +80,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId).get();
     }
 
-    public void addShippingAddress(ShippingAddress shippingAddress) {
-        //String email = getCurrentUsername();
-        //User user = userRepository.findByEmail(email).get();
-
-        User user = userRepository.findById(1L).get();
-        shippingAddress.setUser(user);
-        shippingAddressRepository.save(shippingAddress);
-        user.getShippingAddresses().add(shippingAddress);
-        userRepository.save(user);
-    }
-
-    public void updateShippingAddress(Long shippingAddressId, ShippingAddress shippingAddress) {
-        ShippingAddress foundShippingAddress = shippingAddressRepository.findById(shippingAddressId).get();
-        userRepository.findById(1L).get().getShippingAddresses().remove(foundShippingAddress);
-
-        foundShippingAddress.setAddress(shippingAddress.getAddress());
-        foundShippingAddress.setCity(shippingAddress.getCity());
-        foundShippingAddress.setCountry(shippingAddress.getCountry());
-        shippingAddressRepository.save(foundShippingAddress);
-
-        userRepository.findById(1L).get().getShippingAddresses().add(foundShippingAddress);
-    }
-
-
-    public void deleteShippingAddress(Long shippingAddressId) {
-        //String email = getCurrentUsername();
-        //User user = userRepository.findByEmail(email).get();
-
-        User user = userRepository.findById(1L).get();
-        user.getShippingAddresses().remove(shippingAddressRepository.findById(shippingAddressId).get());
-        shippingAddressRepository.delete(shippingAddressRepository.findById(shippingAddressId).get());
-        userRepository.save(user);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
