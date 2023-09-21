@@ -1,16 +1,13 @@
 package com.LeBao.sales.controllers;
 
-import com.LeBao.sales.DTO.CartItemDTO;
-import com.LeBao.sales.models.Cart;
+import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.services.CartService;
+import com.LeBao.sales.services.HomeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -20,23 +17,40 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/getCart/{userId}")
-    public ResponseEntity<List<Cart>> getCart(@PathVariable Long userId) {
-        if(cartService.getCart(userId) == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cartService.getCart(userId));
-        }
-        return ResponseEntity.status(HttpStatus.FOUND).body(cartService.getCart(userId));
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private HomeService homeService;
+
+    @GetMapping("")
+    public String cart(ModelMap modelMap) {
+        modelMap.addAttribute("products", homeService.getRecommendedProducts());
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+        modelMap.addAttribute("carts", cartService.getItemCart());
+        return "cart";
     }
 
-    @PostMapping("/addItemToCart/{userId}")
-    public ResponseEntity<String> addItemToCart(@PathVariable Long userId, @RequestBody CartItemDTO cartItemDTO) {
-        String message = cartService.addItemToCart(userId,cartItemDTO);
-        return ResponseEntity.ok(message);
+    @PostMapping("/addItemToCart/{id}")
+    public String addCartItem(ModelMap modelMap,
+                          @PathVariable Long id,
+                          @RequestParam("quantity") int quantity) {
+        cartService.addItemToCart(id,quantity);
+        modelMap.addAttribute("products", homeService.getRecommendedProducts());
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+        modelMap.addAttribute("carts", cartService.getItemCart());
+        return "redirect:/cart";
     }
 
-    @PostMapping("/deleteItemInCart/{cartItemId}")
-    public ResponseEntity<String> deleteItemInCart(@PathVariable Long cartItemId) {
-        cartService.deleteItemInCart(cartItemId);
-        return ResponseEntity.ok("Delete successfully");
+    @PostMapping("/delAnCartItem/{id}")
+    public String delCartItem(ModelMap modelMap, @PathVariable Long id) {
+        cartService.delCartItem(id);
+        modelMap.addAttribute("products", homeService.getRecommendedProducts());
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+        modelMap.addAttribute("carts", cartService.getItemCart());
+        return "redirect:/cart";
     }
 }

@@ -1,9 +1,7 @@
 package com.LeBao.sales.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,8 +42,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ShippingAddress> shippingAddresses;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Cart cart;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Cart> carts;
+    private Set<Order> orders;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Wishlist> wishlists;
@@ -143,12 +144,12 @@ public class User implements UserDetails {
         this.shippingAddresses = shippingAddresses;
     }
 
-    public Set<Cart> getCarts() {
-        return carts;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setCarts(Set<Cart> carts) {
-        this.carts = carts;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Set<Review> getReviews() {
@@ -157,6 +158,22 @@ public class User implements UserDetails {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Set<Wishlist> getWishlists() {
+        return wishlists;
+    }
+
+    public void setWishlists(Set<Wishlist> wishlists) {
+        this.wishlists = wishlists;
     }
 }
 

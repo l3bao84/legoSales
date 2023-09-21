@@ -4,6 +4,7 @@ import com.LeBao.sales.models.Category;
 import com.LeBao.sales.models.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
+import com.LeBao.sales.services.CartService;
 import com.LeBao.sales.services.HomeService;
 import com.LeBao.sales.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,12 @@ public class HomeController {
     @Autowired
     private HomeService homeService;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping("/home")
-    public String hello(ModelMap modelMap) {
+    public String home(ModelMap modelMap) {
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("topPickProducts", homeService.getTopPickProducts());

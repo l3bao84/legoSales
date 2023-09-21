@@ -132,10 +132,10 @@
           </a>
         </div>
         <div class="cart">
-          <a href="">
+          <a th:href="@{'/cart'}">
             <i class="fa-solid fa-bag-shopping"></i>
           </a>
-          <p>(0)</p>
+          <p th:text="'&lpar;' + ${cartItemCount} + '&rpar;'"></p>
         </div>
       </div>
     </div>

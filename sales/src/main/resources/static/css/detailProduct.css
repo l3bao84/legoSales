@@ -565,7 +565,7 @@ ul {
     text-align: center;
     line-height: 11%;
 }
-.product-item-btn > button {
+.add-bag {
     outline: none;
     background: transparent;
     border: none;
@@ -578,13 +578,12 @@ ul {
     font-weight: 500;
     background-color: rgba(253, 128, 36, 1);
 }
-.add-bag > a {
-    color: #000;
-    text-decoration: none;
-}
-.product-item-btn > button:hover {
+.add-bag:hover {
     background-color: rgb(255, 255, 255);
     border: 2px solid rgba(253, 128, 36, 1);
+}
+.add-bag:focus {
+    outline: none;
 }
 .add-wishlist,
 .new {
@@ -641,6 +640,8 @@ ul {
     color: rgba(0, 109, 183, 1);
     font-weight: bold;
 }
+
+
 .new {
     position: relative;
 }
@@ -1575,16 +1576,6 @@ footer {
 }
 .add-to-cart-button:focus {
     outline: none;
-}
-.add-to-cart-button > a {
-    color: rgb(0, 0, 0);
-    overflow: hidden;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-.add-to-cart-button > a:hover {
-    text-decoration: none;
 }
 .add-to-wishlist-button-wrapper {
     width: 100%;

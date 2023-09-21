@@ -8,6 +8,7 @@ import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.ReviewRepository;
 import com.LeBao.sales.repositories.UserRepository;
+import com.LeBao.sales.services.CartService;
 import com.LeBao.sales.services.HomeService;
 import com.LeBao.sales.services.ProductService;
 import com.LeBao.sales.services.StorageService;
@@ -49,6 +50,8 @@ public class ProductController {
     @Autowired
     private HomeService homeService;
 
+    @Autowired
+    private CartService cartService;
 
     @GetMapping("/getProduct/{productId}")
     public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
@@ -64,6 +67,7 @@ public class ProductController {
                         .mapToDouble(review -> review.getRating())
                         .average()
                         .orElse(0.0)));
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
         modelMap.addAttribute("review", new ReviewDTO());
         return "detailProduct";
@@ -82,6 +86,7 @@ public class ProductController {
             modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
             modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
             modelMap.addAttribute("imageList", productService.imagesFileName(productId));
+            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             modelMap.addAttribute("avgRating", productService.decialFormat(
                     productRepository.findById(productId).get().getReviews()
                             .stream()
@@ -95,6 +100,7 @@ public class ProductController {
             productService.addReview(productId,reviewDTO,files);
         }
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("product", productRepository.findById(productId).get());
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());

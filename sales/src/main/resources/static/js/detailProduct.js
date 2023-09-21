@@ -233,7 +233,9 @@ minusButton.addEventListener('click', () => {
         rect.style.fill = "black"
         minusButton.disabled = false;
         plusButton.disabled = false;
-        document.querySelector('.quantity-value').value = currentValue--;
+        const nowValue = currentValue--
+        document.querySelector('.quantity-value').value = nowValue;
+        document.getElementById('quantity-form').value = nowValue
         if(document.querySelector('.quantity-value').value == 1) {
             minus.style.fill = "#E0E0E0"
             minusButton.disabled = true;
@@ -244,7 +246,7 @@ minusButton.addEventListener('click', () => {
 
 plusButton.addEventListener('click', () => {
     var currentValue = document.getElementsByClassName("quantity-value")[0].value
-    if(currentValue == 5) {
+    if(currentValue == 3) {
         add.style.fill = "#E0E0E0"
         rect.style.fill = "#E0E0E0"
         plusButton.disabled = true;
@@ -255,8 +257,10 @@ plusButton.addEventListener('click', () => {
         add.style.fill = "black"
         rect.style.fill = "black"
         minusButton.disabled = false;
-        document.querySelector('.quantity-value').value = currentValue++;
-        if(document.querySelector('.quantity-value').value == 5) {
+        const nowValue = currentValue++
+        document.querySelector('.quantity-value').value = nowValue;
+        document.getElementById('quantity-form').value = nowValue
+        if(document.querySelector('.quantity-value').value == 3) {
             add.style.fill = "#E0E0E0"
             rect.style.fill = "#E0E0E0"
             plusButton.disabled = true;

@@ -142,10 +142,10 @@
           </a>
         </div>
         <div class="cart">
-          <a href="">
+          <a th:href="@{'/cart'}">
             <i class="fa-solid fa-bag-shopping"></i>
           </a>
-          <p>(0)</p>
+          <p th:text="'&lpar;' + ${cartItemCount} + '&rpar;'"></p>
         </div>
       </div>
     </div>
@@ -271,14 +271,14 @@
                 <svg width="14px" height="2px" viewBox="0 0 14 2" aria-hidden="true" data-di-rand="1692177394837"><polygon class="minus"  fill="#E0E0E0" points="14 2 0 2 0 -6.03961325e-14 14 -6.03961325e-14"></polygon></svg>
               </button>
               <div class="quantity-input">
-                <input name="quantity" class="quantity-value" type="text" value="1">
+                <input name="" class="quantity-value" type="text" value="1">
               </div>
               <button class="modify-button-plus">
                 <svg  xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 14 14" aria-hidden="true" data-di-rand="1692177394837"><polygon class="add" fill="black" points="14 8 0 8 0 6 14 6"></polygon><rect class="rect"  fill="black" fill-rule="nonzero" x="6" y="0" width="2" height="14"></rect></svg>
               </button>
             </div>
             <div class="max-quantity">
-              <span class="text">Limit 5</span>
+              <span class="text">Limit 3</span>
             </div>
           </div>
           <div class="product-button-wrapper">
@@ -287,15 +287,16 @@
                 <div class="add-to-bag-sticky-container">
                   <div class="add-to-bag-container-content-holder">
                     <div class="add-to-bag-container-holder">
-                      <div class="extra-large-button">
+                      <form th:action="@{'/cart/addItemToCart/' + ${product.getProductId()}}" method="post" class="extra-large-button">
+                        <input type="hidden" name="quantity" id="quantity-form" value="1">
                         <button class="add-to-cart-button">
                           <div class="icon-wrapper">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor" data-di-rand="1692771850891"><path d="M28.036 8.889V5a5.106 5.106 0 0 0-1.416-3.532A4.747 4.747 0 0 0 23.214 0h-6.428a4.747 4.747 0 0 0-3.406 1.468A5.106 5.106 0 0 0 11.964 5v3.889H5V35a5.107 5.107 0 0 0 1.415 3.532A4.747 4.747 0 0 0 9.821 40H30.18a4.747 4.747 0 0 0 3.406-1.468A5.106 5.106 0 0 0 35 35V8.889h-6.964ZM15.179 5c0-.442.169-.866.47-1.179.302-.312.71-.488 1.137-.488h6.428c.427 0 .835.176 1.137.488.301.313.47.737.47 1.179v3.889H15.18V5Zm16.607 30c0 .442-.17.866-.471 1.178-.301.313-.71.489-1.136.489H9.82c-.426 0-.835-.176-1.136-.489A1.698 1.698 0 0 1 8.215 35V12.222h3.75v4.445h3.214v-4.445h9.642v4.445h3.215v-4.445h3.75V35Z"></path>
                             </svg>
                           </div>
-                          <a href="">Add to Bag</a>
+                          Add to Bag
                         </button>
-                      </div>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -654,7 +655,7 @@
               </div>
                 <div class="img">
                   <a th:href="@{'/product/getProduct/' + ${product.getProductId()}}">
-                    <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
+                    <img th:src="@{'http://localhost:8080/' + ${product.getImages()[0]}}" alt="">
                   </a>
                 </div>
                 <div class="new">
@@ -666,19 +667,19 @@
                 <span th:text="${product.getProductName()}"></span>
               </a>
             </div>
-            <div class="product-item-rating">
+            <div th:if="${not #lists.isEmpty(product.reviews)}" class="product-item-rating">
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
             </div>
+            <div th:unless="${not #lists.isEmpty(product.reviews)}" class="product-item-rating"></div>
             <div class="product-item-price" th:text="${'$' + product.getPrice()}"></div>
-            <div class="product-item-btn">
-              <button class="add-bag">
-                <a href="">Add to Bag</a>
-              </button>
-            </div>
+            <form class="product-item-btn" th:action="@{'/cart/addItemToCart/' + ${product.getProductId()}}" method="post">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="add-bag">Add to Bag</button>
+            </form>
           </div>
         </div>
         <div class="next-btn">

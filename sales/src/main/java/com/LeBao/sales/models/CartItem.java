@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Objects;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -77,6 +79,23 @@ public class CartItem {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        CartItem other = (CartItem) obj;
+        return Objects.equals(cartItemId, other.cartItemId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cartItemId);
     }
 }
 

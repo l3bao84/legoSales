@@ -33,12 +33,6 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "product_quantity")
-    private Integer productQuantity;
-
-    @Column(name = "product_price")
-    private Double productPrice;
-
     @Column(name = "subtotal")
     private Double subtotal;
 
@@ -74,22 +68,6 @@ public class OrderDetail {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public Integer getProductQuantity() {
-        return productQuantity;
-    }
-
-    public void setProductQuantity(Integer productQuantity) {
-        this.productQuantity = productQuantity;
-    }
-
-    public Double getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(Double productPrice) {
-        this.productPrice = productPrice;
     }
 
     public Double getSubtotal() {
@@ -131,5 +109,6 @@ public class OrderDetail {
     public void setDeliveryDate(LocalDate deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
+
 }
 

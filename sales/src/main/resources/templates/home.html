@@ -141,10 +141,10 @@
           </a>
         </div>
         <div class="cart">
-          <a href="">
+          <a th:href="@{'/cart'}">
             <i class="fa-solid fa-bag-shopping"></i>
           </a>
-          <p>(0)</p>
+          <p th:text="'&lpar;' + ${cartItemCount} + '&rpar;'"></p>
         </div>
       </div>
     </div>
@@ -182,7 +182,7 @@
           <div class="brick-4"></div>
           <div class="brick-5"></div>
           <div class="brick-6"></div>
-          <img th:src="@{'/product/' + ${tpProduct.getProductId()}}" alt="">
+          <img th:src="@{'http://localhost:8080/' + ${tpProduct.getImages()[0]}}" alt="">
         </div>
       </div>
     </div>
@@ -262,7 +262,7 @@
                 </div>
                 <div class="img">
                   <a th:href="@{'/product/getProduct/' + ${product.getProductId()}}">
-                    <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
+                    <img th:src="@{'http://localhost:8080/' + ${product.getImages()[0]}}" alt="">
                   </a>
                 </div>
                 <div class="new">
@@ -283,11 +283,10 @@
             </div>
             <div th:unless="${not #lists.isEmpty(product.reviews)}" class="product-item-rating"></div>
             <div class="product-item-price" th:text="${'$' + product.getPrice()}"></div>
-            <div class="product-item-btn">
-              <button class="add-bag">
-                <a href="">Add to Bag</a>
-              </button>
-            </div>
+            <form class="product-item-btn" th:action="@{'/cart/addItemToCart/' + ${product.getProductId()}}" method="post">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="add-bag">Add to Bag</button>
+            </form>
           </div>
         </div>
         <div class="next-btn">

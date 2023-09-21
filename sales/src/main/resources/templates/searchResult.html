@@ -138,10 +138,10 @@
           </a>
         </div>
         <div class="cart">
-          <a href="">
+          <a th:href="@{'/cart'}">
             <i class="fa-solid fa-bag-shopping"></i>
           </a>
-          <p>(0)</p>
+          <p th:text="'&lpar;' + ${cartItemCount} + '&rpar;'"></p>
         </div>
       </div>
     </div>
@@ -267,7 +267,7 @@
                                 <div class="product-image-wrapper">
                                     <div class="product-image-container">
                                         <div class="product-image">
-                                            <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
+                                            <img th:src="@{'http://localhost:8080/' + ${product.getImages()[0]}}" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -299,17 +299,16 @@
                         <span class="product-leaf-price">
                             <span class="price-sm-bold" th:text="${'$' + product.getPrice()}"></span>
                         </span>
-                        <div class="product-leaf-action">
+                        <form th:action="@{'/cart/addItemToCart/' + ${product.getProductId()}}" method="post" class="product-leaf-action">
+                            <input type="hidden" name="quantity" value="1">
                             <button class="add-to-bag-button">
-                                <a href="">
-                                    <div class="icon-wrapper-leaf">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor" data-di-res-id="4b715c35-5c943802" data-di-rand="1693290376384"><path d="M28.036 8.889V5a5.106 5.106 0 0 0-1.416-3.532A4.747 4.747 0 0 0 23.214 0h-6.428a4.747 4.747 0 0 0-3.406 1.468A5.106 5.106 0 0 0 11.964 5v3.889H5V35a5.107 5.107 0 0 0 1.415 3.532A4.747 4.747 0 0 0 9.821 40H30.18a4.747 4.747 0 0 0 3.406-1.468A5.106 5.106 0 0 0 35 35V8.889h-6.964ZM15.179 5c0-.442.169-.866.47-1.179.302-.312.71-.488 1.137-.488h6.428c.427 0 .835.176 1.137.488.301.313.47.737.47 1.179v3.889H15.18V5Zm16.607 30c0 .442-.17.866-.471 1.178-.301.313-.71.489-1.136.489H9.82c-.426 0-.835-.176-1.136-.489A1.698 1.698 0 0 1 8.215 35V12.222h3.75v4.445h3.214v-4.445h9.642v4.445h3.215v-4.445h3.75V35Z"></path>
-                                        </svg>
-                                    </div>
-                                    <span>Add to Bag</span>
-                                </a>
+                                <div class="icon-wrapper-leaf">
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor" data-di-res-id="4b715c35-5c943802" data-di-rand="1693290376384"><path d="M28.036 8.889V5a5.106 5.106 0 0 0-1.416-3.532A4.747 4.747 0 0 0 23.214 0h-6.428a4.747 4.747 0 0 0-3.406 1.468A5.106 5.106 0 0 0 11.964 5v3.889H5V35a5.107 5.107 0 0 0 1.415 3.532A4.747 4.747 0 0 0 9.821 40H30.18a4.747 4.747 0 0 0 3.406-1.468A5.106 5.106 0 0 0 35 35V8.889h-6.964ZM15.179 5c0-.442.169-.866.47-1.179.302-.312.71-.488 1.137-.488h6.428c.427 0 .835.176 1.137.488.301.313.47.737.47 1.179v3.889H15.18V5Zm16.607 30c0 .442-.17.866-.471 1.178-.301.313-.71.489-1.136.489H9.82c-.426 0-.835-.176-1.136-.489A1.698 1.698 0 0 1 8.215 35V12.222h3.75v4.445h3.214v-4.445h9.642v4.445h3.215v-4.445h3.75V35Z"></path>
+                                  </svg>
+                                </div>
+                                <span>Add to Bag</span>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </li>
             </ul>

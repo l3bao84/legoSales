@@ -6,6 +6,7 @@ import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.services.AccountService;
+import com.LeBao.sales.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,12 +26,16 @@ public class AccountController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping("")
     public String myAccount(ModelMap modelMap) {
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("address", new ShippingAddressDTO());
         modelMap.addAttribute("addresses", accountService.getShippingAddress());
         modelMap.addAttribute("editAddress", new ShippingAddressDTO());
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         return "myAccount";
     }
 
@@ -43,6 +48,7 @@ public class AccountController {
         } else if ("wishlist".equals(section)) {
             modelMap.addAttribute("address", new ShippingAddressDTO());
         }
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("editAddress", new ShippingAddressDTO());
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("addresses", accountService.getShippingAddress());
@@ -54,12 +60,14 @@ public class AccountController {
                             @ModelAttribute("address") ShippingAddressDTO shippingAddressDTO,
                             BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
+            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             modelMap.addAttribute("allThemes", categoryRepository.findAll());
             modelMap.addAttribute("address", new ShippingAddressDTO());
             modelMap.addAttribute("editAddress", new ShippingAddressDTO());
             modelMap.addAttribute("addresses", accountService.getShippingAddress());
             return "redirect:/my-account/personal";
         }else {
+            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             accountService.addShippingAddress(shippingAddressDTO);
             modelMap.addAttribute("allThemes", categoryRepository.findAll());
             modelMap.addAttribute("address", new ShippingAddressDTO());
@@ -75,6 +83,7 @@ public class AccountController {
                               BindingResult bindingResult,
                               @PathVariable Long id) {
         if(bindingResult.hasErrors()) {
+            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             modelMap.addAttribute("editAddress", new ShippingAddressDTO());
             modelMap.addAttribute("allThemes", categoryRepository.findAll());
             modelMap.addAttribute("addresses", accountService.getShippingAddress());
@@ -82,6 +91,7 @@ public class AccountController {
             return "redirect:/my-account/personal";
         }else {
             accountService.editShippingAddress(shippingAddressDTO, id);
+            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             modelMap.addAttribute("editAddress", new ShippingAddressDTO());
             modelMap.addAttribute("allThemes", categoryRepository.findAll());
             modelMap.addAttribute("addresses", accountService.getShippingAddress());
@@ -93,6 +103,7 @@ public class AccountController {
     @PostMapping("/personal/delAddress/{id}")
     public String delAddress(ModelMap modelMap, @PathVariable Long id) {
         accountService.delShippingAddress(id);
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("editAddress", new ShippingAddressDTO());
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("addresses", accountService.getShippingAddress());

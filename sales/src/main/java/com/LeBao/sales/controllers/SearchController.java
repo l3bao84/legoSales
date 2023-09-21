@@ -2,6 +2,7 @@ package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.models.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
+import com.LeBao.sales.services.CartService;
 import com.LeBao.sales.services.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,10 @@ public class SearchController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CartService cartService;
+
+
     @GetMapping("/search")
     public String searchResultPage(ModelMap modelMap,
                                    @RequestParam("search") String keyword,
@@ -34,6 +39,7 @@ public class SearchController {
             modelMap.addAttribute("products", productPage.getContent());
             modelMap.addAttribute("totalPages", productPage.getTotalPages());
         }
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("allCats", categoryRepository.findAll());
         modelMap.addAttribute("keyword", keyword);
         modelMap.addAttribute("allThemes", categoryRepository.findAll());

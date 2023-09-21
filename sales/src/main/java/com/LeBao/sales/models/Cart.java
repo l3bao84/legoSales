@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class Cart {
     private Long cartId;
 
     @JsonIgnore
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -67,6 +68,23 @@ public class Cart {
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Cart other = (Cart) obj;
+        return Objects.equals(cartId, other.cartId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cartId);
     }
 }
 

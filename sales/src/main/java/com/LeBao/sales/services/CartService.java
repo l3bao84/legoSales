@@ -1,24 +1,26 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.DTO.CartItemDTO;
-import com.LeBao.sales.models.Cart;
-import com.LeBao.sales.models.CartItem;
-import com.LeBao.sales.models.Product;
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.models.*;
 import com.LeBao.sales.repositories.CartItemRepository;
 import com.LeBao.sales.repositories.CartRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CartService {
 
     @Autowired
@@ -36,77 +38,114 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Cart> getCart(Long userId) {
-//        String email = userService.getCurrentUsername();
-//        User user = userRepository.findByEmail(email).get();
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
 
-        List<Cart> carts = cartRepository.findAll();
-        List<Cart> foundCarts = new ArrayList<Cart>();
-        for (Cart cart : carts){
-            if(cart.getUser().getUserId() == userId) {
-                foundCarts.add(cart);
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
             }
         }
-        if(foundCarts.isEmpty()) {
-            return null;
-        }
-        return foundCarts;
+
+        return username;
     }
 
-    public Cart findCartByUserId(Long userId) {
-        for (Cart cart:cartRepository.findAll().stream().toList()) {
-            if(cart.getUser().getUserId() == userId) {
-                return cart;
+    public List<CartItem> getItemCart() {
+        String username = getCurrentUsername();
+        List<CartItem> cartItems = new ArrayList<>();
+        if(username == null) {
+            return cartItems;
+        }else {
+            Optional<User> user = userRepository.findByEmail(username);
+            if(user.isPresent()) {
+                Cart cart = user.get().getCart();
+                if(cart != null) {
+                    cartItems = cart.getCartItems().stream().toList();
+                }
             }
         }
-        return null;
+        return cartItems;
     }
 
-    public String addItemToCart(Long userId, CartItemDTO cartItemDTO) {
-        if(findCartByUserId(userId) == null) {
-            Cart cart = Cart.builder()
-                    .creationDate(LocalDate.now())
-                    .user(userRepository.findById(userId).get())
-                    .build();
-            cartRepository.save(cart);
+    public void addItemToCart(Long id, int quantity) {
+        String username = getCurrentUsername();
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+        Optional<Product> optionalProduct = productRepository.findById(id);
 
-            CartItem cartItem = CartItem.builder()
-                    .cart(cart)
-                    .product(productRepository.findById(cartItemDTO.getProductId()).get())
-                    .quantity(cartItemDTO.getQuantity())
-                    .price(cartItemDTO.getPrice())
-                    .build();
-            cartItemRepository.save(cartItem);
-            cartRepository.findById(cart.getCartId()).get().getCartItems().add(cartItem);
-            cartRepository.save(cartRepository.findById(cart.getCartId()).get());
-            productRepository.findById(cartItemDTO.getProductId()).get().getCartItems().add(cartItem);
-            productRepository.save(productRepository.findById(cartItemDTO.getProductId()).get());
-            return "Add an item to cart successfully";
+        if (optionalUser.isPresent() && optionalProduct.isPresent()) {
+            User user = optionalUser.get();
+            Product product = optionalProduct.get();
+
+            // Kiểm tra xem người dùng đã có giỏ hàng chưa
+            Cart cart = user.getCart();
+            if (cart == null) {
+                cart = new Cart();
+                cart.setCreationDate(LocalDate.now());
+                cart.setUser(user);
+                cart.setCartItems(new HashSet<>());
+                user.setCart(cart);
+                cartRepository.save(cart);
+            }
+
+            // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+            boolean existingCartItemFound = false;
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getProduct().equals(product)) {
+                    if(cartItem.getQuantity() == 3) {
+                        existingCartItemFound = true;
+                        break;
+                    }else if(cartItem.getQuantity() >= 1 && cartItem.getQuantity() < 3){
+                        cartItem.setQuantity(cartItem.getQuantity() + 1);
+                        existingCartItemFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!existingCartItemFound) {
+                CartItem cartItem = new CartItem();
+                cartItem.setQuantity(quantity);
+                cartItem.setPrice(product.getPrice());
+                cartItem.setProduct(product);
+                cartItem.setCart(cart);
+
+
+                cart.getCartItems().add(cartItem);
+            }
+
+            userRepository.save(user);
         }
-        Cart cart = findCartByUserId(userId);
-        CartItem cartItem = CartItem.builder()
-                .cart(cart)
-                .product(productRepository.findById(cartItemDTO.getProductId()).get())
-                .quantity(cartItemDTO.getQuantity())
-                .price(cartItemDTO.getPrice())
-                .build();
-        cartItemRepository.save(cartItem);
-        cartRepository.findById(cart.getCartId()).get().getCartItems().add(cartItem);
-        cartRepository.save(cartRepository.findById(cart.getCartId()).get());
-        productRepository.findById(cartItemDTO.getProductId()).get().getCartItems().add(cartItem);
-        productRepository.save(productRepository.findById(cartItemDTO.getProductId()).get());
-        return "Add an item to cart successfully";
     }
 
-    public void deleteItemInCart(Long cartItemId) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId).get();
-        productRepository.findById(cartItem.getProduct().getProductId()).get()
-                .getCartItems().remove(cartItem);
-        cartRepository.findById(cartItem.getCart().getCartId()).get()
-                .getCartItems().remove(cartItem);
+    public void delCartItem(Long id) {
+        String username = getCurrentUsername();
+        Optional<User> optionalUser = userRepository.findByEmail(username);
 
-        productRepository.save(productRepository.findById(cartItem.getProduct().getProductId()).get());
-        cartRepository.save(cartRepository.findById(cartItem.getCart().getCartId()).get());
-        cartItemRepository.delete(cartItem);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Cart cart = user.getCart();
+
+            // Tìm và xóa CartItem theo id
+            Iterator<CartItem> iterator = cart.getCartItems().iterator();
+            while (iterator.hasNext()) {
+                CartItem cartItem = iterator.next();
+                if (cartItem.getCartItemId() == id) {
+                    iterator.remove();
+                    cartItemRepository.deleteById(id);
+                }
+            }
+
+            // Kiểm tra nếu không còn CartItem nào, thì xóa luôn Cart
+            if (cart.getCartItems().isEmpty()) {
+                cartRepository.deleteById(cart.getCartId());
+                user.setCart(null); // Loại bỏ liên kết với Cart
+            }
+            userRepository.save(user);
+        }
     }
 }

@@ -566,7 +566,7 @@ ul {
     text-align: center;
     line-height: 11%;
 }
-.product-item-btn > button {
+.add-bag {
     outline: none;
     background: transparent;
     border: none;
@@ -579,13 +579,12 @@ ul {
     font-weight: 500;
     background-color: rgba(253, 128, 36, 1);
 }
-.add-bag > a {
-    color: #000;
-    text-decoration: none;
-}
-.product-item-btn > button:hover {
+.add-bag:hover {
     background-color: rgb(255, 255, 255);
     border: 2px solid rgba(253, 128, 36, 1);
+}
+.add-bag:focus {
+    outline: none;
 }
 .add-wishlist,
 .new {

@@ -33,9 +33,6 @@ public class Order {
     @Column(name = "order_date")
     private LocalDate orderDate;
 
-    @Column(name = "total_order_value")
-    private Double totalOrderValue;
-
     @Column(name = "order_status")
     private String orderStatus;
 
@@ -66,14 +63,6 @@ public class Order {
 
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public Double getTotalOrderValue() {
-        return totalOrderValue;
-    }
-
-    public void setTotalOrderValue(Double totalOrderValue) {
-        this.totalOrderValue = totalOrderValue;
     }
 
     public String getOrderStatus() {

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/checkout.css}">
+  <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+  <title>Secure Checkout | LEGO Shop</title>
+</head>
+<body >
+
+    <header class="header-container">
+        <div class="header-max-with-container">
+            <div class="back-to-bag-container">
+                <svg width="18" height="28" viewBox="0 0 18 28" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon__StyledSVG-lm07h6-0 kPkNZo Chevronstyles__ChevronIcon-sc-1qql32m-0 gxjmBc Headerstyles__StyledChevron-sc-1qdzb04-4 iaeVkl" data-di-res-id="fa2729bc-4f7aa696" data-di-rand="1694791939403"><path d="M1.825 28L18 14 1.825 0 0 1.715 14.196 14 0 26.285z" fill="currentColor"></path></svg>
+                <div class="back-to-bag-wrapper">
+                    <span class="text-base">
+                        <a th:href="@{'/cart'}">Back to My Bag</a>
+                    </span>
+                </div>
+            </div>
+            <div class="logo-container">
+                <img src="https://assets.lego.com/logos/v4.6.0/brand-lego.svg" alt="">
+            </div>
+            <div class="secure-checkout-container">
+                <div class="styled-icon-wrapper">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor" data-di-res-id="277eaf08-e6663cec" data-di-rand="1694791939403"><path fill-rule="evenodd" clip-rule="evenodd" d="M28.68 14.335h2.52c.743 0 1.455.299 1.98.83a2.85 2.85 0 0 1 .82 2.003v16.999a2.85 2.85 0 0 1-.82 2.003 2.784 2.784 0 0 1-1.98.83H8.8a2.784 2.784 0 0 1-1.98-.83A2.85 2.85 0 0 1 6 34.167V17.168c0-.751.295-1.472.82-2.003a2.784 2.784 0 0 1 1.98-.83h2.52v-3.4a8.24 8.24 0 0 1 2.54-5.702 8.048 8.048 0 0 1 5.776-2.23h.728a8.048 8.048 0 0 1 5.776 2.23 8.24 8.24 0 0 1 2.54 5.703v3.4Zm-12.84-7.1a5.39 5.39 0 0 0-1.72 3.7v3.4h11.76v-3.4a5.39 5.39 0 0 0-1.72-3.7 5.265 5.265 0 0 0-3.796-1.399h-.728a5.265 5.265 0 0 0-3.797 1.4Zm5.037 19.793.934 3.777h-3.734l.934-3.777a3.261 3.261 0 0 1-1.814-1.387 3.327 3.327 0 0 1 .617-4.265 3.235 3.235 0 0 1 2.13-.802c.782 0 1.538.285 2.13.802a3.327 3.327 0 0 1 .617 4.265 3.261 3.261 0 0 1-1.814 1.386Z"></path></svg>
+                    </div>
+                </div>
+                <div class="secure-checkout-wrapper">
+                    <h1 class="text-base">Secure Checkout</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="loading-wrapper">
+        <div class="checkout-page-container">
+            <div class="checkout-page-max-width-container">
+                <div class="check-out-page-wrapper">
+                    <div class="checkout-page-content">
+                        <div>
+                            <section>
+                                <div class="step-style-container">
+                                    <div class="step-badge-wrap">
+                                        <div class="status-icon-style">
+                                            <span>1</span>
+                                        </div>
+                                        <h2 class="step-badge-text">
+                                            <span>Shipping</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <hr class="horizontal-seperator">
+                                <div class="loading-style-wrapper">
+                                    <div class="loading-style-wrapper">
+                                        <h3 class="text-base-shipping">Your shipping address</h3>
+                                        <div class="summary-style-wrapper">
+                                            <div class="summary-style-address-row">
+                                                <span class="summary-style-text">
+                                                    <span>Lê Bảo, xã Hoàng Diệu, huyện Chương Mỹ, thành phố Hà Nội, Hà Nội, (0338171052)</span>
+                                                </span>
+                                                <div class="saved-address">
+                                                    <span class="summary-button-wrapper">
+                                                        <button class="button-base">Edit</button>
+                                                        |
+                                                        <button class="button-base">Change</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="contact-summary-wrapper">
+                                        <h3 class="summary-style-no-margin-text">LEGO® Account Email</h3>
+                                        <div class="contact-summary-email-wrapper">
+                                            <span>bao08042002@gmail.com</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="loading-style-wrapper">
+                                    <div class="shipping-method-speed">
+                                        <div class="shipping-method-title-wrapper">
+                                            <h3 class="text-base-shipping-speed">Choose your shipping speed</h3>
+                                        </div>
+                                    </div>
+                                    <div class="shipping-method-wrapper">
+                                        <div>
+                                            <label class="radion-button-label">
+                                                <div class="delivery-title-wrapper">
+                                                    <div class="shipping-method-delivery-title">
+                                                        <span class="shipping-type">Standard</span>
+                                                        <span class="shipping-value">(Free)</span>
+                                                    </div>
+                                                    <span class="shipping-method-delivery-caption">
+                                                        <span>(3-5 business days)</span>
+                                                    </span>
+                                                </div>
+                                                <input type="radio" class="radio-button">
+                                                <div class="radio-button-style"></div>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="radion-button-label">
+                                                <div class="delivery-title-wrapper">
+                                                    <div class="shipping-method-delivery-title">
+                                                        <span class="shipping-type">Express Saver</span>
+                                                        <span class="shipping-value">($22.95)</span>
+                                                    </div>
+                                                    <span class="shipping-method-delivery-caption">
+                                                        <span>(2-3 business days)</span>
+                                                    </span>
+                                                </div>
+                                                <input type="radio" class="radio-button">
+                                                <div class="radio-button-style"></div>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label class="radion-button-label">
+                                                <div class="delivery-title-wrapper">
+                                                    <div class="shipping-method-delivery-title">
+                                                        <span class="shipping-type">Express</span>
+                                                        <span class="shipping-value">($27.95)</span>
+                                                    </div>
+                                                    <span class="shipping-method-delivery-caption">
+                                                        <span>(1-2 business days)</span>
+                                                    </span>
+                                                </div>
+                                                <input type="radio" class="radio-button">
+                                                <div class="radio-button-style"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="step-style-container">
+                                    <div class="step-badge-wrap">
+                                        <div class="status-icon-style">
+                                            <span>2</span>
+                                        </div>
+                                        <h2 class="step-badge-text">
+                                            <span>Payment</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <hr class="horizontal-seperator">
+                                <h3 class="text-base-payment-method">Choose your payment method</h3>
+                                <div class="primary-payment-wrapper">
+                                    <div class="loading-style-wrapper">
+                                        <div>
+                                            <div class="payment-item-wrapper">
+                                                <div class="payment-header-button">
+                                                    <label class="radio-input-style-label">
+                                                        <div class="radio-input-container">
+                                                            <input type="radio" class="payment-card" value="Payment Card">
+                                                            <div class="radio-input-style"></div>
+                                                        </div>
+                                                        <div class="payment-header-content">
+                                                            <span>Payment Card</span>
+                                                            <div class="payment-icon-container">
+                                                                <span>
+                                                                    <img src="https://inkythuatso.com/uploads/images/2021/12/vnpay-logo-inkythuatso-01-13-16-26-42.jpg" alt="">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="animate-height-wrapper"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="payment-item-wrapper">
+                                                <div class="payment-header-button">
+                                                    <label class="radio-input-style-label">
+                                                        <div class="radio-input-container">
+                                                            <input type="radio" class="cod" value="Cash on Delivery">
+                                                            <div class="radio-input-style"></div>
+                                                        </div>
+                                                        <div class="payment-header-content">
+                                                            <span>Cash on Delivery</span>
+                                                            <div class="payment-icon-container">
+                                                                <span>
+                                                                    <img src="https://kienvanghcm.com/wp-content/uploads/2022/02/ship-cod-ship-code-5.jpg" alt="">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="animate-height-wrapper"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="primary-payment-des">
+                                    <span>By placing your order, you agree to the <a href="http://shop.lego.com/Terms-And-Conditions">Terms and Conditions</a> and <a href="https://www.lego.com/legal/legal-notice/privacy-policy-full">Privacy Policy</a>. Please note, we use your personal information to process, deliver and support your order. We may also use your personal information to email you in order to gather feedback on our services. To find out how to control your personal data, please see our Privacy Policy.</span>
+                                </p>
+                                <div class="payment-button-container">
+                                    <button type="submit" class="confirm-order-button">
+                                        <span>Place order and pay</span>
+                                    </button>
+                                    <span class="primary-payment-text-total"></span>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="checkout-page-sidebar-wrapper">
+                        <div class="loading-wrapper">
+                            <div class="sidebar-summary">
+                                <h2 class="sidebar-title">Order Summary</h2>
+                                <div class="style-line">
+                                    <span class="style-line-text">Subtotal</span>
+                                    <span class="style-line-text">
+                                        <span class="style-line-text-subtotal"></span>
+                                    </span>
+                                </div>
+                                <div class="style-line">
+                                    <span class="style-line-text shipping-type-summary">Standard shipping</span>
+                                    <span class="style-line-text shipping-value-summary">Free</span>
+                                </div>
+                                <div class="style-line">
+                                    <span class="style-line-text">
+                                        <span>VAT</span>
+                                    </span>
+                                    <span class="style-line-text">
+                                        <span>10%</span>
+                                    </span>
+                                </div>
+                                <div class="style-line">
+                                    <span class="style-line-heading">Order Total</span>
+                                    <span class="style-line-heading">
+                                        <span class="style-line-heading-order-total"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="sidebar-wrap">
+                                <div>
+                                    <div class="sidebar-wrap-title">
+                                        <div class="order-detail-title">
+                                            <div class="order-detail-title-content">
+                                                <div class="order-detail-title-content-row">
+                                                    <h2 class="section-title">Order Details</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="animate-height-wrapper">
+                                        <div class="order-detail-content">
+                                            <div class="animate-height-wrapper">
+                                                <div class="line-item-wrapper">
+                                                    <div class="line-item-section-header">
+                                                        <h2 class="line-item-section-heading">
+                                                            <span>Available now</span>
+                                                        </h2>
+                                                    </div>
+                                                    <div class="line-item-content-wrapper">
+                                                        <div class="line-item-detail">
+                                                            <div class="line-item-detail-custom-wrapper">
+                                                                <div class="product-image-wrapper">
+                                                                    <img src="https://www.lego.com/cdn/cs/set/assets/bltc063be795a30bfd4/75354.png?fit=bounds&format=png&width=320&height=320&dpr=1" alt="">
+                                                                </div>
+                                                                <div class="line-item-detail-container">
+                                                                    <div class="text-wrapper">
+                                                                        <h3 class="line-item-detail-text">
+                                                                            <span>Coruscant Guard Gunship™</span>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="product-infor-wrapper">
+                                                                        <div class="media-query">
+                                                                            <div class="product-price-wrapper">
+                                                                                <span class="product-price-text">$139.99</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="quantity-text">Qty: 1</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="line-item-detail">
+                                                            <div class="line-item-detail-custom-wrapper">
+                                                                <div class="product-image-wrapper">
+                                                                    <img src="https://www.lego.com/cdn/cs/set/assets/bltd099cc8c436240fb/71039.png?fit=bounds&format=png&width=320&height=320&dpr=1" alt="">
+                                                                </div>
+                                                                <div class="line-item-detail-container">
+                                                                    <div class="text-wrapper">
+                                                                        <h3 class="line-item-detail-text">
+                                                                            <span>LEGO® Minifigures Marvel Series 2</span>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="product-infor-wrapper">
+                                                                        <div class="media-query">
+                                                                            <div class="product-price-wrapper">
+                                                                                <span class="product-price-text">$4.99</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="quantity-text">Qty: 1</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-container">
+        <div class="footer-max-with-container">
+            <div class="copy-container">
+                <h2 class="no-margin-text">
+                    <span>Customer Service</span>
+                </h2>
+                <a href="" class="phone-number">
+                    <span>0987654321 (Viet Nam)</span>
+                </a>
+                <p class="text-base-p">
+                    <span>LEGO Brand Retail, Inc. 555 Taylor Road, Enfield, CT 06082, USA. Must be 18 years or older to purchase online.</span>
+                </p>
+                <p class="text-base-p">
+                    <span>LEGO, the LEGO logo, the Minifigure, DUPLO, LEGENDS OF CHIMA, NINJAGO, BIONICLE, MINDSTORMS and MIXELS are trademarks and copyrights of the LEGO Group.  ©2023 The LEGO Group. All rights reserved. Use of this site signifies your agreement to the Terms of Use.</span>
+                </p>
+            </div>
+            <div class="icon-container">
+                <div class="icon-holder">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-paypal-card.svg" alt="">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-visa-card.svg" alt="">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-mastercard-card.svg" alt="">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-american-express-card.svg" alt="">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-discover-card.svg" alt="">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-unionpay-card.svg" alt="">
+                    <img src="https://assets.lego.com/logos/v4.6.0/payments-lego-gift-card-card-compressed.png" alt="">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/checkout.js}" defer></script>
+</body>
+</html>
