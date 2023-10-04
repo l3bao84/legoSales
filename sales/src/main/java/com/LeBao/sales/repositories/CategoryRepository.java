@@ -1,6 +1,6 @@
 package com.LeBao.sales.repositories;
 
-import com.LeBao.sales.models.Category;
+import com.LeBao.sales.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {

@@ -1,10 +1,8 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.DTO.ShippingAddressDTO;
-import com.LeBao.sales.models.ShippingAddress;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
-import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.services.AccountService;
 import com.LeBao.sales.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,13 +1,9 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.DTO.ReviewDTO;
-import com.LeBao.sales.models.Category;
-import com.LeBao.sales.models.Product;
-import com.LeBao.sales.models.Review;
+import com.LeBao.sales.entities.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
-import com.LeBao.sales.repositories.ReviewRepository;
-import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.services.CartService;
 import com.LeBao.sales.services.HomeService;
 import com.LeBao.sales.services.ProductService;
@@ -24,11 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/product")

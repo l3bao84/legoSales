@@ -344,7 +344,7 @@
                 </div>
               </div>
               <div class="product-intro-des-cta">
-                <img th:src="@{'/product/' + ${product.getProductId()}}" alt="">
+                <img th:src="@{'http://localhost:8080/' + ${product.getImages()[0]}}" alt="">
               </div>
             </div>
           </div>

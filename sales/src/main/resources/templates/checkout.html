@@ -44,7 +44,228 @@
                 <div class="check-out-page-wrapper">
                     <div class="checkout-page-content">
                         <div>
-                            <section>
+                            <section class="empty-section" th:if="${#lists.isEmpty(addresses)}">
+                                <div class="step-style-container">
+                                    <div class="step-badge-wrap">
+                                        <div class="status-icon-style">
+                                            <span>1</span>
+                                        </div>
+                                        <h2 class="step-badge-text">
+                                            <span>Shipping</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <hr class="horizontal-seperator">
+                                <div class="empty-section-input">                           
+                                    <div class="loading-style-wrapper">
+                                        <div class="loading-style-wrapper">
+                                            <h3 class="text-base-shipping">Enter shipping details</h3>
+                                            <form action="#">
+                                                <div class="style-flex-wrapper">
+                                                    <div class="style-input-wrapper">
+                                                        <div class="input-wrapper">
+                                                            <label for="fullname" class="input-style-label">
+                                                                <input id="fullname" type="text" class="input-field">
+                                                                <span class="input-label-text">Full Name</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="style-flex-wrapper">
+                                                    <div class="style-input-wrapper">
+                                                        <div class="input-wrapper">
+                                                            <label for="phone-number" class="input-style-label">
+                                                                <input id="phone-number" type="text" class="input-field">
+                                                                <span class="input-label-text">Phone number</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="style-flex-wrapper">
+                                                    <div class="style-input-wrapper">
+                                                        <div class="input-wrapper">
+                                                            <label for="city" class="input-style-label">
+                                                                <input id="city" type="text" class="input-field">
+                                                                <span class="input-label-text">City</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="style-flex-wrapper">
+                                                    <div class="style-input-wrapper">
+                                                        <div class="input-wrapper">
+                                                            <label for="address" class="input-style-label">
+                                                                <input id="address" type="text" class="input-field">
+                                                                <span class="input-label-text">Detail address</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="style-form-footer">
+                                                    <div class="address-form-button-container">
+                                                        <div class="button-wrapper-submit">
+                                                            <button type="submit" class="button-address-submit">
+                                                                <span>Use this Address</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="empty-section-saved">
+                                    <div class="loading-style-wrapper">
+                                        <div class="loading-style-wrapper">
+                                            <h3 class="text-base-shipping">Your shipping address</h3>
+                                            <div class="summary-style-wrapper">
+                                                <div class="summary-style-address-row">
+                                                    <span class="summary-style-text">
+                                                        <span></span>
+                                                    </span>
+                                                    <div class="saved-address">
+                                                        <span class="summary-button-wrapper">
+                                                            <button class="button-base button-edit">Edit</button>
+                                                            <!-- |
+                                                            <button class="button-base button-change">Change</button> -->
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="contact-summary-wrapper">
+                                            <h3 class="summary-style-no-margin-text">LEGO® Account Email</h3>
+                                            <div class="contact-summary-email-wrapper">
+                                                <span>bao08042002@gmail.com</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="loading-style-wrapper">
+                                        <div class="shipping-method-speed">
+                                            <div class="shipping-method-title-wrapper">
+                                                <h3 class="text-base-shipping-speed">Choose your shipping speed</h3>
+                                            </div>
+                                        </div>
+                                        <div class="shipping-method-wrapper">
+                                            <div>
+                                                <label class="radion-button-label">
+                                                    <div class="delivery-title-wrapper">
+                                                        <div class="shipping-method-delivery-title">
+                                                            <span class="shipping-type">Standard</span>
+                                                            <span class="shipping-value">(Free)</span>
+                                                        </div>
+                                                        <span class="shipping-method-delivery-caption">
+                                                            <span>(3-5 business days)</span>
+                                                        </span>
+                                                    </div>
+                                                    <input type="radio" class="radio-button">
+                                                    <div class="radio-button-style"></div>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="radion-button-label">
+                                                    <div class="delivery-title-wrapper">
+                                                        <div class="shipping-method-delivery-title">
+                                                            <span class="shipping-type">Express Saver</span>
+                                                            <span class="shipping-value">($22.95)</span>
+                                                        </div>
+                                                        <span class="shipping-method-delivery-caption">
+                                                            <span>(2-3 business days)</span>
+                                                        </span>
+                                                    </div>
+                                                    <input type="radio" class="radio-button">
+                                                    <div class="radio-button-style"></div>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="radion-button-label">
+                                                    <div class="delivery-title-wrapper">
+                                                        <div class="shipping-method-delivery-title">
+                                                            <span class="shipping-type">Express</span>
+                                                            <span class="shipping-value">($27.95)</span>
+                                                        </div>
+                                                        <span class="shipping-method-delivery-caption">
+                                                            <span>(1-2 business days)</span>
+                                                        </span>
+                                                    </div>
+                                                    <input type="radio" class="radio-button">
+                                                    <div class="radio-button-style"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="edit-section">
+                                <div class="step-style-container">
+                                    <div class="step-badge-wrap">
+                                        <div class="status-icon-style">
+                                            <span>1</span>
+                                        </div>
+                                        <h2 class="step-badge-text">
+                                            <span>Shipping</span>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <hr class="horizontal-seperator">
+                                <div class="loading-style-wrapper">
+                                    <div class="loading-style-wrapper">
+                                        <h3 class="text-base-shipping">Enter shipping details</h3>
+                                        <form action="#">
+                                            <div class="style-flex-wrapper">
+                                                <div class="style-input-wrapper">
+                                                    <div class="input-wrapper">
+                                                        <label for="fullname" class="input-style-label">
+                                                            <input id="fullname" type="text" class="input-field">
+                                                            <span class="input-label-text">Full Name</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="style-flex-wrapper">
+                                                <div class="style-input-wrapper">
+                                                    <div class="input-wrapper">
+                                                        <label for="phone-number" class="input-style-label">
+                                                            <input id="phone-number" type="text" class="input-field">
+                                                            <span class="input-label-text">Phone number</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="style-flex-wrapper">
+                                                <div class="style-input-wrapper">
+                                                    <div class="input-wrapper">
+                                                        <label for="city" class="input-style-label">
+                                                            <input id="city" type="text" class="input-field">
+                                                            <span class="input-label-text">City</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="style-flex-wrapper">
+                                                <div class="style-input-wrapper">
+                                                    <div class="input-wrapper">
+                                                        <label for="address" class="input-style-label">
+                                                            <input id="address" type="text" class="input-field">
+                                                            <span class="input-label-text">Detail address</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="style-form-footer">
+                                                <div class="address-form-button-container">
+                                                    <div class="button-wrapper-submit">
+                                                        <button type="submit" class="button-address-submit">
+                                                            <span>Use this Address</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="saved-section" th:unless="${#lists.isEmpty(addresses)}">
                                 <div class="step-style-container">
                                     <div class="step-badge-wrap">
                                         <div class="status-icon-style">
@@ -62,13 +283,13 @@
                                         <div class="summary-style-wrapper">
                                             <div class="summary-style-address-row">
                                                 <span class="summary-style-text">
-                                                    <span>Lê Bảo, xã Hoàng Diệu, huyện Chương Mỹ, thành phố Hà Nội, Hà Nội, (0338171052)</span>
+                                                    <span th:text="${addresses[0].getFullName() + ', ' + addresses[0].getAddress() + ', ' + addresses[0].getCity() + ', ' + '&lpar;' + addresses[0].getPhoneNumber() + '&rpar;'}"></span>
                                                 </span>
                                                 <div class="saved-address">
                                                     <span class="summary-button-wrapper">
-                                                        <button class="button-base">Edit</button>
+                                                        <button class="button-base button-edit">Edit</button>
                                                         |
-                                                        <button class="button-base">Change</button>
+                                                        <button class="button-base button-change">Change</button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -257,46 +478,24 @@
                                                         </h2>
                                                     </div>
                                                     <div class="line-item-content-wrapper">
-                                                        <div class="line-item-detail">
+                                                        <div th:each="item : ${items}" class="line-item-detail">
                                                             <div class="line-item-detail-custom-wrapper">
                                                                 <div class="product-image-wrapper">
-                                                                    <img src="https://www.lego.com/cdn/cs/set/assets/bltc063be795a30bfd4/75354.png?fit=bounds&format=png&width=320&height=320&dpr=1" alt="">
+                                                                    <img th:src="@{'http://localhost:8080/' + ${item.getProduct().getImages()[0]}}" alt="">
                                                                 </div>
                                                                 <div class="line-item-detail-container">
                                                                     <div class="text-wrapper">
                                                                         <h3 class="line-item-detail-text">
-                                                                            <span>Coruscant Guard Gunship™</span>
+                                                                            <span th:text="${item.getProduct().getProductName()}"></span>
                                                                         </h3>
                                                                     </div>
                                                                     <div class="product-infor-wrapper">
                                                                         <div class="media-query">
                                                                             <div class="product-price-wrapper">
-                                                                                <span class="product-price-text">$139.99</span>
+                                                                                <span class="product-price-text" th:text="${'$' + item.getProduct().getPrice()}"></span>
                                                                             </div>
                                                                         </div>
-                                                                        <p class="quantity-text">Qty: 1</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="line-item-detail">
-                                                            <div class="line-item-detail-custom-wrapper">
-                                                                <div class="product-image-wrapper">
-                                                                    <img src="https://www.lego.com/cdn/cs/set/assets/bltd099cc8c436240fb/71039.png?fit=bounds&format=png&width=320&height=320&dpr=1" alt="">
-                                                                </div>
-                                                                <div class="line-item-detail-container">
-                                                                    <div class="text-wrapper">
-                                                                        <h3 class="line-item-detail-text">
-                                                                            <span>LEGO® Minifigures Marvel Series 2</span>
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div class="product-infor-wrapper">
-                                                                        <div class="media-query">
-                                                                            <div class="product-price-wrapper">
-                                                                                <span class="product-price-text">$4.99</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <p class="quantity-text">Qty: 1</p>
+                                                                        <p class="quantity-text" th:text="${'Qty: ' + item.getQuantity()}"></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -312,6 +511,53 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <aside th:onclick="closeAside()" class="modal-style-container">
+                <div class="modal-window">
+                    <div class="modal-close-button-wrapper">
+                        <button class="close-button-style">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 dHKzVM" data-di-res-id="1a42ebbe-a5d5e997" data-di-rand="1695720864689"><path d="M10.377 8.142l5.953-5.954-2.234-2.234-5.954 5.954L2.188-.046-.046 2.188l5.954 5.954-5.954 5.954 2.234 2.234 5.954-5.953 5.954 5.953 2.234-2.234z" fill="currentColor" fill-rule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                    <div class="select-address-wrapper">
+                        <div class="select-address-scollable">
+                            <div class="select-address-content">
+                                <span class="text-base-span">Select address</span>
+                                <p class="text-base-p">Please select the correct address below.</p>
+                            </div>
+                            <ul>
+                                <li th:each="address : ${addresses}" class="address-item">
+                                    <label class="radio-input-style-label">
+                                        <div class="radio-container">
+                                            <input type="radio" class="radio-input">
+                                            <div class="radio-style"></div>
+                                        </div>
+                                        <p class="address-item-content">
+                                            <span class="text-base tb-full-name">
+                                                <span th:text="${address.getFullName()}"></span>
+                                            </span>
+                                            <span class="text-base tb-bg">
+                                                <span th:text="${address.getAddress() + ', ' + address.getCity() + ', ' + '&lpar;' + address.getPhoneNumber() + '&rpar;'}"></span>
+                                            </span>
+                                        </p>
+                                        <button class="edit-button">Edit</button>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="select-address-buttons">
+                            <button class="select-address">
+                                <span>Select address</span>
+                            </button>
+                            <button class="add-new-address">Add new Address</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 

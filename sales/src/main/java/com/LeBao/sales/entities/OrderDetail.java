@@ -1,16 +1,10 @@
-package com.LeBao.sales.models;
+package com.LeBao.sales.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -35,6 +29,10 @@ public class OrderDetail {
 
     @Column(name = "subtotal")
     private Double subtotal;
+
+    private Double price;
+
+    private int quantity;
 
     private String paymentMethod;
 
@@ -110,5 +108,29 @@ public class OrderDetail {
         this.deliveryDate = deliveryDate;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        OrderDetail other = (OrderDetail) obj;
+        return Objects.equals(orderDetailId, other.orderDetailId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderDetailId);
+    }
 }
 

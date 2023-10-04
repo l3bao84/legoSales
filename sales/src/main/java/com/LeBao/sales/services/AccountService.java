@@ -1,8 +1,8 @@
 package com.LeBao.sales.services;
 
 import com.LeBao.sales.DTO.ShippingAddressDTO;
-import com.LeBao.sales.models.ShippingAddress;
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.entities.ShippingAddress;
+import com.LeBao.sales.entities.User;
 import com.LeBao.sales.repositories.ShippingAddressRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service

@@ -1,9 +1,8 @@
-package com.LeBao.sales.models;
+package com.LeBao.sales.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

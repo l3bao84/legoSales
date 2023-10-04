@@ -1,8 +1,7 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.models.Category;
-import com.LeBao.sales.models.Product;
-import com.LeBao.sales.models.Review;
+import com.LeBao.sales.entities.Category;
+import com.LeBao.sales.entities.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

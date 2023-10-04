@@ -179,6 +179,7 @@
                             </div>
                             <div class="line-item-content-wrapper">
                                 <div th:each="item : ${carts}" class="product-row-container">
+                                  <input type="hidden" name="itemId" class="itemId" th:value="${item.getCartItemId()}">
                                     <div class="custom-wrapper">
                                         <div class="product-image-wrapper">
                                             <a th:href="@{'/product/getProduct/' + ${item.getProduct().getProductId()}}" class="link-style">
@@ -206,15 +207,15 @@
                                                 </div>
                                                 <div class="quantity-container">
                                                     <div class="quantity-wrapper">
-                                                        <button class="modify-button-minus">
-                                                          <svg width="14px" height="2px" viewBox="0 0 14 2" aria-hidden="true" data-di-rand="1692177394837"><polygon class="minus"  fill="#E0E0E0" points="14 2 0 2 0 -6.03961325e-14 14 -6.03961325e-14"></polygon></svg>
-                                                        </button>
-                                                        <div class="quantity-input">
-                                                          <input name="quantity" class="quantity-value" type="text" th:value="${item.getQuantity()}">
-                                                        </div>
-                                                        <button class="modify-button-plus">
-                                                          <svg  xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 14 14" aria-hidden="true" data-di-rand="1692177394837"><polygon class="add" fill="black" points="14 8 0 8 0 6 14 6"></polygon><rect class="rect"  fill="black" fill-rule="nonzero" x="6" y="0" width="2" height="14"></rect></svg>
-                                                        </button>
+                                                      <button type="button" class="modify-button-minus">
+                                                        <svg width="14px" height="2px" viewBox="0 0 14 2" aria-hidden="true" data-di-rand="1692177394837"><polygon class="minus"  fill="#E0E0E0" points="14 2 0 2 0 -6.03961325e-14 14 -6.03961325e-14"></polygon></svg>
+                                                      </button>
+                                                      <div class="quantity-input">
+                                                        <input name="quantity" class="quantity-value" type="text" th:value="${item.getQuantity()}">
+                                                      </div>
+                                                      <button type="button" class="modify-button-plus">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 14 14" aria-hidden="true" data-di-rand="1692177394837"><polygon class="add" fill="black" points="14 8 0 8 0 6 14 6"></polygon><rect class="rect"  fill="black" fill-rule="nonzero" x="6" y="0" width="2" height="14"></rect></svg>
+                                                      </button>
                                                     </div>
                                                 </div>
                                                 <div class="wishlist-wrapper">
@@ -290,7 +291,7 @@
                                         </div>
                                     </div>
                                     <div class="order-summary-button-wrapper">
-                                        <a th:href="@{'/checkout'}" class="order-summary-link">
+                                        <a class="order-summary-link">
                                             <div class="icon-wrapper">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="currentColor" data-di-res-id="bf924e76-e739f62e" data-di-rand="1694678648529"><path d="M20.022 37a1.24 1.24 0 0 1-.473-.09C18.997 36.688 6 31.308 6 10.412a1.353 1.353 0 0 1 .253-.795c.166-.23.4-.4.667-.485.99-.412 11.454-5.423 12.392-5.924a1.32 1.32 0 0 1 1.42 0c.937.5 11.392 5.512 12.392 5.924.259.092.483.265.64.495.158.23.24.505.236.785.044 20.896-12.953 26.275-13.505 26.498-.15.061-.311.091-.473.09ZM8.629 11.289c.307 16.323 9.176 21.791 11.393 22.9 2.2-1.109 11.077-6.568 11.393-22.9-1.262-.582-3.751-1.79-6.065-2.873a492.946 492.946 0 0 1-4.084-1.969c-.482-.232-.876-.43-1.235-.608-.342.179-.754.376-1.236.608a492.946 492.946 0 0 1-4.084 1.97 524.153 524.153 0 0 1-6.082 2.872Zm10.84 13.424 6.608-9.845a.426.426 0 0 0-.122-.6l-1.437-.966a.44.44 0 0 0-.605.117l-5.6 8.367-2.147-3.454a.43.43 0 0 0-.596-.143l-1.472.895a.414.414 0 0 0-.199.262.427.427 0 0 0 .05.328l3.084 4.994a.435.435 0 0 0 .36.206h1.752a.456.456 0 0 0 .334-.143l-.01-.018Z"></path></svg>
                                             </div>

@@ -375,3 +375,23 @@ function switchOffPanel() {
 function preventEventPropagation(event) {
     event.stopPropagation();
 }
+
+// xử lý trước khi checkout
+
+const handleCheckout = document.querySelector('.order-summary-link')
+
+if(handleCheckout !== null) {
+    handleCheckout.addEventListener("click", () => {
+        const items = document.querySelectorAll('.product-row-container')
+        var param = ""
+        items.forEach((item,index) => {
+            if(index == items.length - 1) {
+                param += item.querySelector('.itemId').value + ":" + item.querySelector('.quantity-value').value
+            }else {
+                param += item.querySelector('.itemId').value + ":" + item.querySelector('.quantity-value').value + ","
+            }
+        })
+        var newUrl = `/handleCheckout?data=${param}`;
+        window.location.href = newUrl
+    })
+}

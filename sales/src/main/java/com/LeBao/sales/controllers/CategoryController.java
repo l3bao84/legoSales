@@ -1,18 +1,12 @@
 package com.LeBao.sales.controllers;
 
-import com.LeBao.sales.models.Category;
-import com.LeBao.sales.models.Product;
-import com.LeBao.sales.models.User;
-import com.LeBao.sales.repositories.CategoryRepository;
+import com.LeBao.sales.entities.Category;
 import com.LeBao.sales.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/category")

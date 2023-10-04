@@ -1,6 +1,6 @@
 package com.LeBao.sales.repositories;
 
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

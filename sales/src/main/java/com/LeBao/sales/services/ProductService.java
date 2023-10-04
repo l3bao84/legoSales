@@ -1,10 +1,9 @@
 package com.LeBao.sales.services;
 
 import com.LeBao.sales.DTO.ReviewDTO;
-import com.LeBao.sales.models.Category;
-import com.LeBao.sales.models.Product;
-import com.LeBao.sales.models.Review;
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.entities.Product;
+import com.LeBao.sales.entities.Review;
+import com.LeBao.sales.entities.User;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.ReviewRepository;
@@ -21,7 +20,6 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -159,7 +157,7 @@ public class ProductService {
             review.setProduct(product);
             review.setUser(user);
             review.setReviewDate(LocalDate.now());
-            review.setImageReviews(storageService.uploadFileToFileSystem(files));
+            review.setImageReviews(storageService.upload(files));
             review.setContent(reviewDTO.getContent());
             review.setRating(reviewDTO.getRating());
 

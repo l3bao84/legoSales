@@ -1,6 +1,6 @@
 package com.LeBao.sales.controllers;
 
-import com.LeBao.sales.models.Product;
+import com.LeBao.sales.entities.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.services.CartService;
 import com.LeBao.sales.services.HomeService;

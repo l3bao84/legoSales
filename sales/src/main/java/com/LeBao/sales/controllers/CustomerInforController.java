@@ -1,7 +1,6 @@
 package com.LeBao.sales.controllers;
 
-import com.LeBao.sales.models.ShippingAddress;
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.entities.User;
 import com.LeBao.sales.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

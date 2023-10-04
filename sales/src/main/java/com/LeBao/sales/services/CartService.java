@@ -1,6 +1,6 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.models.*;
+import com.LeBao.sales.entities.*;
 import com.LeBao.sales.repositories.CartItemRepository;
 import com.LeBao.sales.repositories.CartRepository;
 import com.LeBao.sales.repositories.ProductRepository;
@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -144,6 +142,24 @@ public class CartService {
             if (cart.getCartItems().isEmpty()) {
                 cartRepository.deleteById(cart.getCartId());
                 user.setCart(null); // Loại bỏ liên kết với Cart
+            }
+            userRepository.save(user);
+        }
+    }
+
+    public void reduceQuantity(long id, int quantity) {
+        String username = getCurrentUsername();
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Cart cart = user.getCart();
+            List<CartItem> cartItems = cart.getCartItems().stream().toList();
+            for (CartItem item : cartItems){
+                if(item.getCartItemId() == id) {
+                    item.setQuantity(quantity);
+                    break;
+                }
             }
             userRepository.save(user);
         }

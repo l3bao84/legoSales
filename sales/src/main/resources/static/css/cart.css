@@ -1245,6 +1245,7 @@ footer {
     row-gap: 1.125rem;
 }
 .order-summary-link {
+    cursor: pointer;
     margin: 1.125rem auto auto;
     display: flex;
     -webkit-box-align: center;

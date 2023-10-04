@@ -1,13 +1,11 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.entities.User;
 import com.LeBao.sales.repositories.UserRepository;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 

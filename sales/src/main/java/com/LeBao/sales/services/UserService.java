@@ -1,8 +1,7 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.models.Role;
-import com.LeBao.sales.models.ShippingAddress;
-import com.LeBao.sales.models.User;
+import com.LeBao.sales.entities.Role;
+import com.LeBao.sales.entities.User;
 import com.LeBao.sales.repositories.ShippingAddressRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.LeBao.sales.models;
+package com.LeBao.sales.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

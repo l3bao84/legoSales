@@ -13,7 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +39,7 @@ public class SecurityConfiguration {
 //                        .anyRequest()
 //                        .authenticated())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login","/register","/css/**","/images/**","/js/**").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(login -> login
                         .loginPage("/login")
