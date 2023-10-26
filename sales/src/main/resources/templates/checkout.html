@@ -136,7 +136,7 @@
                                         <div class="contact-summary-wrapper">
                                             <h3 class="summary-style-no-margin-text">LEGO® Account Email</h3>
                                             <div class="contact-summary-email-wrapper">
-                                                <span>bao08042002@gmail.com</span>
+                                                <span sec:authentication="principal.email"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -283,7 +283,7 @@
                                         <div class="summary-style-wrapper">
                                             <div class="summary-style-address-row">
                                                 <span class="summary-style-text">
-                                                    <span th:text="${addresses[0].getFullName() + ', ' + addresses[0].getAddress() + ', ' + addresses[0].getCity() + ', ' + '&lpar;' + addresses[0].getPhoneNumber() + '&rpar;'}"></span>
+                                                    <span th:text="${addresses[0].getFullName() + ' | ' + addresses[0].getAddress() + ' | ' + addresses[0].getCity() + ' | ' + '&lpar;' + addresses[0].getPhoneNumber() + '&rpar;'}"></span>
                                                 </span>
                                                 <div class="saved-address">
                                                     <span class="summary-button-wrapper">
@@ -298,7 +298,7 @@
                                     <div class="contact-summary-wrapper">
                                         <h3 class="summary-style-no-margin-text">LEGO® Account Email</h3>
                                         <div class="contact-summary-email-wrapper">
-                                            <span>bao08042002@gmail.com</span>
+                                            <span sec:authentication="principal.email"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -377,14 +377,14 @@
                                                 <div class="payment-header-button">
                                                     <label class="radio-input-style-label">
                                                         <div class="radio-input-container">
-                                                            <input type="radio" class="payment-card" value="Payment Card">
+                                                            <input type="radio" class="paypal" value="PayPal">
                                                             <div class="radio-input-style"></div>
                                                         </div>
                                                         <div class="payment-header-content">
-                                                            <span>Payment Card</span>
+                                                            <span>PayPal</span>
                                                             <div class="payment-icon-container">
                                                                 <span>
-                                                                    <img src="https://inkythuatso.com/uploads/images/2021/12/vnpay-logo-inkythuatso-01-13-16-26-42.jpg" alt="">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="16" viewBox="0.5 0 63 16.1" class="Icon__StyledSVG-lm07h6-0 dHKzVM" aria-label="PayPal" data-di-res-id="bf48627b-4163d2c9" data-di-rand="1696500521993"><g fill="none"><path d="M49.2 4.2h-3.4c-.2 0-.4.2-.5.4l-1.4 8.8c0 .2.1.3.3.3H46c.2 0 .3-.1.3-.3l.4-2.5c0-.2.2-.4.5-.4h1.1c2.3 0 3.6-1.1 3.9-3.3.2-.9 0-1.7-.4-2.2-.6-.5-1.5-.8-2.6-.8m.4 3.3c-.2 1.2-1.1 1.2-2 1.2H47l.4-2.3c0-.1.1-.2.3-.2h.2c.6 0 1.2 0 1.5.4.2.1.2.4.2.9" fill="#139AD6"></path><path d="M24.7 4.2h-3.4c-.2 0-.4.2-.5.4l-1.4 8.8c0 .2.1.3.3.3h1.6c.2 0 .4-.2.5-.4l.4-2.4c0-.2.2-.4.5-.4h1.1c2.3 0 3.6-1.1 3.9-3.3.2-.9 0-1.7-.4-2.2-.6-.5-1.4-.8-2.6-.8m.4 3.3c-.2 1.2-1.1 1.2-2 1.2h-.5l.4-2.3c0-.1.1-.2.3-.2h.2c.6 0 1.2 0 1.5.4.1.1.2.4.1.9m9.9-.1h-1.6c-.1 0-.3.1-.3.2l-.1.5-.1-.2c-.4-.5-1.1-.7-1.9-.7-1.8 0-3.4 1.4-3.7 3.3-.2 1 .1 1.9.6 2.5.5.6 1.2.8 2.1.8 1.5 0 2.3-.9 2.3-.9l-.1.5c0 .2.1.3.3.3H34c.2 0 .4-.2.5-.4l.9-5.6c-.1-.1-.3-.3-.4-.3m-2.3 3.2c-.2.9-.9 1.6-1.9 1.6-.5 0-.9-.2-1.1-.4-.2-.3-.3-.7-.3-1.2.1-.9.9-1.6 1.8-1.6.5 0 .8.2 1.1.4.3.3.4.8.4 1.2" fill="#263B80"></path><path d="M59.4 7.4h-1.6c-.1 0-.3.1-.3.2l-.1.5-.1-.2c-.4-.5-1.1-.7-1.9-.7-1.8 0-3.4 1.4-3.7 3.3-.2 1 .1 1.9.6 2.5.5.6 1.2.8 2.1.8 1.5 0 2.3-.9 2.3-.9l-.1.5c0 .2.1.3.3.3h1.5c.2 0 .4-.2.5-.4l.9-5.6c-.1-.1-.2-.3-.4-.3m-2.3 3.2c-.2.9-.9 1.6-1.9 1.6-.5 0-.9-.2-1.1-.4-.2-.3-.3-.7-.3-1.2.1-.9.9-1.6 1.8-1.6.5 0 .8.2 1.1.4.4.3.5.8.4 1.2" fill="#139AD6"></path><path d="M43.7 7.4H42c-.2 0-.3.1-.4.2L39.4 11l-1-3.2c-.1-.2-.2-.3-.5-.3h-1.6c-.2 0-.3.2-.3.4l1.8 5.3-1.7 2.4c-.1.2 0 .5.2.5h1.6c.2 0 .3-.1.4-.2L43.8 8c.3-.3.1-.6-.1-.6" fill="#263B80"></path><path d="M61.3 4.5l-1.4 9c0 .2.1.3.3.3h1.4c.2 0 .4-.2.5-.4l1.4-8.8c0-.2-.1-.3-.3-.3h-1.6c-.1-.1-.2 0-.3.2" fill="#139AD6"></path><path d="M12 1.2C11.3.4 10 0 8.2 0h-5c-.3 0-.6.3-.7.6l-2 13.1c0 .3.2.5.4.5H4l.8-4.9v.2c.1-.3.4-.6.7-.6H7c2.9 0 5.1-1.2 5.8-4.5v-.3c-.1 0-.1 0 0 0 .1-1.3-.1-2.1-.8-2.9" fill="#263B80"></path><path d="M12.7 4.1v.3C12 7.8 9.8 8.9 6.9 8.9H5.4c-.3 0-.6.3-.7.6l-1 6.1c0 .2.1.4.4.4h2.6c.3 0 .6-.2.6-.5v-.1l.5-3.1v-.2c0-.3.3-.5.6-.5h.4c2.5 0 4.5-1 5-4 .2-1.2.1-2.3-.5-3-.1-.2-.3-.4-.6-.5" fill="#139AD6"></path><path d="M12 3.8c-.1 0-.2-.1-.3-.1-.1 0-.2 0-.3-.1-.4-.1-.8-.1-1.3-.1H6.2c-.1 0-.2 0-.3.1-.2.1-.3.3-.3.5l-.8 5.2v.2c.1-.3.4-.6.7-.6H7c2.9 0 5.1-1.2 5.8-4.5 0-.1 0-.2.1-.3-.2-.1-.3-.2-.5-.2-.3-.1-.3-.1-.4-.1" fill="#232C65"></path></g></svg>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -420,10 +420,18 @@
                                     <span>By placing your order, you agree to the <a href="http://shop.lego.com/Terms-And-Conditions">Terms and Conditions</a> and <a href="https://www.lego.com/legal/legal-notice/privacy-policy-full">Privacy Policy</a>. Please note, we use your personal information to process, deliver and support your order. We may also use your personal information to email you in order to gather feedback on our services. To find out how to control your personal data, please see our Privacy Policy.</span>
                                 </p>
                                 <div class="payment-button-container">
-                                    <button type="submit" class="confirm-order-button">
-                                        <span>Place order and pay</span>
-                                    </button>
-                                    <span class="primary-payment-text-total"></span>
+                                    <form th:object="${orderDTO}"
+                                          th:action="@{'/handle-order'}"  
+                                          method="post">
+                                        <input th:field="*{shippingAddress}" type="hidden" class="order-address">
+                                        <input th:field="*{paymentStatus}" type="hidden" class="order-payment">
+                                        <input th:field="*{totalAmount}" type="hidden" class="order-total">
+                                        <input th:field="*{shippingMethod}" type="hidden" class="order-method">
+                                        <button type="submit" class="confirm-order-button">
+                                            <span>Place order and pay</span>
+                                        </button>
+                                        <span class="primary-payment-text-total"></span>
+                                    </form>
                                 </div>
                             </section>
                         </div>
@@ -541,7 +549,7 @@
                                                 <span th:text="${address.getFullName()}"></span>
                                             </span>
                                             <span class="text-base tb-bg">
-                                                <span th:text="${address.getAddress() + ', ' + address.getCity() + ', ' + '&lpar;' + address.getPhoneNumber() + '&rpar;'}"></span>
+                                                <span th:text="${address.getAddress() + ' | ' + address.getCity() + ' | ' + '&lpar;' + address.getPhoneNumber() + '&rpar;'}"></span>
                                             </span>
                                         </p>
                                         <button class="edit-button">Edit</button>
@@ -560,6 +568,35 @@
             </aside>
         </div>
     </div>
+
+    <div>
+        <div>
+          <aside class="order-modal-style-container">
+            <div class="modal-window">
+              <div class="modal-style-close-button-wrapper">
+                <button class="close-button-style"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 dHKzVM" data-di-res-id="a31f75e5-d947b6aa" data-di-rand="1697253127427"><path d="M10.377 8.142l5.953-5.954-2.234-2.234-5.954 5.954L2.188-.046-.046 2.188l5.954 5.954-5.954 5.954 2.234 2.234 5.954-5.953 5.954 5.953 2.234-2.234z" fill="currentColor" fill-rule="evenodd"></path></svg></button>
+              </div>
+              <div class="order-noti-container">
+                <div class="order-noti-header">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="13" viewBox="0 0 20 13" aria-hidden="true" class="Icon__StyledSVG-lm07h6-0 dHKzVM AddToBagModalstyles__AddedIcon-sc-1getijs-5 jWPbFU" data-di-res-id="6c7e0d3c-fe7ed5ea" data-di-rand="1697253765091"><path d="M0 5.703L7.177 13 20 0h-4.476L7.177 8.442 4.476 5.723H2.238z" fill="currentColor" fill-rule="evenodd"></path></svg>
+                  <h2 class="order-noti-title">Order Canceled</h2>
+                </div>
+                <div class="order-noti-body">
+                  <div class="order-noti-body-title">
+                    <p class="order-noti-text">
+                      <span>You have just canceled the payment for the order</span>
+                    </p>
+                  </div>
+                  <div class="order-noti-action-container">
+                    <button class="continue-button">Continue Shopping</button>
+                    <button class="continue-payment">Continue with payment</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
 
     <footer class="footer-container">
         <div class="footer-max-with-container">

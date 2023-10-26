@@ -260,3 +260,34 @@ closeButton.addEventListener('click', (event) => {
     }
     event.preventDefault()
 })
+
+// xử lý thông báo order thành công
+
+const closeModal = document.querySelector('.close-button-style')
+const continueShopping = document.querySelector('.continue-button')
+const orderModal = document.querySelector('.modal-style-container')
+
+if(closeModal !== null) {
+    closeModal.addEventListener("click", () => {
+        orderModal.style.display = 'none'
+    })
+}
+
+
+if(continueShopping !== null) {
+    continueShopping.addEventListener("click", () => {
+        var homeUrl = `/home`
+        window.location.href = homeUrl
+    })
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    var url = new URL(window.location.href);
+
+    var payValue = url.searchParams.get("pay");
+    var orderValue = url.searchParams.get("order")
+
+    if (payValue === "success" || orderValue === "success") {
+        orderModal.style.display = 'flex'
+    }
+})

@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(shippingButton.length != 0) {
         shippingButton[0].style.border = '1px solid rgb(49, 161, 224)'
         shippingButton[0].querySelector('.radio-button-style').style.display = 'block'
+        document.querySelector('.order-method').value = shippingButton[0].querySelector('.shipping-type').textContent
     }
 })
 
@@ -37,6 +38,7 @@ function calculateOrderTotal() {
     }
     document.querySelector('.style-line-heading-order-total').textContent = "$" + subTotal.toFixed(2)
     document.querySelector('.primary-payment-text-total').textContent = "Total: $" + subTotal.toFixed(2)
+    document.querySelector('.order-total').value = subTotal.toFixed(2)
 }
 
 // chọn phương thức giao hàng
@@ -56,6 +58,7 @@ shippingButton.forEach((button) => {
         const shippingType = button.querySelector('.shipping-type').textContent
         const shippingValue = button.querySelector('.shipping-value').textContent
         document.querySelector('.shipping-type-summary').textContent = shippingType
+        document.querySelector('.order-method').value = shippingType
         document.querySelector('.shipping-value-summary').textContent = shippingValue.substring(1,shippingValue.length - 1)
         calculateOrderTotal()
     })
@@ -64,6 +67,23 @@ shippingButton.forEach((button) => {
 // chọn pt thanh toán
 
 const paymentMethods = document.querySelectorAll('.payment-item-wrapper')
+
+document.addEventListener("DOMContentLoaded", () => {
+    var checked = false
+    paymentMethods.forEach((method) => {
+        if(method.querySelector('input[type="radio"]').checked === true) {
+            checked = true
+        }
+    })
+    if(checked) {
+        document.querySelector('.confirm-order-button').disabled = false
+        document.querySelector('.confirm-order-button').style.backgroundColor = "#0070ba"
+    }else {
+        document.querySelector('.confirm-order-button').disabled = true
+        document.querySelector('.confirm-order-button').style.backgroundColor = "#7fb3d8"
+    }
+})
+
 
 paymentMethods.forEach((method) => {
     method.addEventListener('click', () => {
@@ -74,6 +94,17 @@ paymentMethods.forEach((method) => {
         })
         method.style.borderColor = 'rgb(0, 109, 183)'
         method.querySelector('input[type="radio"]').checked = true
+        if(method.querySelector("input[type='radio']").value === "PayPal") {
+            document.querySelector('.confirm-order-button').querySelector("span").textContent = "PayPal"
+            document.querySelector('.order-payment').value = "PayPal"
+            document.querySelector('.confirm-order-button').disabled = false
+            document.querySelector('.confirm-order-button').style.backgroundColor = "#0070ba"
+        }else {
+            document.querySelector('.confirm-order-button').disabled = false
+            document.querySelector('.order-payment').value = "COD"
+            document.querySelector('.confirm-order-button').style.backgroundColor = "#0070ba"
+            document.querySelector('.confirm-order-button').querySelector("span").textContent = "Place order and pay"
+        }
     })
 })
 
@@ -118,8 +149,9 @@ if(selectBtn !== null) {
     selectBtn.addEventListener("click", () => {
         addressItem.forEach((item) => {
             if(item.querySelector('input[type="radio"]').checked === true) {
-                const selectedAddress = item.querySelector('.text-base').querySelector("span").textContent + ', ' + item.querySelector('.tb-bg').querySelector("span").textContent
+                const selectedAddress = item.querySelector('.text-base').querySelector("span").textContent + ' | ' + item.querySelector('.tb-bg').querySelector("span").textContent
                 document.querySelector('.summary-style-text').querySelector("span").textContent = selectedAddress
+                document.querySelector('.order-address').value = handleAddress(selectedAddress)
                 document.querySelector('.modal-style-container').style.display = 'none'
             }
         })
@@ -143,11 +175,11 @@ const savedSection = document.querySelector('.saved-section')
 if(editButtonSaved !== null) {
     editButtonSaved.addEventListener("click", () => {
         const address = document.querySelector('.summary-style-text').querySelector("span").textContent
-        const addressParts = address.split(',')
+        const addressParts = address.split('|')
         editSection.querySelector('#fullname').value = addressParts[0].trim()
-        editSection.querySelector('#phone-number').value = addressParts[5].trim().slice(1, -1)
-        editSection.querySelector('#city').value = addressParts[addressParts.length - 2].trim()
-        editSection.querySelector('#address').value = addressParts[1].trim() + ', ' + addressParts[2].trim() + ', ' + addressParts[3].trim()
+        editSection.querySelector('#phone-number').value = addressParts[3].trim().slice(1, -1)
+        editSection.querySelector('#city').value = addressParts[2].trim()
+        editSection.querySelector('#address').value = addressParts[1].trim()
 
         if(savedSection !== null) {
             editSection.style.display = 'block'
@@ -159,8 +191,9 @@ if(editButtonSaved !== null) {
         const useThisAddress = editSection.querySelector('.button-address-submit')
         useThisAddress.addEventListener("click", (event) => {
             event.preventDefault()
-            const editedAddress = editSection.querySelector('#fullname').value + ', ' + editSection.querySelector('#address').value + ', ' + editSection.querySelector('#city').value + ', (' + editSection.querySelector('#phone-number').value + ')'
+            const editedAddress = editSection.querySelector('#fullname').value + ' | ' + editSection.querySelector('#address').value + ' | ' + editSection.querySelector('#city').value + ' | (' + editSection.querySelector('#phone-number').value + ')'
             document.querySelector('.summary-style-text').querySelector("span").textContent = editedAddress  
+            document.querySelector('.order-address').value = handleAddress(editedAddress)
             savedSection.style.display = 'block'
             editSection.style.display = 'none'
         })
@@ -176,13 +209,13 @@ if(addressItem !== null) {
                 event.stopPropagation()
 
                 const address = item.querySelector('.tb-bg').querySelector("span").textContent
-                const addressParts = address.split(',')
+                const addressParts = address.split('|')
 
                 editSection.querySelector('#fullname').value = item.querySelector('.tb-full-name').querySelector("span").textContent.trim()
 
-                editSection.querySelector('#phone-number').value = addressParts[4].trim().slice(1, -1)
-                editSection.querySelector('#city').value = addressParts[3].trim()
-                editSection.querySelector('#address').value = addressParts[0].trim() + ', ' + addressParts[1].trim() + ', ' + addressParts[2].trim()
+                editSection.querySelector('#phone-number').value = addressParts[2].trim().slice(1, -1)
+                editSection.querySelector('#city').value = addressParts[1].trim()
+                editSection.querySelector('#address').value = addressParts[0].trim()
                 
                 editSection.style.display = 'block'
                 savedSection.style.display = 'none'
@@ -223,8 +256,9 @@ if(emptySectionInput !== null) {
                 alert("Please fill in all the fields.")
             }else {
                 emptySectionInput.style.display = 'none'
-                const editedAddress = emptySectionInput.querySelector('#fullname').value + ', ' + emptySectionInput.querySelector('#address').value + ', ' + emptySectionInput.querySelector('#city').value + ', (' + emptySectionInput.querySelector('#phone-number').value + ')'
+                const editedAddress = emptySectionInput.querySelector('#fullname').value + ' | ' + emptySectionInput.querySelector('#address').value + ' | ' + emptySectionInput.querySelector('#city').value + ' | (' + emptySectionInput.querySelector('#phone-number').value + ')'
                 emptySectionSaved.querySelector('.summary-style-text').querySelector("span").textContent = editedAddress  
+                document.querySelector('.order-address').value = handleAddress(emptySectionSaved.querySelector('.summary-style-text').querySelector("span").textContent)
                 emptySectionSaved.style.display = 'block'
             }
         }
@@ -235,15 +269,68 @@ if(emptySectionInput !== null) {
         const emptySectionEditButton = emptySectionSaved.querySelector('.button-edit')
         emptySectionEditButton.addEventListener("click", () => {
             const address = emptySectionSaved.querySelector('.summary-style-text').querySelector("span").textContent
-            const addressParts = address.split(',')
+            const addressParts = address.split('|')
 
             emptySectionInput.querySelector('#fullname').value = addressParts[0].trim()
-            emptySectionInput.querySelector('#phone-number').value = addressParts[5].trim().slice(1, -1)
-            emptySectionInput.querySelector('#city').value = addressParts[4].trim()
-            emptySectionInput.querySelector('#address').value = addressParts[1].trim() + ', ' + addressParts[2].trim() + ', ' + addressParts[3].trim()
+            emptySectionInput.querySelector('#phone-number').value = addressParts[3].trim().slice(1, -1)
+            emptySectionInput.querySelector('#city').value = addressParts[2].trim()
+            emptySectionInput.querySelector('#address').value = addressParts[1].trim()
         
             emptySectionInput.style.display = 'block'
-            emptySectionSaved.style.display = 'block'
+            emptySectionSaved.style.display = 'none'
         })
     }
 }
+
+function handleAddress(address) {
+    return address.replace(/\s*\|\s*/g, ', ').replace(/\(|\)/g, '')
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const savedSection = document.querySelector('.saved-section')
+    const emptySectionSaved = document.querySelector('.empty-section-saved')
+    if(savedSection !== null) {
+        document.querySelector('.order-address').value = handleAddress(savedSection.querySelector('.summary-style-text').querySelector("span").textContent)
+    }
+    if(emptySectionSaved !== null) {
+        const address = editButtonSaved.querySelector('.summary-style-text')
+        if(address !== null) {
+            document.querySelector('.order-address').value = handleAddress(address.querySelector("span").textContent)
+        }
+    }
+})
+
+// xử lý thông báo order thành công
+
+const closeModal = document.querySelector('.close-button-style')
+const continueShopping = document.querySelector('.continue-button')
+const continuePayment = document.querySelector('.continue-payment')
+const orderModal = document.querySelector('.order-modal-style-container')
+
+if(closeModal !== null && continuePayment !== null) {
+    closeModal.addEventListener("click", () => {
+        orderModal.style.display = 'none'
+    })
+
+    continuePayment.addEventListener("click", () => {
+        orderModal.style.display = 'none'
+    })
+}
+
+
+if(continueShopping !== null) {
+    continueShopping.addEventListener("click", () => {
+        var homeUrl = `/home`
+        window.location.href = homeUrl
+    })
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    var url = new URL(window.location.href);
+
+    var payValue = url.searchParams.get("pay");
+
+    if (payValue === "cancel") {
+        orderModal.style.display = 'flex'
+    }
+})

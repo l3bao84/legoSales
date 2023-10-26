@@ -54,15 +54,5 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @PutMapping("/reduceQuantity/{id}")
-    public String reduceQuantity(ModelMap modelMap,
-                                 @PathVariable long id,
-                                 @RequestParam("quantity") int quantity) {
-        cartService.reduceQuantity(id,quantity);
-        modelMap.addAttribute("products", homeService.getRecommendedProducts());
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("carts", cartService.getItemCart());
-        return "redirect:/cart";
-    }
+
 }
