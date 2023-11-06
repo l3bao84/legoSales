@@ -249,7 +249,7 @@
                                                 <div class="line-item-product-infor-wrapper">
                                                     <div class="media-query">
                                                         <div class="product-style-wrapper">
-                                                            <span class="product-style-text">${order.getUnitPrice()}</span>
+                                                            <span class="product-style-text">$${order.getUnitPrice()}</span>
                                                         </div>
                                                     </div>
                                                     <p class="line-item-quantity-text">Qty: ${order.getQuantity()}</p>

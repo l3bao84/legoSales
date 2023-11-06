@@ -82,13 +82,14 @@ public class CheckoutController {
                              @RequestParam("PayerID") String payerId,
                              /*RedirectAttributes redirectAttributes*/
                              HttpSession httpSession) {
+        OrderDTO orderDTO = (OrderDTO) httpSession.getAttribute("orderDTO");
+        if (orderDTO != null) {
+            checkoutService.order(orderDTO);
+        }
         try {
             Payment payment = payPalService.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
-                OrderDTO orderDTO = (OrderDTO) httpSession.getAttribute("orderDTO");
-                if (orderDTO != null) {
-                    checkoutService.order(orderDTO);
-                }
+
                 return "redirect:" + SUCCESS_URL;
             }
         } catch (PayPalRESTException e) {

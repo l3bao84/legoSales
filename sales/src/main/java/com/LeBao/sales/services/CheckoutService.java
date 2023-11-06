@@ -130,20 +130,23 @@ public class CheckoutService {
                 orderRepository.save(order);
 
                 Cart cart = user.getCart();
-                if(cart != null) {
-                    for (CartItem item:cart.getCartItems()) {
+                if (cart != null) {
+                    Iterator<CartItem> iterator = cart.getCartItems().iterator();
+                    while (iterator.hasNext()) {
+                        CartItem item = iterator.next();
                         OrderDetail orderDetail = new OrderDetail();
                         orderDetail.setOrder(order);
                         orderDetail.setProduct(item.getProduct());
                         orderDetail.setQuantity(item.getQuantity());
                         orderDetail.setUnitPrice(item.getPrice());
 
-                        cartService.delCartItem(item.getCartItemId());
-
                         orderDetailRepository.save(orderDetail);
                         order.getOrderDetails().add(orderDetail);
                     }
+
+                    cartService.dellAllInCart(cart.getCartId());
                 }
+
                 if(user.getOrders() == null) {
                     Set<Order> orders = new HashSet<>();
                     orders.add(order);

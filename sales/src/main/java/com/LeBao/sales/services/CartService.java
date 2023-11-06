@@ -147,6 +147,30 @@ public class CartService {
         }
     }
 
+    public void dellAllInCart(Long id) {
+        String username = getCurrentUsername();
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Cart cart = user.getCart();
+
+            // Tìm và xóa CartItem theo id
+            Iterator<CartItem> iterator = cart.getCartItems().iterator();
+            while (iterator.hasNext()) {
+                CartItem cartItem = iterator.next();
+                if (cartItem.getCartItemId() == id) {
+                    iterator.remove();
+                    cartItemRepository.deleteById(id);
+                }
+            }
+
+            cartRepository.deleteById(cart.getCartId());
+            user.setCart(null);
+            userRepository.save(user);
+        }
+    }
+
     public void reduceQuantity(long id, int quantity) {
         String username = getCurrentUsername();
         Optional<User> optionalUser = userRepository.findByEmail(username);
