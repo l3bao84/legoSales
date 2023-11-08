@@ -109,7 +109,7 @@ public class CheckoutService {
 
 
 
-    public void order(OrderDTO orderDTO) {
+    public Order order(OrderDTO orderDTO) {
         Order order = null;
         String username = getCurrentUsername();
         if (username != null) {
@@ -143,7 +143,9 @@ public class CheckoutService {
                         orderDetailRepository.save(orderDetail);
                         order.getOrderDetails().add(orderDetail);
                     }
+                }
 
+                if(!order.getPaymentStatus().equalsIgnoreCase("PayPal")) {
                     cartService.dellAllInCart(cart.getCartId());
                 }
 
@@ -156,7 +158,37 @@ public class CheckoutService {
                     user.getOrders().add(order);
                 }
                 userRepository.save(user);
+                if(order.getPaymentStatus().equalsIgnoreCase("COD")) {
+                    emailService.sendEmail(order);
+                }
+            }
+        }
+        return order;
+    }
+
+    public void paymentSuccess(String orderId, String status) {
+        Long id = Long.parseLong(orderId);
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if(optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            if(status.equalsIgnoreCase("PayPal(Payment successfull)")) {
+                order.setPaymentStatus(status);
+                orderRepository.save(order);
                 emailService.sendEmail(order);
+                cartService.dellAllInCart(order.getUser().getCart().getCartId());
+            }else {
+
+                String username = getCurrentUsername();
+                Optional<User> optionalUser = userRepository.findByEmail(username);
+                if(optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+
+                    List<OrderDetail> orderDetails = order.getOrderDetails().stream().toList();
+                    orderDetailRepository.deleteAll(orderDetails);
+
+                    orderRepository.deleteById(order.getOrderId());
+                    userRepository.save(user);
+                }
             }
         }
     }

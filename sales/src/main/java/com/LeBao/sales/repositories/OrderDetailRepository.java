@@ -8,5 +8,5 @@ import org.springframework.data.repository.query.Param;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail,Long> {
 
     @Query("DELETE FROM OrderDetail o WHERE o.order.id = :orderId")
-    void deleteByOrderId(@Param("orderId") Long orderId);
+    int deleteByOrderId(@Param("orderId") Long orderId);
 }
