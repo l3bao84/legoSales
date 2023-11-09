@@ -28,16 +28,16 @@ public class HomeService {
         Pageable pageable;
         if(sortValue.equalsIgnoreCase("Price: Low to High")) {
             pageable = PageRequest.of(page,pageSize,Sort.by(Sort.Order.asc("price")));
-            return productRepository.findAll(pageable);
+            return productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
         }else if(sortValue.equalsIgnoreCase("Price: High to Low")) {
             pageable = PageRequest.of(page,pageSize,Sort.by(Sort.Order.desc("price")));
-            return productRepository.findAll(pageable);
+            return productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
         }else if(sortValue.equalsIgnoreCase("A-Z")) {
             pageable = PageRequest.of(page,pageSize,Sort.by(Sort.Order.asc("productName")));
-            return productRepository.findAll(pageable);
+            return productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
         }
         pageable = PageRequest.of(page, pageSize);
-        return productRepository.findAll(pageable);
+        return productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
     }
 
     public List<Product> getRecommendedProducts() {
