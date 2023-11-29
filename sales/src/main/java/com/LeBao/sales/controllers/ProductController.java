@@ -1,6 +1,7 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.DTO.ReviewDTO;
+import com.LeBao.sales.DTO.ShippingAddressDTO;
 import com.LeBao.sales.entities.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
@@ -45,10 +46,16 @@ public class ProductController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/getProduct/{productId}")
-    public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
+    @ModelAttribute
+    public void prepareDataForProduct(ModelMap modelMap) {
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("products", homeService.getRecommendedProducts());
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+        modelMap.addAttribute("review", new ReviewDTO());
+    }
+
+    @GetMapping("/getProduct/{productId}")
+    public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
         modelMap.addAttribute("product", productService.imageReviewsFileName(productRepository.findById(productId).get()));
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
         modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
@@ -59,9 +66,7 @@ public class ProductController {
                         .mapToDouble(review -> review.getRating())
                         .average()
                         .orElse(0.0)));
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
-        modelMap.addAttribute("review", new ReviewDTO());
         return "detailProduct";
     }
 
@@ -72,13 +77,10 @@ public class ProductController {
                             BindingResult bindingResult,
                             @RequestParam("files") MultipartFile[] files) throws IOException {
         if(bindingResult.hasErrors()) {
-            modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            modelMap.addAttribute("products", homeService.getRecommendedProducts());
             modelMap.addAttribute("product", productRepository.findById(productId).get());
             modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
             modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
             modelMap.addAttribute("imageList", productService.imagesFileName(productId));
-            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             modelMap.addAttribute("avgRating", productService.decialFormat(
                     productRepository.findById(productId).get().getReviews()
                             .stream()
@@ -86,14 +88,10 @@ public class ProductController {
                             .average()
                             .orElse(0.0)));
             modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
-            modelMap.addAttribute("review", new ReviewDTO());
             return "redirect:/product/getProduct/" + productId;
         }else {
             productService.addReview(productId,reviewDTO,files);
         }
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("product", productRepository.findById(productId).get());
         modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
         modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
@@ -105,7 +103,6 @@ public class ProductController {
                 .average()
                 .orElse(0.0)));
         modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
-        modelMap.addAttribute("review", new ReviewDTO());
         return "redirect:/product/getProduct/" + productId;
     }
 

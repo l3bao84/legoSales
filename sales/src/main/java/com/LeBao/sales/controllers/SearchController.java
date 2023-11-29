@@ -1,5 +1,6 @@
 package com.LeBao.sales.controllers;
 
+import com.LeBao.sales.DTO.ReviewDTO;
 import com.LeBao.sales.entities.Product;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.services.CartService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -23,6 +25,12 @@ public class SearchController {
     @Autowired
     private CartService cartService;
 
+    @ModelAttribute
+    public void prepareDataForSearch(ModelMap modelMap) {
+        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+        modelMap.addAttribute("allCats", categoryRepository.findAll());
+        modelMap.addAttribute("allThemes", categoryRepository.findAll());
+    }
 
     @GetMapping("/search")
     public String searchResultPage(ModelMap modelMap,
@@ -39,10 +47,7 @@ public class SearchController {
             modelMap.addAttribute("products", productPage.getContent());
             modelMap.addAttribute("totalPages", productPage.getTotalPages());
         }
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("allCats", categoryRepository.findAll());
         modelMap.addAttribute("keyword", keyword);
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("currentPage", page);
         return "searchResult";
     }

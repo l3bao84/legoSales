@@ -39,16 +39,19 @@ public class HomeController {
     @Autowired
     private CheckoutService checkoutService;
 
-    @GetMapping("/home")
-    public String home(ModelMap modelMap,
-                       @RequestParam(value = "orderId", required = false) String orderId,
-                       @RequestParam(value = "pay", required = false) String paymentStatus) {
+    @ModelAttribute
+    public void prepareDataForHome(ModelMap modelMap) {
         modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("topPickProducts", homeService.getTopPickProducts());
         modelMap.addAttribute("randomCat", homeService.getRandomCategory());
+    }
 
+    @GetMapping("/home")
+    public String home(ModelMap modelMap,
+                       @RequestParam(value = "orderId", required = false) String orderId,
+                       @RequestParam(value = "pay", required = false) String paymentStatus) {
         if(paymentStatus != null && orderId != null) {
             if(paymentStatus.equalsIgnoreCase("success")) {
                 checkoutService.paymentSuccess(orderId,"PayPal(Payment successfull)");

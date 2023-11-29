@@ -27,29 +27,25 @@ public class AccountController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("")
-    public String myAccount(ModelMap modelMap) {
+    @ModelAttribute
+    public void prepareDataForMyAccount(ModelMap modelMap) {
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("address", new ShippingAddressDTO());
         modelMap.addAttribute("addresses", accountService.getShippingAddress());
         modelMap.addAttribute("editAddress", new ShippingAddressDTO());
         modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+    }
+
+    @GetMapping("")
+    public String myAccount(ModelMap modelMap) {
         return "myAccount";
     }
 
     @GetMapping("/{section}")
     public String showSection(@PathVariable String section, ModelMap modelMap) {
-        if ("orders".equals(section)) {
-            modelMap.addAttribute("address", new ShippingAddressDTO());
-        } else if ("personal".equals(section)) {
-            modelMap.addAttribute("address", new ShippingAddressDTO());
-        } else if ("wishlist".equals(section)) {
+        if ("orders".equals(section) || "personal".equals(section) || "wishlist".equals(section)) {
             modelMap.addAttribute("address", new ShippingAddressDTO());
         }
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("addresses", accountService.getShippingAddress());
         return "myAccount";
     }
 
@@ -58,19 +54,9 @@ public class AccountController {
                             @ModelAttribute("address") ShippingAddressDTO shippingAddressDTO,
                             BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-            modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            modelMap.addAttribute("address", new ShippingAddressDTO());
-            modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-            modelMap.addAttribute("addresses", accountService.getShippingAddress());
             return "redirect:/my-account/personal";
         }else {
-            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
             accountService.addShippingAddress(shippingAddressDTO);
-            modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            modelMap.addAttribute("address", new ShippingAddressDTO());
-            modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-            modelMap.addAttribute("addresses", accountService.getShippingAddress());
             return "redirect:/my-account/personal";
         }
     }
@@ -81,19 +67,9 @@ public class AccountController {
                               BindingResult bindingResult,
                               @PathVariable Long id) {
         if(bindingResult.hasErrors()) {
-            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-            modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-            modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            modelMap.addAttribute("addresses", accountService.getShippingAddress());
-            modelMap.addAttribute("address", new ShippingAddressDTO());
             return "redirect:/my-account/personal";
         }else {
             accountService.editShippingAddress(shippingAddressDTO, id);
-            modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-            modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-            modelMap.addAttribute("allThemes", categoryRepository.findAll());
-            modelMap.addAttribute("addresses", accountService.getShippingAddress());
-            modelMap.addAttribute("address", new ShippingAddressDTO());
             return "redirect:/my-account/personal";
         }
     }
@@ -101,11 +77,6 @@ public class AccountController {
     @PostMapping("/personal/delAddress/{id}")
     public String delAddress(ModelMap modelMap, @PathVariable Long id) {
         accountService.delShippingAddress(id);
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("addresses", accountService.getShippingAddress());
-        modelMap.addAttribute("address", new ShippingAddressDTO());
         return "redirect:/my-account/personal";
     }
 }
