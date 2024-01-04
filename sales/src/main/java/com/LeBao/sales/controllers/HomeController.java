@@ -11,14 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
+//@RestController
 @Controller
+@CrossOrigin
 public class HomeController {
 
     @Autowired
@@ -40,28 +45,33 @@ public class HomeController {
     private CheckoutService checkoutService;
 
     @ModelAttribute
-    public void prepareDataForHome(ModelMap modelMap) {
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("products", homeService.getRecommendedProducts());
-        modelMap.addAttribute("topPickProducts", homeService.getTopPickProducts());
-        modelMap.addAttribute("randomCat", homeService.getRandomCategory());
+    public void prepareDataForHome(Model model) {
+        model.addAttribute("cartItemCount", cartService.getItemCart().size());
+        model.addAttribute("allThemes", categoryRepository.findAll());
+        model.addAttribute("products", homeService.getRecommendedProducts());
+        model.addAttribute("topPickProducts", homeService.getTopPickProducts());
+        model.addAttribute("randomCat", homeService.getRandomCategory());
     }
 
     @GetMapping("/home")
-    public String home(ModelMap modelMap,
+    public String home(
                        @RequestParam(value = "orderId", required = false) String orderId,
                        @RequestParam(value = "pay", required = false) String paymentStatus) {
+//        if(authentication != null && authentication.isAuthenticated()) {
+//            if(paymentStatus != null && orderId != null) {
+//                if(paymentStatus.equalsIgnoreCase("success")) {
+//                    checkoutService.paymentSuccess(orderId,"PayPal(Payment successfull)");
+//                }
+//            }
+//            return "home";
+//        }
         if(paymentStatus != null && orderId != null) {
             if(paymentStatus.equalsIgnoreCase("success")) {
                 checkoutService.paymentSuccess(orderId,"PayPal(Payment successfull)");
             }
         }
-
         return "home";
     }
-
-
 
     @GetMapping("/{fileName}")
     public ResponseEntity<?> getImage(@PathVariable String fileName) throws IOException {

@@ -536,7 +536,7 @@
                 </div>
               </li>
             </ul>
-            <div class="load-more-review">
+            <!-- <div class="load-more-review">
               <div class="pagination-container">
                 <div class="pagination-load-more">
                   <div th:if="${#lists.size(product.reviews) >= 5}" class="load-more-review-container">
@@ -546,7 +546,7 @@
                   <div th:unless="${#lists.size(product.reviews) >= 5}" class="load-more-review-container"></div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div th:unless="${not #lists.isEmpty(product.reviews)}" class="max-width-container">
             <p class="reviews-title">Be the first reviewer</p>

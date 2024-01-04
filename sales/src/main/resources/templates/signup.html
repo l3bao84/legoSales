@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/signup.css}">
+  <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+  <title>LEGO Sign up</title>
+</head>
+<body>
+    <div class="app">
+        <div class="theme-provider">
+            <div class="main">
+                <div class="route-section">
+                    <div class="page">
+                        <div class="horizon-line"></div>
+                        <div class="page-content">
+                            <header class="application-header">
+                                <div class="application-header-content">
+                                    <div class="application-header-start">
+                                        <button class="button-base back-to-login">
+                                            <span class="button-text-base">
+                                                <span class="icon">
+                                                    <span class="Icon_icon__17hkjo0 Icon_icon_size_lg__17hkjo3 Icon_icon_color_inherit__17hkjo7">
+                                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="Icon_svg__17hkjoa"><path d="M14.4004 4.80078L2.97297 16.2282L14.4004 27.6556" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><line x1="4.5" y1="16.5" x2="27.5" y2="16.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"></line></svg>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="application-header-center">
+                                        <button class="button-base">
+                                            <span class="button-text-base">
+                                                <img th:src="@{data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTgwIDE4MCIgZmlsbD0iY3VycmVudENvbG9yIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik0xLjIyMyAxLjIwNFYxNzguOEgxNzguODJsLS4wMDEtMTc3LjU5NkgxLjIyM1oiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEuMjIzIDE3OC44VjEuMjA0aDE3Ny41OTVsLjAwMSAxNzcuNTk2SDEuMjIzWm0xNjIuMTcxLTg2Ljc0M2MxLjU1NS00LjYwNiAzLjMxNi0xMS41IDMuNjA2LTE3LjAzMy4yMjEtNC4xNzQtLjM0MS0xMC4wMi00LjI3OC0xNC4xNzQtMy4xNDEtMy4zMTktNy45NC00Ljk5NC0xNC4yNjQtNC45OTQtNy45ODkgMC0xNC40MjYgMi44Mi0xOS4xMzYgOC4zOTdsLTEuMjQzIDEuNDY2LS44MjYtMS43MzRjLS42NzQtMS40MTMtMS4xNTYtMS45OTItMS44OS0yLjgyLTMuMjE5LTMuNjQyLTguNjE3LTUuNDg4LTE2LjA0NC01LjQ4Ny02LjgwNCAwLTEyLjk1IDIuMDM5LTE3LjMwOCA1Ljc0MmwtMS4xMDMuOTM3LS43Ni0xLjIzN2MtMi4wNTgtMy4zNDUtNy4xODgtNS41MS0xMy4wNjUtNS41MS04LjQ1Ni4wMDItMTYuOTg4IDEuMTUtMjIuMTM1IDkuNDQ3bC0yLjEzMyAzLjQyNC0uMTY3LTQuMDMzYy0uMTMtMy4xMi0uNDE1LTQuNDE2LTEuODY2LTUuOTUyLTEuNTk2LTEuNjkzLTQuMjgyLTIuNTE2LTguMjEtMi41MTMtNS43NjggMC0xMC4xMDMgMi41MTUtMTMuMjU2IDcuNjk0LTQuODUzIDcuNzUyLTE2LjU4MyAzMy4yNS0xNi4zMjQgNDUuMzY5LjE3IDcuODY1IDUuNDE4IDEyLjY3OSAxNC4wNDMgMTIuODc4IDcuMTA4LjE3MiAxMi43NTgtMS42NTIgMTYuMzQ3LTUuMjc0bC45MTYtLjkyNi44OC45NTJjMy4yMjYgMy41MDIgOC4xMyA1LjQzMiAxMy44MTEgNS40MzIgNy4yMzQgMCAxMy40Mi0yLjI0OCAxNi45NzMtNi4xNzFsLjk3LTEuMDY5LjkxMiAxLjEyMWMzLjMyNiA0LjA4NiA4LjQ2NiA2LjIyOCAxNC44NjMgNi4yMDIgOC4zNDMtLjAzNyAxNi4xMzUtMy44NzEgMjEuMzc2LTEwLjUxMmwxLjM3NC0xLjc0MS43NjcgMi4wODNjMy4yMyA4Ljc4MyAxMS45ODQgMTAuMDkyIDE2LjkyMSAxMC4wOTUgMTYuNzY1IDAgMjQuMDA1LTExLjUwMyAzMC4yNDktMzAuMDU5WiIgZmlsbD0iI0ZGRUQwMCIvPgogIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMS4yMjMgMTc4LjhWMS4yMDRoMTc3LjU5NWwuMDAxIDE3Ny41OTZIMS4yMjNabTE2My4yODMtNzMuNzQyYzIuMzIxLTQuNzg0IDYuNjg4LTE2Ljc1NyA3LjQ5NS0yMy4yMjJsLjAwOS0uMDcxYy45ODQtNy44OTIgMS45MTUtMTUuMzYtMy40MS0yMi43ODEtMy43ODYtNS4yNzQtMTAuMjM3LTguODEzLTIwLjA1Mi04LjgxNC03LjQxOSAwLTE0LjA0NSAyLjAxLTE5LjM0MyA2LjQxNi00LjUzNy00LjQ5LTExLjA0NC02LjUyOC0xOS44MDItNi41MjYtNi44NTMgMC0xMi42MDUgMS41NjctMTcuNjE0IDQuNTc0LTMuNjM2LTIuODg5LTcuOTA0LTQuNjk0LTE0LjcwNC00LjY5NC02LjE2NC0uMDAxLTE0LjgxOC4zMi0yMS4zNDcgNS44NjMtMS41MDktMy4wNzktNC41NzctNS40OTctMTMuMDQtNS40OTctNy43OTYgMC0xNC4xNTYgMy42ODgtMTguMzI3IDEwLjUzNS01LjU2OSA4Ljg5NS0xNy4zOSAzNC41ODItMTcuMDg4IDQ4LjYxNC4yMjUgMTAuNTYzIDguMTQ2IDE3Ljg0IDE5LjYyIDE4LjExMyA2Ljg5NS4xNjEgMTIuNzY3LTEuMzE1IDE3LjI0OC00LjI4OSA0LjA1MiAyLjkyIDkuMjMgNC40OTcgMTQuOTg0IDQuNDk3IDYuODg2LjAwMSAxMy4wOTgtMS44MDcgMTcuNzA0LTUuMDUzIDQuMTczIDMuMzA4IDkuNjQ4IDUuMDk2IDE1Ljg0MiA1LjA5NiA4LjAzNi4wMDMgMTUuNTAzLTIuNzcyIDIxLjUzNS04LjA1MSA0LjExNCA1LjI0NiAxMS4xNjIgNy45NzMgMTkuNzIxIDcuOTc0IDE2LjAyMy4wMDEgMjQuMzQ2LTkuODU0IDMwLjU2OS0yMi42ODRaIiBmaWxsPSIjRTMwMDBCIi8+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0wIDE4MFYwaDE4MGwtLjAwMyAxNzkuOTk3TDAgMTgwWm0xNzcuNTItMi40NzkuMDAyLTE3NS4wNDNIMi40NzZMMi40OCAxNzcuNTJoMTc1LjA0WiIvPgogIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTY3LjYxNSA1NC4zMDFhNC4zMDUgNC4zMDUgMCAwIDEgNC4zMDktNC4zMTMgNC4zMDcgNC4zMDcgMCAwIDEgNC4zMTUgNC4zMTMgNC4zMDQgNC4zMDQgMCAwIDEtNC4zMTUgNC4zMTIgNC4zMDIgNC4zMDIgMCAwIDEtNC4zMDktNC4zMTJabTQuMzExLTMuNDU3YzEuOTE4LjAwMSAzLjQ3NyAxLjU0NSAzLjQ3MiAzLjQ2My4wMDUgMS45MTgtMS41NiAzLjQ2Ny0zLjQ3MiAzLjQ2N2EzLjQ1OCAzLjQ1OCAwIDAgMS0zLjQ1My0zLjQ2NyAzLjQ0OCAzLjQ0OCAwIDAgMSAzLjQ1My0zLjQ2M1ptMS42NzkgNC44MS41MTUuOS0xLjExNy4wMDctLjM1Ny0uNzNhMy42NDMgMy42NDMgMCAwIDAtLjYwOS0uODc0Yy0uMTc2LS4xODMtLjMzNy0uMjI5LS43MzQtLjIyOWwtLjE2NC4wMDEtLjAwMiAxLjgzaC0uOTIxdi00LjQ2N2gyLjIyNWMuOTU5IDAgMS40MDkuNTM1IDEuNDA5IDEuMjQzLjAwMi42NzUtLjQ1NCAxLjE2LTEuMjA4IDEuMjVsLjAwMi4wMjVjLjM4My4xMzMuNTEuMjU4Ljk2MSAxLjA0NFptLTIuNDY5LTIuODY4djEuMjI3aC45MzNjLjYyNCAwIC44My0uMzA0LjgyMS0uNjIgMC0uMzk0LS4zMTMtLjYxLS45MjEtLjYxbC0uODMzLjAwM1ptLTQyLjc3IDEwLjY2NGM0LjM0OC01LjE1IDEwLjc4Mi04LjgzOSAyMC4wODYtOC44MzkgMTYuMTA1IDAgMjAuMzE4IDEwLjUzIDE5Ljc5IDIwLjQ4LS4zMTMgNS45OC0yLjIzMiAxMy4xMDQtMy42NjYgMTcuMzY1LTYuMzcgMTguOTMxLTE0LjAyIDMwLjkwMi0zMS40MyAzMC45LTcuOTQ1LjAwMi0xNS4yMTYtMy4wOTgtMTguMDgxLTEwLjkwOC01LjIzMyA2LjYyMi0xMy4yMzEgMTAuOTQ0LTIyLjM1IDEwLjk4OS02Ljk3LjAzNC0xMi4zOS0yLjQyOS0xNS44MzUtNi42Ni00LjA5IDQuNTE0LTExLjAxMSA2LjU4MS0xNy44OSA2LjU4My02LjE4LS4wMDQtMTEuMzQtMi4xNTctMTQuNzI3LTUuODM1LTMuNzc0IDMuODA2LTkuNzA0IDUuODI2LTE3LjI1NyA1LjY0OS05LjY3NS0uMjMyLTE1LjA4LTYuMDM3LTE1LjI1OC0xNC4wOTUtLjI2Ni0xMi40NzQgMTEuNjE0LTM4LjIyNiAxNi41MTEtNDYuMDQ1IDMuMzgtNS41NDcgOC4wNzUtOC4yNyAxNC4zMS04LjI3MyAzLjQyMy4wMDMgNi45MzguNTk4IDkuMTExIDIuOSAxLjc4NyAxLjg5IDIuMDc0IDMuNTcgMi4yMDYgNi43NSA1LjQ4LTguODMgMTQuNzE2LTEwLjAzIDIzLjE5LTEwLjAyOCA2LjQ4NCAwIDExLjg2NiAyLjQyNyAxNC4xMjQgNi4wOTYgNC4zNDYtMy42OTQgMTAuNjA1LTYuMDM4IDE4LjExMy02LjAzOCA3LjY4NS4wMDEgMTMuNDEgMS44NzYgMTYuOTc0IDUuOTA4Ljc4Ni44ODUgMS4zNDUgMS41NjIgMi4wNzkgMy4xMDJaTTQzLjU5IDEwNi45MTVjLjI4Ni0zLjAxNi0xLjk3My02LjI3My0xMC45ODYtNC43MDkuODk1LTIuMDA1IDIuMjI2LTQuNzUzIDMuNzM3LTcuODczdi0uMDAxQzQxLjE4MyA4NC4zMzQgNDcuODc0IDcwLjUxOSA0OCA2NS4xMTRjLjA2OC0yLjY2NS0xLjAwNi00Ljg4Ny01LjMyOC00Ljg4NS00LjU2Ni0uMDAyLTcuNDMgMS45MDgtOS43NzYgNS43NjItNS4wODggOC4xMjUtMTUuODkzIDMyLjYzNS0xNS42NjYgNDMuMjI5LjEyOCA2LjA1NiA0LjgyMyA4LjQ0NiAxMC4wNCA4LjU2OCA3LjE5LjE2NyAxNS40NzItMS44NTIgMTYuMzIxLTEwLjg3NFptMTguMzUtMTMuMDNjLS42IDEuNjE0LTEuNzI4IDQuOTk0LTIuNjM5IDguNTcxIDIuOTU4LS43MzggNS4xNzMtMS4yNDkgOC45Ny0xLjE2MSA0LjMyOS4xMDYgNy4wOTkgMS44OTggNy4wOTcgNS40OCAwIDguNjc0LTkuNTkzIDExLjIyMi0xNi4yNCAxMS4yMjQtNy4zMDYgMC0xMy43MjQtNC4xNTUtMTMuNzI0LTEyLjE0NCAwLTkuMzY2IDUuMDc2LTIzLjU2OCA5Ljg0LTMzLjAyMyA1Ljg0OC0xMS42MTYgMTEuODI3LTEzLjE1OSAyMi4xMi0xMy4xNTkgNC41MjYgMCA5LjczNiAxLjkzMiA5LjczNiA2LjIwNCAwIDUuOTIyLTUuMDA4IDguMTgtOS45ODMgOC40NjYtMi4xMjcuMTIyLTUuMzk0LjIzOS03LjM0OC4wOTkgMCAwLTEuNjYxIDIuNTI1LTMuNDE2IDcuMDE1IDkuMjA4LTEuMjk2IDEzLjExNi43OTUgMTEuNTYyIDYuMTItMi4xMDQgNy4xOTktOC4zNDIgNy42NzQtMTUuOTc2IDYuMzA3Wm0zOS45NjQtMTkuMTE0YzEuMjE1LTEuNzAzIDIuODQtMy4yOCA1LjMzMy0zLjI4IDMuMDU1IDAgMi43NTkgMS42MTYgMi4wMzQgMy42ODEtMi4wNTkgNS44OCA0LjE1OSA2LjAzNSA1LjY3NyA1LjkxNSA1LjQyOC0uNDIzIDguNDE5LTMuOTMgOS4xNTUtOS45MDQgMS4wMDgtOC4xMzQtNS44NDUtMTEuMjU3LTE0LjUzMi0xMS4yNTctMTQuNDggMC0yMC4xNjQgOC44NTYtMjUuNTg2IDIxLjUxNi0yLjU0NyA1Ljk0Ny01Ljc1NSAxNi4xMS01Ljc1NCAyMi41ODItLjAwMSA5LjA5IDUuNTMgMTQuMDE5IDE0LjQ0NCAxNC4wMTkgMTMuMDE3IDAgMjIuMjE1LTEwLjM4IDI0Ljg0My0yMy4zMTMuODA5LTMuOTggMS44MDYtMTEuNDQ5LTguMzA0LTExLjAzMy01LjEzMi4yMTItOC4yMjggMS4zNDQtOS44NiA2LjU4OC0xLjY4IDUuNDAyIDQuNDEzIDUuNTQ5IDQuNDEzIDUuNTQ5LTEuMjI2IDUuNTg1LTQuODE1IDguOTcxLTguMDEzIDguOTc0LTEuOTk2IDAtMy44MTItLjg2Ni0zLjIwNC01LjA5LjkwMy02LjE3NiA2LjY4Ny0yMS4xOTggOS4zNTQtMjQuOTQ3Wm02MC4wMTcgNy40MDdjLTEuNTM2IDcuNjItNC45NzYgMTYuNjQtOC43MTQgMjMuMzYxLTYuMSAxMC45NjQtMTMuNDk5IDEyLjUtMTkuOTY4IDEyLjQxOC02LjQ2NS0uMDc3LTEzLjc1NC0yLjQ2MS0xMy44MDktMTIuNDM5LS4wMzktNy4xNiAzLjA0OC0xNy4yNzIgNS42NzEtMjMuODkzIDQuNTc1LTEyLjAxIDkuMjQxLTIxLjgwNSAyNC4wMS0yMS42MyAxNy4yMTguMjAxIDE0LjE0NyAxNS41MTYgMTIuODEgMjIuMTgzWm0tMjEuNTk4IDE5LjUzN2MyLjM5NC00LjA1NSA5LjEzMy0yMi40NDggOS4zMTctMjcuMDQ3LjA1NC0xLjM0LS4xNjctMi45LTIuMzI3LTIuOTI1LTEuNDgxLS4wMjEtMi43NjkuMjY2LTMuOTI3IDIuMDU1LTIuNjAyIDMuMzgyLTEwLjIxOSAyNC4xODUtMTAuMDkgMjguMzM1LjA0NyAxLjQ5Mi44OCAyLjc5NSAyLjcxMiAyLjc5NSAyLjExLjAwMiAzLjI3OS0xLjQ1IDQuMzE1LTMuMjEzWiIvPgo8L3N2Zz4=}" alt="">
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="application-header-end"></div>
+                                </div>
+                            </header>
+                            <main class="page-body">
+                                <h1 class="h1-text-base">Create your adult LEGO® account</h1>
+                                <h6 class="h6-textbase">Already have an account?</h6>
+                                <div class="box">
+                                    <button class="link-to-login">
+                                        <span>Sign in</span>
+                                    </button>
+                                </div>
+                                <div class="card-container">
+                                    <div class="card-padding">
+                                        <div class="box-magin">
+                                            <form th:action="@{/registration}" method="post" th:object="${user}" class="register-form">
+                                                <div class="textfield-group">
+                                                    <label for="firstname" class="label-container">First name</label>
+                                                    <div class="textfield-input-container">
+                                                        <input type="text" id="firstname" th:field="*{firstName}" name="firstname" placeholder="Write your first name" class="textfield-input-value">
+                                                        <div class="textfield-icon-wrapper">
+                                                            <span class="icon">
+                                                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" class="Icon_svg__17hkjoa"><path d="M20 19.72H1C1.15833 16.9016 3.28 11.265 10.5 11.265C17.72 11.265 20 16.9016 20 19.72Z" stroke="currentColor" stroke-width="1.43"></path><path d="M14.535 5.80251C14.535 7.99799 12.7353 9.79001 10.5 9.79001C8.26477 9.79001 6.46503 7.99799 6.46503 5.80251C6.46503 3.60704 8.26477 1.81501 10.5 1.81501C12.7353 1.81501 14.535 3.60704 14.535 5.80251Z" stroke="currentColor" stroke-width="1.43"></path></svg>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="error-field"></div>
+                                                </div>
+                                                <div class="textfield-group">
+                                                    <label for="lastname" class="label-container">Last name</label>
+                                                    <div class="textfield-input-container">
+                                                        <input type="text" id="lastname" th:field="*{lastName}" name="lastname" placeholder="Write your last name" class="textfield-input-value">
+                                                        <div class="textfield-icon-wrapper">
+                                                            <span class="icon">
+                                                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" class="Icon_svg__17hkjoa"><path d="M20 19.72H1C1.15833 16.9016 3.28 11.265 10.5 11.265C17.72 11.265 20 16.9016 20 19.72Z" stroke="currentColor" stroke-width="1.43"></path><path d="M14.535 5.80251C14.535 7.99799 12.7353 9.79001 10.5 9.79001C8.26477 9.79001 6.46503 7.99799 6.46503 5.80251C6.46503 3.60704 8.26477 1.81501 10.5 1.81501C12.7353 1.81501 14.535 3.60704 14.535 5.80251Z" stroke="currentColor" stroke-width="1.43"></path></svg>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="error-field"></div>
+                                                </div>
+                                                <div class="textfield-group">
+                                                    <label for="email" class="label-container">Email</label>
+                                                    <div class="textfield-input-container">
+                                                        <input type="text" id="email" th:field="*{email}" name="email" placeholder="Write your email" class="textfield-input-value">
+                                                        <div class="textfield-icon-wrapper">
+                                                            <span class="icon">
+                                                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" class="Icon_svg__17hkjoa"><path d="M19.25 3H1.75C1.28587 3 0.840752 3.16932 0.512563 3.47072C0.184375 3.77212 0 4.1809 0 4.60714V16.3929C0 16.8191 0.184375 17.2279 0.512563 17.5293C0.840752 17.8307 1.28587 18 1.75 18H19.25C19.7141 18 20.1592 17.8307 20.4874 17.5293C20.8156 17.2279 21 16.8191 21 16.3929V4.60714C21 4.1809 20.8156 3.77212 20.4874 3.47072C20.1592 3.16932 19.7141 3 19.25 3ZM17.8267 4.60714L11.6649 9.0224C10.9685 9.52145 10.0315 9.52145 9.33508 9.0224L3.17333 4.60714H17.8267ZM1.75 16.3929V5.625L9.33467 11.0627C10.0313 11.5622 10.9687 11.5622 11.6653 11.0627L19.25 5.625V16.3929H1.75Z" fill="currentColor"></path></svg>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="error-field"></div>
+                                                </div>
+                                                <div class="textfield-group">
+                                                    <label for="password" class="label-container">Password</label>
+                                                    <div class="textfield-input-container">
+                                                        <input type="password" th:field="*{password}" id="password" name="password" placeholder="Password" class="textfield-input-value">
+                                                        <button type="button" class="textfield-icon-wrapper show-password">
+                                                            <span class="icon eye-icon">
+                                                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="show-pass-icon"><circle cx="16" cy="16" r="5" fill="currentColor"></circle><path d="M16 23.5001C11.3939 23.5001 6.63672 21.0982 2.84233 16C6.63672 10.9018 11.3939 8.5 16 8.5C20.6061 8.5 25.3633 10.9018 29.1577 16C25.3633 21.0982 20.6061 23.5001 16 23.5001Z" stroke="currentColor" stroke-width="3"></path><line x1="3" y1="28.8787" x2="26.8787" y2="5" stroke="currentColor" stroke-width="3" stroke-linecap="round"></line></svg>                                                            
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="error-field"></div>
+                                                </div>
+                                                <div class="buttons">
+                                                    <button type="submit" class="button-base-form">
+                                                        <span>Yes, create account!</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                            <footer class="application-footer">
+                                <button class="button-base privacy">
+                                    <span>Privacy Policy</span>
+                                </button>
+                                 |
+                                <button class="button-base cookie">
+                                    <span>Cookies</span>
+                                </button> 
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/signup.js}"></script>
+</body>
+</html>

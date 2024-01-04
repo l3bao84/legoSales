@@ -1,7 +1,9 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.entities.User;
+import com.LeBao.sales.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -10,17 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class LoginController {
 
-//    private final AuthenticationService authenticationService;
+    @ModelAttribute
+    public void prepareDataForLogin(ModelMap modelMap) {
+        modelMap.addAttribute("register", new User());
+//        modelMap.addAttribute("authenticate", new AuthenticateRequest());
+    }
 
     @GetMapping("/login")
     public String login(ModelMap modelMap) {
-        modelMap.addAttribute("user", new User());
         return "login";
     }
 
-//    @PostMapping("/authenticate")
-//    public String authenticate(@RequestParam("username") String username,
-//                               @RequestParam("password") String password, HttpServletResponse response) {
-//        return authenticationService.authenticate(username,password,response);
-//    }
 }

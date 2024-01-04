@@ -538,61 +538,61 @@ readMoreButton.forEach((button) => {
 
 // Hiển thị thêm số lượng reviews
 
-document.addEventListener("DOMContentLoaded", () => {
-    const reviewItems = document.querySelectorAll('.product-review-container')
+// document.addEventListener("DOMContentLoaded", () => {
+//     const reviewItems = document.querySelectorAll('.product-review-container')
 
-    if(reviewItems.length >= 5) {
-        reviewItems.forEach(item => {
-            item.style.display = 'none'
-        })
+//     if(reviewItems.length >= 5) {
+//         reviewItems.forEach(item => {
+//             item.style.display = 'none'
+//         })
 
-        const loadMoreButton = document.querySelector('.load-more-review-button')
-        const hideLessButton = document.querySelector('.hide-less-review-button')
+//         const loadMoreButton = document.querySelector('.load-more-review-button')
+//         const hideLessButton = document.querySelector('.hide-less-review-button')
 
-        if(loadMoreButton !== null && hideLessButton !== null) {
-            let currentQuantity = 0
-            const rvPerPage = 5
+//         if(loadMoreButton !== null && hideLessButton !== null) {
+//             let currentQuantity = 0
+//             const rvPerPage = 5
 
-            function showReview(index) {
-                for(let i = index; i < index + rvPerPage; i++) {
-                    if(reviewItems[i]) {
-                        reviewItems[i].classList.add('active')
-                    }
-                }
-                var contains = true
-                for(let i = 0; i < reviewItems.length; i++) {
-                    if(!reviewItems[i].classList.contains('active')) {
-                        contains = false
-                    }
-                }
-                if(contains == true) {
-                    loadMoreButton.style.display = 'none'
-                    hideLessButton.style.display = 'block'
-                }
-            }
+//             function showReview(index) {
+//                 for(let i = index; i < index + rvPerPage; i++) {
+//                     if(reviewItems[i]) {
+//                         reviewItems[i].classList.add('active')
+//                     }
+//                 }
+//                 var contains = true
+//                 for(let i = 0; i < reviewItems.length; i++) {
+//                     if(!reviewItems[i].classList.contains('active')) {
+//                         contains = false
+//                     }
+//                 }
+//                 if(contains || currentQuantity + rvPerPage >= reviewItems.length) {
+//                     loadMoreButton.style.display = 'none'
+//                     hideLessButton.style.display = 'block'
+//                 }
+//             }
 
-            loadMoreButton.addEventListener('click', () => {
-                currentQuantity += 5
-                showReview(currentQuantity)
-            })
+//             loadMoreButton.addEventListener('click', () => {
+//                 currentQuantity += rvPerPage;
+//                 showReview(currentQuantity);
+//             });
 
-            hideLessButton.addEventListener('click', () => {
-                reviewItems.forEach((item) => {
-                    item.classList.remove('active')
-                })
-                for(let i = 0; i < rvPerPage; i++) {
-                    if(reviewItems[i]) {
-                        reviewItems[i].classList.add('active')
-                    }
-                }
-                loadMoreButton.style.display = 'block'
-                hideLessButton.style.display = 'none'
-                currentQuantity = 0
-            })
-            showReview(currentQuantity)
-        }
-    }
-})
+//             hideLessButton.addEventListener('click', () => {
+//                 reviewItems.forEach((item) => {
+//                     item.style.display = 'none';
+//                 });
+//                 for (let i = 0; i < rvPerPage; i++) {
+//                     if (reviewItems[i]) {
+//                         reviewItems[i].style.display = 'block';
+//                     }
+//                 }
+//                 loadMoreButton.style.display = 'block';
+//                 hideLessButton.style.display = 'none';
+//                 currentQuantity = 0;
+//             });
+//             showReview(currentQuantity)
+//         }
+//     }
+// })
 
 // chặn hành vi của button ẩn thanh tìm kiếm
 

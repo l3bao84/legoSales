@@ -25,7 +25,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Tài khoản này ko tồn tại"));
+                .orElseThrow(() -> new UsernameNotFoundException("This account does not exist"));
     }
 
     @Bean

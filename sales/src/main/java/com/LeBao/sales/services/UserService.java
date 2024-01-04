@@ -47,12 +47,12 @@ public class UserService implements UserDetailsService {
 
     public String customerRegister(User user) {
         if(userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return "redirect:/login?same";
+            return "redirect:/signup?same";
         }
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "redirect:/login?success";
+        return "redirect:/signup?success";
     }
 
     public void adminRegister(User user) {

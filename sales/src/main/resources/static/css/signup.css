@@ -141,6 +141,21 @@ body {
     text-align: center;
     width: 700px;
 }
+.h6-textbase {
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    align-items: center;
+    line-height: 1.5;
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+    justify-content: center;
+    text-align: center;
+    font-family: Typewell,sans-serif;
+    margin: 0;
+}
 .h1-text-base {
     font-weight: 700;
     font-size: 1.625rem;
@@ -161,7 +176,38 @@ body {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 }
-.login-form {
+.box {
+    display: flex;
+    justify-content: center;
+}
+.link-to-login {
+    margin: 0;
+    padding: 0.4rem;
+    font-size: inherit;
+    line-height: inherit;
+    color: #006cb7;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-family: Typewell,sans-serif;
+    cursor: pointer;
+    box-shadow: 0 0 0 0 rgba(0,108,183,0.4);
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+}
+.link-to-login:hover {
+    text-decoration: underline;
+}
+.link-to-login:focus {
+    outline: none;
+}
+.register-form {
     display: block;
     margin-top: 0em;
 }
@@ -208,8 +254,13 @@ body {
     border: 2px solid #646464;
     box-sizing: border-box;
 }
-.textfield-input-container:focus-within {
+/* .textfield-input-container:focus-within {
     border-color: #006cb7;
+} */
+.error-field {
+    margin-top: 0.5rem;
+    color: #dd1a22;
+    text-align: left;
 }
 .textfield-input-value {
     padding-right: 2.5rem;
@@ -256,6 +307,11 @@ body {
     color: #006cb7;
     background: #ebf1f4;
     outline: none;
+}
+.buttons {
+    text-align: center;
+    padding-top: 15px;
+    margin-bottom: 15px;
 }
 .button-base-form {
     width: auto;
