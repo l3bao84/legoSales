@@ -23,7 +23,6 @@ import java.io.IOException;
 
 //@RestController
 @Controller
-@CrossOrigin
 public class HomeController {
 
     @Autowired
@@ -44,40 +43,21 @@ public class HomeController {
     @Autowired
     private CheckoutService checkoutService;
 
-    @ModelAttribute
-    public void prepareDataForHome(Model model) {
-        model.addAttribute("cartItemCount", cartService.getItemCart().size());
-        model.addAttribute("allThemes", categoryRepository.findAll());
-        model.addAttribute("products", homeService.getRecommendedProducts());
-        model.addAttribute("topPickProducts", homeService.getTopPickProducts());
-        model.addAttribute("randomCat", homeService.getRandomCategory());
-    }
-
-    @GetMapping("/home")
-    public String home(
-                       @RequestParam(value = "orderId", required = false) String orderId,
-                       @RequestParam(value = "pay", required = false) String paymentStatus) {
-//        if(authentication != null && authentication.isAuthenticated()) {
-//            if(paymentStatus != null && orderId != null) {
-//                if(paymentStatus.equalsIgnoreCase("success")) {
-//                    checkoutService.paymentSuccess(orderId,"PayPal(Payment successfull)");
-//                }
+//    @ModelAttribute
+//    public void prepareDataForHome(Model model) {
+//        model.addAttribute("cartItemCount", cartService.getItemCart().size());
+//        model.addAttribute("allThemes", categoryRepository.findAll());
+//    }
+//
+//    @GetMapping("/home")
+//    public String home(
+//                       @RequestParam(value = "orderId", required = false) String orderId,
+//                       @RequestParam(value = "pay", required = false) String paymentStatus) {
+//        if(paymentStatus != null && orderId != null) {
+//            if(paymentStatus.equalsIgnoreCase("success")) {
+//                checkoutService.paymentSuccess(orderId,"PayPal(Payment successfull)");
 //            }
-//            return "home";
 //        }
-        if(paymentStatus != null && orderId != null) {
-            if(paymentStatus.equalsIgnoreCase("success")) {
-                checkoutService.paymentSuccess(orderId,"PayPal(Payment successfull)");
-            }
-        }
-        return "home";
-    }
-
-    @GetMapping("/{fileName}")
-    public ResponseEntity<?> getImage(@PathVariable String fileName) throws IOException {
-        byte[] imageData = storageService.getImage(fileName);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/png"))
-                .body(imageData);
-    }
+//        return "home";
+//    }
 }

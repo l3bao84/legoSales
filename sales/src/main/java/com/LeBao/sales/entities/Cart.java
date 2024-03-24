@@ -34,8 +34,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CartItem> cartItems;
 
-    // Constructors, getters and setters
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

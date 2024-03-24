@@ -23,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/product")
-@RequiredArgsConstructor
+@CrossOrigin
 public class ProductController {
 
     @Autowired
@@ -38,36 +38,32 @@ public class ProductController {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private StorageService storageService;
-
-    @Autowired
-    private HomeService homeService;
-
-    @Autowired
     private CartService cartService;
 
     @ModelAttribute
     public void prepareDataForProduct(ModelMap modelMap) {
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("review", new ReviewDTO());
     }
 
-    @GetMapping("/getProduct/{productId}")
-    public String getProduct(ModelMap modelMap, @PathVariable Long productId) {
-        modelMap.addAttribute("product", productService.imageReviewsFileName(productRepository.findById(productId).get()));
-        modelMap.addAttribute("themeId", productRepository.findById(productId).get().getCategory().getCategoryId());
-        modelMap.addAttribute("themeName", productRepository.findById(productId).get().getCategory().getCategoryName());
-        modelMap.addAttribute("imageList", productService.imagesFileName(productId));
-        modelMap.addAttribute("avgRating", productService.decialFormat(
-                productRepository.findById(productId).get().getReviews()
-                        .stream()
-                        .mapToDouble(review -> review.getRating())
-                        .average()
-                        .orElse(0.0)));
-        modelMap.addAttribute("ratingCount", productService.ratingCount(productId));
-        return "detailProduct";
+    @GetMapping("/topPicks")
+    public ResponseEntity<List<Product>> getTopPicks() {
+        return ResponseEntity.ok().body(productService.getTopPickProducts());
+    }
+
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<Product>> getRecommendedProducts() {
+        return ResponseEntity.ok().body(productService.getRecommendedProducts());
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProduct(@PathVariable Long productId) {
+        if(productService.getProduct(productId) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No product has id: " + productId);
+        }else {
+            return ResponseEntity.ok().body(productService.getProduct(productId));
+        }
     }
 
     @PostMapping("/addReview/{productId}")
@@ -112,6 +108,8 @@ public class ProductController {
         return "";
     }
 
+
+
 //    @PostMapping("/addProduct")
 //    public ResponseEntity<String> addProduct(@RequestBody Product product) {
 //        String status = productService.addProduct(product);
@@ -128,13 +126,13 @@ public class ProductController {
 //        return ResponseEntity.ok(productService.addImageToProduct(productId));
 //    }
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable Long productId) throws IOException {
-        byte[] imageData = storageService.downloadImageFromFileSystem(productId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/png"))
-                .body(imageData);
-    }
+//    @GetMapping("/{productId}")
+//    public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable Long productId) throws IOException {
+//        byte[] imageData = storageService.downloadImageFromFileSystem(productId);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .contentType(MediaType.valueOf("image/png"))
+//                .body(imageData);
+//    }
 
     @PostMapping("/updateProduct/{productId}")
     public ResponseEntity<String> updateProduct(@PathVariable Long productId, @RequestBody Product product) {

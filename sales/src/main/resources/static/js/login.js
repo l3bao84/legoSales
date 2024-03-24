@@ -6,9 +6,17 @@ function createAcc(event) {
     event.preventDefault()
     window.location.href = '/signup'
 }
-
+// social login
 function socialLogin(event) {
     event.preventDefault()
+    const button = event.target
+    if(button.id === "git") {
+        window.location.href = '/oauth2/authorization/github'
+    }else if(button.id === "gg") {
+        window.location.href = '/oauth2/authorization/google'
+    }else if(button.id == "fb") {
+        window.location.href = '/oauth2/authorization/facebook'
+    }
 }
 
 /*hien thi mat khau*/

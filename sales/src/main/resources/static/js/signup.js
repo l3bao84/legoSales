@@ -62,7 +62,7 @@ inputs.forEach((input) => {
                 input.parentNode.nextElementSibling.innerHTML = 'Email is required'
             }
             if(input.id === "password") {
-                input.parentNode.nextElementSibling.innerHTML = 'The password must be at least 10 characters long<br>Password is required'
+                input.parentNode.nextElementSibling.innerHTML = 'The password must be at least 10 characters long<br/>Password is required'
             }
             input.parentNode.style.borderColor = '#dd1a22'; 
         } else {

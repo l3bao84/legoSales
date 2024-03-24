@@ -6,16 +6,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-@RequiredArgsConstructor
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping
+    public ResponseEntity<List<Category>> loadAllCats() {
+        return ResponseEntity.ok().body(categoryService.loadAllCategories());
+    }
+
+    //@PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/quickLinks")
+    public ResponseEntity<List<Category>> getQuickLinks() {
+        return ResponseEntity.ok().body(categoryService.getQuickLinks());
+    }
 
     @PostMapping("/addCategory")
     public ResponseEntity<String> addCategory(@RequestBody Category category) {
@@ -23,9 +36,13 @@ public class CategoryController {
         return ResponseEntity.ok("Add a category successfully");
     }
 
-    @GetMapping("/getCategoryById/{categoryId}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(categoryService.getCategoryById(categoryId));
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<?> getCategoryById(@PathVariable Long categoryId) {
+        if(categoryService.getCategoryById(categoryId) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No category has id: " + categoryId);
+        }else {
+            return ResponseEntity.ok().body(categoryService.getCategoryById(categoryId));
+        }
     }
 
     @PostMapping("/updateCategory/{categoryId}")

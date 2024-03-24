@@ -8,8 +8,13 @@ import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.ReviewRepository;
 import com.LeBao.sales.repositories.UserRepository;
+import com.LeBao.sales.responses.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,8 +45,25 @@ public class ProductService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public Product getProduct(Long productId) {
-        if(productRepository.findById(productId).isPresent()) return productRepository.findById(productId).get();
+    public ProductResponse getProduct(Long productId) {
+        if(productRepository.findById(productId).isPresent()) {
+            Product product = productRepository.findById(productId).get();
+
+            ProductResponse response = ProductResponse.builder()
+                    .productName(product.getProductName())
+                    .productDescription(product.getProductDescription())
+                    .price(product.getPrice())
+                    .stock(product.getStock())
+                    .pieces(product.getPieces())
+                    .images(product.getImages())
+                    .categoryId(product.getCategory().getCategoryId())
+                    .cartItems(product.getCartItems())
+                    .wishlistProducts(product.getWishlistProducts())
+                    .orderDetails(product.getOrderDetails())
+                    .reviews(product.getReviews()).build();
+
+            return response;
+        }
         return null;
     }
 
@@ -50,6 +72,28 @@ public class ProductService {
             return productRepository.findAllByCategoryId(categoryId);
         }
         return null;
+    }
+
+    public List<Product> getRecommendedProducts() {
+        List<Product> products = productRepository.findAll();
+        Collections.reverse(products);
+        List<Product> recommendedProducts = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            recommendedProducts.add(products.get(i));
+        }
+        return recommendedProducts;
+    }
+
+    public List<Product> getTopPickProducts() {
+        List<Product> products = productRepository.findAll();
+        List<Product> toppickProducts = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i <= 3; i++) {
+            int randomPosition = random.nextInt(products.size());
+            toppickProducts.add(products.get(randomPosition));
+            products.remove(randomPosition);
+        }
+        return toppickProducts;
     }
 
 //    public String addProduct(Product product) {
@@ -169,5 +213,27 @@ public class ProductService {
             user.getReviews().add(review);
             userRepository.save(user);
         }
+    }
+
+    public Page<Product> search(String keyword, int page, String sortValue) {
+        int pageSize = 8;
+        Pageable pageable; Page<Product> products = null;
+        if(sortValue != null) {
+            if(sortValue.equalsIgnoreCase("Price: Low to High")) {
+                pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.asc("price")));
+                products = productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
+            }else if(sortValue.equalsIgnoreCase("Price: High to Low")) {
+                pageable = PageRequest.of(page,pageSize,Sort.by(Sort.Order.desc("price")));
+                products = productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
+            }else if(sortValue.equalsIgnoreCase("A-Z")) {
+                pageable = PageRequest.of(page,pageSize,Sort.by(Sort.Order.asc("productName")));
+                products = productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
+            }else {
+                pageable = PageRequest.of(page, pageSize);
+                products = productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
+            }
+        }
+
+        return products;
     }
 }

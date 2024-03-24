@@ -8,10 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
-@RequiredArgsConstructor
 public class CategoryService {
 
     @Autowired
@@ -20,8 +21,16 @@ public class CategoryService {
     @Autowired
     private ProductRepository productRepository;
 
+    public List<Category> loadAllCategories() {
+        return categoryRepository.findAll();
+    }
+
     public Category getCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId).get();
+        if(categoryRepository.findById(categoryId).isPresent()) {
+            return categoryRepository.findById(categoryId).get();
+        }else {
+            return null;
+        }
     }
 
     public void addCategory(Category category) {
@@ -32,6 +41,19 @@ public class CategoryService {
         Category foundCategory = categoryRepository.findById(categoryId).get();
         foundCategory.setCategoryName(category.getCategoryName());
         categoryRepository.save(foundCategory);
+    }
+
+    public List<Category> getQuickLinks() {
+        List<Category> allCats = categoryRepository.findAll();
+        allCats.remove(0);
+        List<Category> randomCat = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i <= 3; i++) {
+            int randomPosition = random.nextInt(allCats.size());
+            randomCat.add(allCats.get(randomPosition));
+            allCats.remove(randomPosition);
+        }
+        return randomCat;
     }
 
     public void deleteCategory(Long categoryId) {

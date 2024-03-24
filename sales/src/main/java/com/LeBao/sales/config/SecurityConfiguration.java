@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,8 +31,8 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
-@RequiredArgsConstructor
+//@EnableMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration {
 
     @Autowired
@@ -44,24 +45,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/login","/register","/css/**","/images/**")
-//                        .permitAll()
-//                        .anyRequest()
-//                        .authenticated())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/home","signup","/**","/login","/authenticate","/registration","/css/**","/images/**","/js/**").permitAll()
+                        .requestMatchers("/authenticate","/img/**").permitAll()
+                        .requestMatchers("/product/topPicks", "/product/recommendations", "/product/{id}").permitAll()
+                        .requestMatchers("/category", "/category/{id}","/category/quickLinks").permitAll()
+                        .requestMatchers("/search").permitAll()
+                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/reviews/*").permitAll()
                         .anyRequest().authenticated())
-                .oauth2Login(o -> o
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home"))
-                .formLogin(login -> login
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home"));
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
@@ -70,7 +65,7 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:8080");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,

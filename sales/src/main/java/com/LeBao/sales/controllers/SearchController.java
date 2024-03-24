@@ -1,54 +1,23 @@
 package com.LeBao.sales.controllers;
-
-import com.LeBao.sales.DTO.ReviewDTO;
 import com.LeBao.sales.entities.Product;
-import com.LeBao.sales.repositories.CategoryRepository;
-import com.LeBao.sales.services.CartService;
-import com.LeBao.sales.services.HomeService;
+import com.LeBao.sales.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class SearchController {
 
     @Autowired
-    private HomeService homeService;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private CartService cartService;
-
-    @ModelAttribute
-    public void prepareDataForSearch(ModelMap modelMap) {
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("allCats", categoryRepository.findAll());
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-    }
+    private ProductService productService;
 
     @GetMapping("/search")
-    public String searchResultPage(ModelMap modelMap,
-                                   @RequestParam("search") String keyword,
-                                   @RequestParam(defaultValue = "0", required = false) int page,
-                                   @RequestParam(value = "sort", required = false) String sortValue) {
-
-        if(sortValue != null) {
-            Page<Product> productPage = homeService.searchProducts(keyword,sortValue,page);
-            modelMap.addAttribute("products", productPage.getContent());
-            modelMap.addAttribute("totalPages", productPage.getTotalPages());
-        }else {
-            Page<Product> productPage = homeService.searchProducts(keyword,"",page);
-            modelMap.addAttribute("products", productPage.getContent());
-            modelMap.addAttribute("totalPages", productPage.getTotalPages());
-        }
-        modelMap.addAttribute("keyword", keyword);
-        modelMap.addAttribute("currentPage", page);
-        return "searchResult";
+    public ResponseEntity<Page<Product>> search(@RequestParam("key") String keyword,
+                                                @RequestParam(defaultValue = "0", required = false) int page,
+                                                @RequestParam(value = "sort", required = false) String sortValue) {
+        return ResponseEntity.ok().body(productService.search(keyword, page, sortValue));
     }
 }

@@ -8,15 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class LoginController {
-
-    @ModelAttribute
-    public void prepareDataForLogin(ModelMap modelMap) {
-        modelMap.addAttribute("register", new User());
-//        modelMap.addAttribute("authenticate", new AuthenticateRequest());
-    }
 
     @GetMapping("/login")
     public String login(ModelMap modelMap) {

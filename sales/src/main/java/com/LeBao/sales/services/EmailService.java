@@ -67,7 +67,6 @@ public class EmailService {
                 emailContent += "<td>" + orderDetail.getQuantity() + "</td>";
                 emailContent += "</tr>";
             }
-
             helper.setText(emailContent, true);
             sender.send(mimeMessage);
 

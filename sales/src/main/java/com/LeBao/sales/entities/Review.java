@@ -38,7 +38,6 @@ public class Review {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

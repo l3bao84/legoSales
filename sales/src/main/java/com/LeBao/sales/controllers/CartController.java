@@ -26,7 +26,6 @@ public class CartController {
 
     @ModelAttribute
     public void prepareDataForCart(ModelMap modelMap) {
-        modelMap.addAttribute("products", homeService.getRecommendedProducts());
         modelMap.addAttribute("allThemes", categoryRepository.findAll());
         modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
         modelMap.addAttribute("carts", cartService.getItemCart());
