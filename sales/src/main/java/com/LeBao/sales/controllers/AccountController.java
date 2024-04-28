@@ -1,82 +1,41 @@
 package com.LeBao.sales.controllers;
 
-import com.LeBao.sales.DTO.ShippingAddressDTO;
-import com.LeBao.sales.repositories.CategoryRepository;
-import com.LeBao.sales.repositories.ProductRepository;
+import com.LeBao.sales.requests.AddressRequest;
 import com.LeBao.sales.services.AccountService;
-import com.LeBao.sales.services.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/my-account")
+@RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private CartService cartService;
-
-    @ModelAttribute
-    public void prepareDataForMyAccount(ModelMap modelMap) {
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("address", new ShippingAddressDTO());
-        modelMap.addAttribute("addresses", accountService.getShippingAddress());
-        modelMap.addAttribute("editAddress", new ShippingAddressDTO());
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
+    @GetMapping("/get-personal-info")
+    public ResponseEntity<?> getPersonalInfo() {
+        return ResponseEntity.ok().body(accountService.getPersonalInfo());
     }
 
-    @GetMapping("")
-    public String myAccount(ModelMap modelMap) {
-        return "myAccount";
+    @GetMapping("/addresses")
+    public ResponseEntity<?> getAddresses() {
+        return ResponseEntity.ok().body(accountService.getShippingAddress());
     }
 
-    @GetMapping("/{section}")
-    public String showSection(@PathVariable String section, ModelMap modelMap) {
-        if ("orders".equals(section) || "personal".equals(section) || "wishlist".equals(section)) {
-            modelMap.addAttribute("address", new ShippingAddressDTO());
-        }
-        return "myAccount";
+    @PostMapping("/addresses")
+    public ResponseEntity<?> addAddress(@RequestBody AddressRequest request) {
+        return ResponseEntity.ok().body(accountService.add(request));
     }
 
-    @PostMapping("/personal/addAddress")
-    public String addAdress(ModelMap modelMap,
-                            @ModelAttribute("address") ShippingAddressDTO shippingAddressDTO,
-                            BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            return "redirect:/my-account/personal";
-        }else {
-            accountService.addShippingAddress(shippingAddressDTO);
-            return "redirect:/my-account/personal";
-        }
+    @PutMapping("/addresses/{id}")
+    public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody AddressRequest request) {
+        return ResponseEntity.ok().body(accountService.update(id,request));
     }
 
-    @PostMapping("/personal/editAddress/{id}")
-    public String editAddress(ModelMap modelMap,
-                              @ModelAttribute("editAddress") ShippingAddressDTO shippingAddressDTO,
-                              BindingResult bindingResult,
-                              @PathVariable Long id) {
-        if(bindingResult.hasErrors()) {
-            return "redirect:/my-account/personal";
-        }else {
-            accountService.editShippingAddress(shippingAddressDTO, id);
-            return "redirect:/my-account/personal";
-        }
-    }
-
-    @PostMapping("/personal/delAddress/{id}")
-    public String delAddress(ModelMap modelMap, @PathVariable Long id) {
-        accountService.delShippingAddress(id);
-        return "redirect:/my-account/personal";
+    @DeleteMapping("/addresses/{id}")
+    public ResponseEntity<?> removeAddress(@PathVariable Long id) {
+        accountService.removeAddress(id);
+        return ResponseEntity.ok().body("Remove successfully");
     }
 }

@@ -18,6 +18,7 @@ import java.util.Set;
 @Builder
 public class ProductResponse {
 
+    private Long id;
     private String productName;
     private String productDescription;
     private Double price;

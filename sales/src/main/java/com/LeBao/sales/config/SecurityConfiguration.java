@@ -1,45 +1,34 @@
 package com.LeBao.sales.config;
 
-import com.LeBao.sales.services.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 //@EnableMethodSecurity(securedEnabled = true)
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration {
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtAuthenticationFilter jwtAuthFilter;
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -52,6 +41,15 @@ public class SecurityConfiguration {
                         .requestMatchers("/search").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/reviews/*").permitAll()
+                        .requestMatchers("/my-account/get-personal-info").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/my-account/addresses").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/my-account/addresses").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/my-account/addresses/{id}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/my-account/addresses/{id}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/carts").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/carts").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/carts/{cartItemId}").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/carts/{cartItemId}").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

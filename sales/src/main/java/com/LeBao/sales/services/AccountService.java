@@ -1,11 +1,12 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.DTO.ShippingAddressDTO;
+import com.LeBao.sales.DTO.PersonalInfoDTO;
 import com.LeBao.sales.entities.ShippingAddress;
 import com.LeBao.sales.entities.User;
 import com.LeBao.sales.repositories.ShippingAddressRepository;
 import com.LeBao.sales.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.LeBao.sales.requests.AddressRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +15,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ShippingAddressRepository shippingAddressRepository;
+    private final ShippingAddressRepository shippingAddressRepository;
 
-    public String getCurrentUsername() {
+    public User getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = null;
 
@@ -36,54 +36,88 @@ public class AccountService {
             }
         }
 
-        return username;
+        User user = null;
+        if(userRepository.findByEmail(username).isPresent()) {
+            user = userRepository.findByEmail(username).get();
+        }
+        return user;
+    }
+
+    public PersonalInfoDTO getPersonalInfo() {
+
+        User user = getCurrentUsername();
+        PersonalInfoDTO personalInfoDTO = null;
+        if(user != null) {
+            personalInfoDTO = userRepository.getPersonalInfo(user.getEmail());
+            personalInfoDTO.setAddress(user.getShippingAddresses().stream().toList().get(0).getAddress());
+            personalInfoDTO.setPhonenumber(user.getShippingAddresses().stream().toList().get(0).getPhoneNumber());
+        }
+
+        return personalInfoDTO;
     }
 
     public List<ShippingAddress> getShippingAddress() {
-        String email = getCurrentUsername();
-        User user = userRepository.findByEmail(email).get();
-        return user.getShippingAddresses().stream().toList();
+        return getCurrentUsername().getShippingAddresses().stream().toList();
     }
 
-    public void addShippingAddress(ShippingAddressDTO shippingAddressDTO) {
-        String email = getCurrentUsername();
-        User user = userRepository.findByEmail(email).get();
-        ShippingAddress shippingAddress = new ShippingAddress();
-        shippingAddress.setFullName(shippingAddressDTO.getFullName());
-        shippingAddress.setPhoneNumber(shippingAddressDTO.getPhoneNumber());
-        shippingAddress.setCity(shippingAddressDTO.getCity());
-        shippingAddress.setAddress(shippingAddressDTO.getAddress());
-        shippingAddress.setUser(user);
-        shippingAddressRepository.save(shippingAddress);
-        user.getShippingAddresses().add(shippingAddress);
-        userRepository.save(user);
+    public ShippingAddress add(AddressRequest request) {
+        User user = getCurrentUsername();
+        ShippingAddress address = new ShippingAddress();
+        if(user != null) {
+            address = ShippingAddress.builder()
+                    .fullName(request.getFullName())
+                    .phoneNumber(request.getPhoneNumber())
+                    .address(request.getAddress())
+                    .city(request.getCity())
+                    .user(user)
+                    .build();
+
+            shippingAddressRepository.save(address);
+            user.getShippingAddresses().add(address);
+        }
+        return address;
     }
 
-    public void editShippingAddress(ShippingAddressDTO shippingAddressDTO, Long id) {
-        String email = getCurrentUsername();
-        User user = userRepository.findByEmail(email).get();
-        ShippingAddress foundSA = shippingAddressRepository.findById(id).get();
-        if(foundSA != null) {
+    public ShippingAddress update(Long id, AddressRequest request) {
+        ShippingAddress address = null;
+        if(shippingAddressRepository.findById(id).isPresent()) {
+            address = shippingAddressRepository.findById(id).get();
 
-            foundSA.setFullName(shippingAddressDTO.getFullName());
-            foundSA.setPhoneNumber(shippingAddressDTO.getPhoneNumber());
-            foundSA.setCity(shippingAddressDTO.getCity());
-            foundSA.setAddress(shippingAddressDTO.getAddress());
+            if(request.getFullName() != null
+                    && !request.getFullName().trim().isEmpty()
+                    && !request.getFullName().trim().equalsIgnoreCase(address.getFullName())) {
+                address.setFullName(request.getFullName().trim());
+            }
 
-            shippingAddressRepository.save(foundSA);
+            if(request.getPhoneNumber() != null
+                    && !request.getPhoneNumber().trim().isEmpty()
+                    && !request.getPhoneNumber().trim().equalsIgnoreCase(address.getPhoneNumber())) {
+                address.setPhoneNumber(request.getPhoneNumber().trim());
+            }
+
+            if(request.getAddress() != null
+                    && !request.getAddress().trim().isEmpty()
+                    && !request.getAddress().trim().equalsIgnoreCase(address.getAddress())) {
+                address.setAddress(request.getAddress().trim());
+            }
+
+            if(request.getCity() != null
+                    && !request.getCity().trim().isEmpty()
+                    && !request.getCity().trim().equalsIgnoreCase(address.getCity())) {
+                address.setCity(request.getCity().trim());
+            }
+            shippingAddressRepository.save(address);
+        }
+        return address;
+    }
+
+    public void removeAddress(Long id) {
+        User user = getCurrentUsername();
+        if(shippingAddressRepository.findById(id).isPresent()) {
+            ShippingAddress address = shippingAddressRepository.findById(id).get();
+            shippingAddressRepository.deleteById(id);
+            user.getShippingAddresses().remove(address);
             userRepository.save(user);
         }
-    }
-
-    public void delShippingAddress(Long id) {
-        String email = getCurrentUsername();
-        User user = userRepository.findByEmail(email).get();
-        for (ShippingAddress address: user.getShippingAddresses()) {
-            if(address.getId() == id) {
-                user.getShippingAddresses().remove(address);
-            }
-        }
-        shippingAddressRepository.deleteById(id);
-        userRepository.save(user);
     }
 }

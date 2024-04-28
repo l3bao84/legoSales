@@ -1,5 +1,6 @@
 package com.LeBao.sales.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -49,6 +50,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CartItem> cartItems;
 

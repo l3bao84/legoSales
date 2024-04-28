@@ -1,54 +1,48 @@
 package com.LeBao.sales.controllers;
 
-import com.LeBao.sales.DTO.ShippingAddressDTO;
-import com.LeBao.sales.repositories.CategoryRepository;
+import com.LeBao.sales.exceptions.CartItemDeletionException;
+import com.LeBao.sales.requests.CartItemRequest;
 import com.LeBao.sales.services.CartService;
-import com.LeBao.sales.services.HomeService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/cart")
-@RequiredArgsConstructor
+@RestController
+@RequestMapping("/carts")
 public class CartController {
 
-    @Autowired
-    private CartService cartService;
+    private final CartService cartService;
 
     @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private HomeService homeService;
-
-    @ModelAttribute
-    public void prepareDataForCart(ModelMap modelMap) {
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("carts", cartService.getItemCart());
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
     }
 
-    @GetMapping("")
-    public String cart(ModelMap modelMap) {
-        return "cart";
+    @GetMapping()
+    public ResponseEntity<?> getCart() {
+        return ResponseEntity.ok().body(cartService.getCart());
     }
 
-    @PostMapping("/addItemToCart/{id}")
-    public String addCartItem(ModelMap modelMap,
-                          @PathVariable Long id,
-                          @RequestParam("quantity") int quantity) {
-        cartService.addItemToCart(id,quantity);
-        return "redirect:/cart";
+    @PostMapping()
+    public ResponseEntity<?> addCartItem(@RequestBody CartItemRequest cartItemRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addCartItem(cartItemRequest.getId(), cartItemRequest.getQuantity()));
     }
 
-    @PostMapping("/delAnCartItem/{id}")
-    public String delCartItem(ModelMap modelMap, @PathVariable Long id) {
-        cartService.delCartItem(id);
-        return "redirect:/cart";
+    @DeleteMapping("/{cartItemId}")
+    public ResponseEntity<?> removeCartItem(@PathVariable Long cartItemId) {
+        cartService.delCartItem(cartItemId);
+        return ResponseEntity.ok().body("Remove cart item successfully");
     }
 
+    @PatchMapping()
+    public ResponseEntity<?> changeCartItemQuantity(@RequestBody CartItemRequest cartItemRequest) {
+        cartService.changeCartItemQuantity(cartItemRequest);
+        return ResponseEntity.ok().body("Update cart item quantity successfully");
+    }
 
+    @ExceptionHandler(CartItemDeletionException.class)
+    public ResponseEntity<Object> handleCartItemDeletionException(CartItemDeletionException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }

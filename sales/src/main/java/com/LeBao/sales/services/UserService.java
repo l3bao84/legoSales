@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -25,25 +27,14 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private ShippingAddressRepository shippingAddressRepository;
-
 
     public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
 
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-        }
-
-        return username;
+        return Optional.ofNullable(authentication)
+                .map(Authentication::getPrincipal)
+                .map(principal -> principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString())
+                .orElse(null);
     }
 
     public User customerRegister(RegistrationRequest request) {

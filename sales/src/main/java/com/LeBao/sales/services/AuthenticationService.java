@@ -35,9 +35,7 @@ public class AuthenticationService {
 
             User user = (User) authentication.getPrincipal();
 
-            String token = jwtService.generateToken(user);
-
-            return token;
+            return jwtService.generateToken(user);
         } catch (AuthenticationException e) {
             throw new AuthenticationFailedException("Authentication failed", e);
         }

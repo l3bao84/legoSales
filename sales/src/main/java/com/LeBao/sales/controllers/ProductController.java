@@ -1,20 +1,12 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.DTO.ReviewDTO;
-import com.LeBao.sales.DTO.ShippingAddressDTO;
 import com.LeBao.sales.entities.Product;
-import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
-import com.LeBao.sales.services.CartService;
-import com.LeBao.sales.services.HomeService;
 import com.LeBao.sales.services.ProductService;
-import com.LeBao.sales.services.StorageService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -33,19 +25,6 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private CartService cartService;
-
-    @ModelAttribute
-    public void prepareDataForProduct(ModelMap modelMap) {
-        modelMap.addAttribute("allThemes", categoryRepository.findAll());
-        modelMap.addAttribute("cartItemCount", cartService.getItemCart().size());
-        modelMap.addAttribute("review", new ReviewDTO());
-    }
 
     @GetMapping("/topPicks")
     public ResponseEntity<List<Product>> getTopPicks() {

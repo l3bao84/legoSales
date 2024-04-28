@@ -1,6 +1,8 @@
 package com.LeBao.sales.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +27,7 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @JsonIgnore
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
@@ -35,8 +37,6 @@ public class CartItem {
 
     @Column(name = "price")
     private Double price;
-
-    // Constructors, getters and setters
 
     @Override
     public boolean equals(Object obj) {
@@ -54,5 +54,7 @@ public class CartItem {
     public int hashCode() {
         return Objects.hash(cartItemId);
     }
+
+
 }
 

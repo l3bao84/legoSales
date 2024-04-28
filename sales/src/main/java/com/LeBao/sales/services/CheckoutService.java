@@ -64,7 +64,7 @@ public class CheckoutService {
     }
 
     public List<CartItem> getCartItem() {
-        return cartService.getItemCart();
+        return cartService.getCart();
     }
 
     public void checkoutHandler(String data) {

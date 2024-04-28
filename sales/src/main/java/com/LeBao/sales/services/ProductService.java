@@ -50,6 +50,7 @@ public class ProductService {
             Product product = productRepository.findById(productId).get();
 
             ProductResponse response = ProductResponse.builder()
+                    .id(product.getProductId())
                     .productName(product.getProductName())
                     .productDescription(product.getProductDescription())
                     .price(product.getPrice())
