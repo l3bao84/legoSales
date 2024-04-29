@@ -38,4 +38,14 @@ public class AccountController {
         accountService.removeAddress(id);
         return ResponseEntity.ok().body("Remove successfully");
     }
+
+    @GetMapping("/my-orders")
+    public ResponseEntity<?> getOrders(@RequestParam(value = "type", required = false) String type) {
+        return ResponseEntity.ok().body(accountService.getOrders(type));
+    }
+
+    @PatchMapping("/my-orders/{id}/cancel")
+    public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
+        return ResponseEntity.ok().body(accountService.cancelOrder(id));
+    }
 }

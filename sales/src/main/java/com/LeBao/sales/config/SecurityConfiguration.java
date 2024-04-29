@@ -43,6 +43,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/reviews/*").permitAll()
                         .requestMatchers("/my-account/get-personal-info").authenticated()
                         .requestMatchers(HttpMethod.GET,"/my-account/addresses").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/my-account/my-orders").authenticated()
+                        .requestMatchers(HttpMethod.PATCH,"/my-account/my-orders/{id}/cancel").authenticated()
                         .requestMatchers(HttpMethod.POST,"/my-account/addresses").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/my-account/addresses/{id}").authenticated()
                         .requestMatchers(HttpMethod.DELETE,"/my-account/addresses/{id}").authenticated()

@@ -1,18 +1,27 @@
 package com.LeBao.sales.services;
 
+import com.LeBao.sales.DTO.OrdersDTO;
 import com.LeBao.sales.DTO.PersonalInfoDTO;
+import com.LeBao.sales.DTO.ProductOrderDTO;
+import com.LeBao.sales.entities.Order;
 import com.LeBao.sales.entities.ShippingAddress;
 import com.LeBao.sales.entities.User;
+import com.LeBao.sales.repositories.OrderRepository;
 import com.LeBao.sales.repositories.ShippingAddressRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.requests.AddressRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +30,8 @@ public class AccountService {
     private final UserRepository userRepository;
 
     private final ShippingAddressRepository shippingAddressRepository;
+
+    private final OrderRepository orderRepository;
 
     public User getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -119,5 +130,41 @@ public class AccountService {
             user.getShippingAddresses().remove(address);
             userRepository.save(user);
         }
+    }
+
+    public List<OrdersDTO> getOrders(String type) {
+        User user = getCurrentUsername();
+        Set<Order> orders = orderRepository.findByStatusAndUserId(user.getUserId(), type);
+        if(type.equals("ALL")) {
+            orders = user.getOrders();
+        }
+        return orders.stream()
+                .map(order -> {
+
+                    List<ProductOrderDTO> productOrderDTOList = order.getOrderDetails().stream()
+                            .map(orderDetail -> ProductOrderDTO.builder()
+                                    .quantity((long) orderDetail.getQuantity())
+                                    .image(orderDetail.getProduct().getImages().get(0))
+                                    .price(orderDetail.getUnitPrice())
+                                    .name(orderDetail.getProduct().getProductName())
+                                    .build()
+                            ).toList();
+
+                    return OrdersDTO.builder()
+                            .orderId(order.getOrderId())
+                            .status(order.getOrderStatus())
+                            .total(order.getTotalAmount())
+                            .paymentStatus(order.getPaymentStatus())
+                            .productOrderDTOList(productOrderDTOList)
+                            .build();
+                })
+                .toList();
+    }
+
+    @Transactional
+    public Order cancelOrder(Long id) {
+        Optional<Order> order = orderRepository.findById(id);
+        order.ifPresent(value -> value.setOrderStatus("CANCELLED"));
+        return order.orElse(null);
     }
 }
