@@ -49,8 +49,7 @@ public class CartService {
     }
 
     public Product addCartItem(Long id, int quantity) {
-        User user = userRepository.findByEmail(userService.getCurrentUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.getCurrentUsername();
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -71,17 +70,14 @@ public class CartService {
     }
 
     public List<CartItem> getCart() {
-        String username = userService.getCurrentUsername();
+        User user = userService.getCurrentUsername();
         List<CartItem> cartItems = new ArrayList<>();
-        if(username == null) {
+        if(user == null) {
             return cartItems;
         }else {
-            Optional<User> user = userRepository.findByEmail(username);
-            if(user.isPresent()) {
-                Cart cart = user.get().getCart();
-                if(cart != null) {
-                    cartItems = cart.getCartItems().stream().toList();
-                }
+            Cart cart = user.getCart();
+            if(cart != null) {
+                cartItems = cart.getCartItems().stream().toList();
             }
         }
         return cartItems;
@@ -90,8 +86,7 @@ public class CartService {
     @Transactional
     public void delCartItem(Long id) {
         try {
-            User user = userRepository.findByEmail(userService.getCurrentUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+            User user = userService.getCurrentUsername();
 
             boolean removed = user.getCart().getCartItems().removeIf(cartItem -> cartItem.getCartItemId().equals(id));
             cartItemService.removeCartItem(id);
@@ -106,27 +101,22 @@ public class CartService {
 
 
     public void dellAllInCart(Long id) {
-        String username = userService.getCurrentUsername();
-        Optional<User> optionalUser = userRepository.findByEmail(username);
+        User user = userService.getCurrentUsername();
+        Cart cart = user.getCart();
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Cart cart = user.getCart();
-
-            // Tìm và xóa CartItem theo id
-            Iterator<CartItem> iterator = cart.getCartItems().iterator();
-            while (iterator.hasNext()) {
-                CartItem cartItem = iterator.next();
-                if (cartItem.getCartItemId() == id) {
-                    iterator.remove();
-                    cartItemRepository.deleteById(id);
-                }
+        // Tìm và xóa CartItem theo id
+        Iterator<CartItem> iterator = cart.getCartItems().iterator();
+        while (iterator.hasNext()) {
+            CartItem cartItem = iterator.next();
+            if (cartItem.getCartItemId().equals(id)) {
+                iterator.remove();
+                cartItemRepository.deleteById(id);
             }
-
-            cartRepository.deleteById(cart.getCartId());
-            user.setCart(null);
-            userRepository.save(user);
         }
+
+        cartRepository.deleteById(cart.getCartId());
+        user.setCart(null);
+        userRepository.save(user);
     }
 
     public void changeCartItemQuantity(CartItemRequest cartItemRequest) {

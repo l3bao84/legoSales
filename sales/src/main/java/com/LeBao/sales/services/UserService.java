@@ -21,20 +21,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-
-    public String getCurrentUsername() {
+    public User getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
 
-        return Optional.ofNullable(authentication)
-                .map(Authentication::getPrincipal)
-                .map(principal -> principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString())
-                .orElse(null);
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+        }
+
+        User user = null;
+        if(userRepository.findByEmail(username).isPresent()) {
+            user = userRepository.findByEmail(username).get();
+        }
+        return user;
     }
 
     public User customerRegister(RegistrationRequest request) {

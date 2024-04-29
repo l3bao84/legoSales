@@ -12,16 +12,11 @@ import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.requests.AddressRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,34 +24,15 @@ public class AccountService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     private final ShippingAddressRepository shippingAddressRepository;
 
     private final OrderRepository orderRepository;
 
-    public User getCurrentUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-        }
-
-        User user = null;
-        if(userRepository.findByEmail(username).isPresent()) {
-            user = userRepository.findByEmail(username).get();
-        }
-        return user;
-    }
-
     public PersonalInfoDTO getPersonalInfo() {
 
-        User user = getCurrentUsername();
+        User user = userService.getCurrentUsername();
         PersonalInfoDTO personalInfoDTO = null;
         if(user != null) {
             personalInfoDTO = userRepository.getPersonalInfo(user.getEmail());
@@ -68,11 +44,11 @@ public class AccountService {
     }
 
     public List<ShippingAddress> getShippingAddress() {
-        return getCurrentUsername().getShippingAddresses().stream().toList();
+        return userService.getCurrentUsername().getShippingAddresses().stream().toList();
     }
 
     public ShippingAddress add(AddressRequest request) {
-        User user = getCurrentUsername();
+        User user = userService.getCurrentUsername();
         ShippingAddress address = new ShippingAddress();
         if(user != null) {
             address = ShippingAddress.builder()
@@ -123,7 +99,7 @@ public class AccountService {
     }
 
     public void removeAddress(Long id) {
-        User user = getCurrentUsername();
+        User user = userService.getCurrentUsername();
         if(shippingAddressRepository.findById(id).isPresent()) {
             ShippingAddress address = shippingAddressRepository.findById(id).get();
             shippingAddressRepository.deleteById(id);
@@ -133,7 +109,7 @@ public class AccountService {
     }
 
     public List<OrdersDTO> getOrders(String type) {
-        User user = getCurrentUsername();
+        User user = userService.getCurrentUsername();
         Set<Order> orders = orderRepository.findByStatusAndUserId(user.getUserId(), type);
         if(type.equals("ALL")) {
             orders = user.getOrders();
