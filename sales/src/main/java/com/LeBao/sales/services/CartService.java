@@ -7,6 +7,7 @@ import com.LeBao.sales.repositories.CartRepository;
 import com.LeBao.sales.repositories.ProductRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.requests.CartItemRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.*;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CartService {
 
     private final CartRepository cartRepository;
@@ -29,16 +31,6 @@ public class CartService {
     private final ProductRepository productRepository;
 
     private final CartItemService cartItemService;
-
-    @Autowired
-    public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository, UserService userService, UserRepository userRepository, ProductRepository productRepository, CartItemService cartItemService) {
-        this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.cartItemService = cartItemService;
-    }
 
     private Cart createCart(User user) {
         return Cart.builder()
@@ -99,24 +91,8 @@ public class CartService {
         }
     }
 
-
-    public void dellAllInCart(Long id) {
-        User user = userService.getCurrentUsername();
-        Cart cart = user.getCart();
-
-        // Tìm và xóa CartItem theo id
-        Iterator<CartItem> iterator = cart.getCartItems().iterator();
-        while (iterator.hasNext()) {
-            CartItem cartItem = iterator.next();
-            if (cartItem.getCartItemId().equals(id)) {
-                iterator.remove();
-                cartItemRepository.deleteById(id);
-            }
-        }
-
-        cartRepository.deleteById(cart.getCartId());
-        user.setCart(null);
-        userRepository.save(user);
+    public void delCartById(Long id) {
+        cartRepository.deleteById(id);
     }
 
     public void changeCartItemQuantity(CartItemRequest cartItemRequest) {

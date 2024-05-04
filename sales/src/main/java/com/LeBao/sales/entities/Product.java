@@ -55,9 +55,6 @@ public class Product {
     private Set<CartItem> cartItems;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<WishlistProduct> wishlistProducts;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<OrderDetail> orderDetails;
 

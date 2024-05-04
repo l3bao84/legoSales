@@ -27,7 +27,6 @@ public class ProductResponse {
     private List<String> images;
     private Long categoryId;
     private Set<CartItem> cartItems;
-    private Set<WishlistProduct> wishlistProducts;
     private Set<OrderDetail> orderDetails;
     private Set<Review> reviews;
 }

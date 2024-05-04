@@ -1,34 +1,23 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.config.EmailSenderConfig;
 import com.LeBao.sales.entities.Order;
 import com.LeBao.sales.entities.OrderDetail;
-import freemarker.core.ParseException;
-import freemarker.template.*;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class EmailService {
+    private final JavaMailSender sender;
 
-    @Autowired
-    private JavaMailSender sender;
-
-    @Autowired
-    private Configuration configuration;
 
     public void sendEmail(Order order) {
 

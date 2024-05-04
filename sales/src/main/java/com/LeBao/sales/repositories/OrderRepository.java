@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -18,4 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT o FROM Order o WHERE o.orderStatus = :orderStatus AND o.orderDate = :orderDate")
     List<Order> findByOrderDateBeforeAndOrderStatus(String orderStatus, LocalDate orderDate);
+
+    @Query("select o from Order o where o.paymentStatus = :paymentId")
+    Optional<Order> findByPaymentStatus(@Param("paymentId") String paymentId);
 }

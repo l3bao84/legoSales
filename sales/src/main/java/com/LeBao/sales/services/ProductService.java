@@ -10,7 +10,6 @@ import com.LeBao.sales.repositories.ReviewRepository;
 import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.responses.ProductResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,20 +29,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private StorageService storageService;
+    private final StorageService storageService;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     public ProductResponse getProduct(Long productId) {
         if(productRepository.findById(productId).isPresent()) {
@@ -59,18 +53,10 @@ public class ProductService {
                     .images(product.getImages())
                     .categoryId(product.getCategory().getCategoryId())
                     .cartItems(product.getCartItems())
-                    .wishlistProducts(product.getWishlistProducts())
                     .orderDetails(product.getOrderDetails())
                     .reviews(product.getReviews()).build();
 
             return response;
-        }
-        return null;
-    }
-
-    public List<Product> getAllByThemeId(Long categoryId) {
-        if(categoryRepository.findById(categoryId).isPresent()) {
-            return productRepository.findAllByCategoryId(categoryId);
         }
         return null;
     }
@@ -170,50 +156,6 @@ public class ProductService {
         }
         product.setReviews(reviews);
         return product;
-    }
-
-    public String decialFormat(Double avgRating) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.#");
-        return decimalFormat.format(avgRating);
-    }
-
-    public Map<Integer,Long> ratingCount(Long productId) {
-        Map<Integer,Long> ratingCountMap = new HashMap<>();
-        for(int i = 5; i >= 1; i--) {
-            int currentRV = i;
-            long count = productRepository.findById(productId).get().getReviews()
-                    .stream()
-                    .filter(review -> review.getRating() == currentRV)
-                    .count();
-            ratingCountMap.put(currentRV, count);
-        }
-        return ratingCountMap;
-    }
-
-    public void addReview(Long productId, ReviewDTO reviewDTO, MultipartFile[] files) throws IOException {
-        Optional<Product> oProduct = productRepository.findById(productId);
-        Optional<User> oUser = userRepository.findById(31L);
-        Review review = new Review();
-
-        if(oProduct.isPresent() && oUser.isPresent()) {
-            Product product = oProduct.get();
-            User user = oUser.get();
-
-            review.setProduct(product);
-            review.setUser(user);
-            review.setReviewDate(LocalDate.now());
-            review.setImageReviews(storageService.upload(files));
-            review.setContent(reviewDTO.getContent());
-            review.setRating(reviewDTO.getRating());
-
-            reviewRepository.save(review);
-
-            product.getReviews().add(review);
-            productRepository.save(product);
-
-            user.getReviews().add(review);
-            userRepository.save(user);
-        }
     }
 
     public Page<Product> search(String keyword, int page, String sortValue) {

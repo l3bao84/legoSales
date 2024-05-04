@@ -3,6 +3,7 @@ package com.LeBao.sales.services;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PayPalService {
 
-    @Autowired
-    private CheckoutService checkoutService;
 
-    @Autowired
-    private APIContext apiContext;
+    private final UserService userService;
+    private final APIContext apiContext;
 
     public Payment createPayment(
             Double total,
@@ -30,7 +30,7 @@ public class PayPalService {
         amount.setTotal(String.format("%.2f", total));
 
         Transaction transaction = new Transaction();
-        transaction.setDescription("Payment for " + checkoutService.getCurrentUsername() + "'s order");
+        transaction.setDescription("Payment for " + userService.getCurrentUsername().getFirstName() + "'s order");
         transaction.setAmount(amount);
 
         List<Transaction> transactions = new ArrayList<>();

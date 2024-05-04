@@ -1,7 +1,7 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.services.StorageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/img")
+@RequiredArgsConstructor
 public class ImageController {
 
-    @Autowired
-    private StorageService storageService;
+    private final StorageService storageService;
 
     @GetMapping("/{fileName}")
     public ResponseEntity<?> getImage(@PathVariable String fileName) throws IOException {

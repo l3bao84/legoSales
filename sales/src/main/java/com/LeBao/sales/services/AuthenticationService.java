@@ -2,11 +2,8 @@ package com.LeBao.sales.services;
 
 import com.LeBao.sales.entities.User;
 import com.LeBao.sales.exceptions.AuthenticationFailedException;
-import com.LeBao.sales.repositories.UserRepository;
 import com.LeBao.sales.requests.AuthenticationRequest;
-import com.LeBao.sales.responses.AuthenticationResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,16 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     public String authenticate(AuthenticationRequest request) {
         try {

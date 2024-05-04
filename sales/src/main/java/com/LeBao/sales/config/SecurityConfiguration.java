@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,7 +34,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate","/img/**").permitAll()
                         .requestMatchers("/product/topPicks", "/product/recommendations", "/product/{id}").permitAll()
@@ -53,6 +54,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/carts").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/carts/{cartItemId}").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/carts/{cartItemId}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/order").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/order/execute-payment").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

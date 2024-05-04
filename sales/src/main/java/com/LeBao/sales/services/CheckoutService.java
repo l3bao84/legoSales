@@ -1,195 +1,98 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.DTO.OrderDTO;
 import com.LeBao.sales.entities.*;
-import com.LeBao.sales.repositories.OrderDetailRepository;
+import com.LeBao.sales.repositories.CartItemRepository;
 import com.LeBao.sales.repositories.OrderRepository;
-import com.LeBao.sales.repositories.UserRepository;
-import org.aspectj.weaver.ast.Or;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.LeBao.sales.requests.OrderRequest;
+import com.LeBao.sales.requests.PaymentExecutionRequest;
+import com.LeBao.sales.responses.DataResponse;
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class CheckoutService {
 
-    @Autowired
-    private OrderDetailRepository orderDetailRepository;
+    private final UserService userService;
+    private final OrderRepository orderRepository;
+    private final EmailService emailService;
+    private final CartItemRepository cartItemRepository;
+    private final PayPalService payPalService;
+    private static final String CANCEL_URL = "/checkout?pay=cancel";
 
-    @Autowired
-    private UserRepository userRepository;
+    public DataResponse placeOrder(OrderRequest request) throws PayPalRESTException {
+        String[] ids = request.getItems().split(",");
 
-    @Autowired
-    private CartService cartService;
+        Order order = Order.builder()
+                .user(userService.getCurrentUsername())
+                .orderDate(LocalDate.now())
+                .shippingAddress(request.getAddress())
+                .shippingMethod(request.getShippingMethod())
+                .totalAmount(request.getTotal())
+                .paymentStatus(request.getPaymentStatus())
+                .orderStatus(request.getStatus())
+                .build();
 
-    @Autowired
-    private OrderRepository orderRepository;
+        List<OrderDetail> orderDetails = Arrays.stream(ids).map(id -> cartItemRepository.findById(Long.parseLong(id)).orElse(null)).filter(Objects::nonNull)
+                .map(cartItem -> OrderDetail.builder()
+                        .order(order)
+                        .quantity(cartItem.getQuantity())
+                        .unitPrice(cartItem.getPrice())
+                        .product(cartItem.getProduct())
+                        .build()).toList();
 
-    @Autowired
-    private EmailService emailService;
+        order.setOrderDetails(orderDetails);
+        DataResponse response = new DataResponse();
 
-
-    public String getCurrentUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-        }
-
-        return username;
-    }
-
-    public List<ShippingAddress> getShippingAddress() {
-        String username = getCurrentUsername();
-        if(username != null) {
-            Optional<User> optionalUser = userRepository.findByEmail(username);
-            if(optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                return user.getShippingAddresses().stream().toList();
-            }
-        }
-        return null;
-    }
-
-    public List<CartItem> getCartItem() {
-        return cartService.getCart();
-    }
-
-    public void checkoutHandler(String data) {
-        String username = getCurrentUsername();
-        User user = null;
-        if(username != null) {
-            Optional<User> optionalUser = userRepository.findByEmail(username);
-            if(optionalUser.isPresent()) {
-                user = optionalUser.get();
-            }
-        }
-
-        String[] pairs = data.split(",");
-        Map<Long,Integer> idAndQuantity = new HashMap<>();
-        for (String pair:pairs) {
-            String[] elements = pair.split(":");
-            idAndQuantity.put(Long.parseLong(elements[0]), Integer.parseInt(elements[1]));
-        }
-        for (Long key : idAndQuantity.keySet()) {
-            Integer value = idAndQuantity.get(key);
-            List<CartItem> cartItems = getCartItem();
-            for (CartItem item:cartItems) {
-                if(item.getCartItemId() == key) {
-                    item.setQuantity(value);
-                }
-            }
-        }
-        userRepository.save(user);
-    }
-
-    public void cancelOrder(Long orderId) {
-        String username = getCurrentUsername();
-        if (username != null) {
-            Optional<User> optionalUser = userRepository.findByEmail(username);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                orderDetailRepository.deleteByOrderId(orderId);
-                orderRepository.deleteById(orderId);
-            }
-        }
-    }
-
-
-
-    public Order order(OrderDTO orderDTO) {
-        Order order = null;
-        String username = getCurrentUsername();
-        if (username != null) {
-            Optional<User> optionalUser = userRepository.findByEmail(username);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-
-                order = new Order();
-                order.setUser(user);
-                order.setOrderDate(LocalDate.now());
-                order.setShippingAddress(orderDTO.getShippingAddress());
-                order.setShippingMethod(orderDTO.getShippingMethod());
-                order.setTotalAmount(orderDTO.getTotalAmount());
-                order.setPaymentStatus(orderDTO.getPaymentStatus());
-                order.setOrderStatus("Preparing the order");
-                order.setOrderDetails(new HashSet<OrderDetail>());
-
-                orderRepository.save(order);
-
-                Cart cart = user.getCart();
-                if (cart != null) {
-                    Iterator<CartItem> iterator = cart.getCartItems().iterator();
-                    while (iterator.hasNext()) {
-                        CartItem item = iterator.next();
-                        OrderDetail orderDetail = new OrderDetail();
-                        orderDetail.setOrder(order);
-                        orderDetail.setProduct(item.getProduct());
-                        orderDetail.setQuantity(item.getQuantity());
-                        orderDetail.setUnitPrice(item.getPrice());
-
-                        orderDetailRepository.save(orderDetail);
-                        order.getOrderDetails().add(orderDetail);
+        if(order.getPaymentStatus().equals("PayPal")) {
+            Payment payment = payPalService.createPayment(order.getTotalAmount(), "http://localhost:3000" + CANCEL_URL, "http://localhost:3000");
+            for (Links link:payment.getLinks()) {
+                    if(link.getRel().equals("approval_url")) {
+                        response = DataResponse.builder()
+                                .code(201)
+                                .message("Pay by PayPal")
+                                .data(order)
+                                .link(link.getHref())
+                                .build();
+                        break;
                     }
                 }
-
-                if(!order.getPaymentStatus().equalsIgnoreCase("PayPal")) {
-                    cartService.dellAllInCart(cart.getCartId());
-                }
-
-                if(user.getOrders() == null) {
-                    Set<Order> orders = new HashSet<>();
-                    orders.add(order);
-                    user.setOrders(orders);
-
-                }else {
-                    user.getOrders().add(order);
-                }
-                userRepository.save(user);
-                if(order.getPaymentStatus().equalsIgnoreCase("COD")) {
-                    emailService.sendEmail(order);
-                }
-            }
+            order.setPaymentStatus(payment.getId());
+            orderRepository.save(order);
+        }else {
+            orderRepository.save(order);
+            emailService.sendEmail(order);
+            response = DataResponse.builder()
+                .code(200)
+                .message("Order successfully")
+                .data(order)
+                .build();
         }
-        return order;
+        return response;
     }
 
-    public void paymentSuccess(String orderId, String status) {
-        Long id = Long.parseLong(orderId);
-        Optional<Order> optionalOrder = orderRepository.findById(id);
+    public DataResponse executePayment(PaymentExecutionRequest request) throws PayPalRESTException {
+        DataResponse response = new DataResponse();
+        Optional<Order> optionalOrder = orderRepository.findByPaymentStatus(request.getPaymentId());
         if(optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
-            if(status.equalsIgnoreCase("PayPal(Payment successfull)")) {
-                order.setPaymentStatus(status);
+            order.setPaymentStatus("PayPal");
+            Payment payment = payPalService.executePayment(request.getPaymentId(), request.getPayerId());
+            if (payment.getState().equals("approved")) {
                 orderRepository.save(order);
                 emailService.sendEmail(order);
-                cartService.dellAllInCart(order.getUser().getCart().getCartId());
-            }else {
-
-                String username = getCurrentUsername();
-                Optional<User> optionalUser = userRepository.findByEmail(username);
-                if(optionalUser.isPresent()) {
-                    User user = optionalUser.get();
-
-                    List<OrderDetail> orderDetails = order.getOrderDetails().stream().toList();
-                    orderDetailRepository.deleteAll(orderDetails);
-
-                    orderRepository.deleteById(order.getOrderId());
-                    userRepository.save(user);
-                }
+                response = DataResponse.builder()
+                        .code(200)
+                        .data(order)
+                        .build();
             }
         }
+        return response;
     }
 }
