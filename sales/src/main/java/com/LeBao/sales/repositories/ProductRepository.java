@@ -18,5 +18,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByProductNameContainingIgnoreCase(String keyword, Pageable pageable);
 
-    Page<Product> findAll(Pageable pageable);
+    @Query("select p from Product p")
+    Page<Product> getAll(Pageable pageable);
+
+    @Query("select p from Product p where p.productName like %:name%")
+    Page<Product> search(Pageable pageable, @Param("name") String name);
 }

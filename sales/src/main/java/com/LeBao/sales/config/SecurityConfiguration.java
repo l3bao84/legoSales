@@ -19,6 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -56,6 +57,17 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, "/carts/{cartItemId}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/order").authenticated()
                         .requestMatchers(HttpMethod.POST, "/order/execute-payment").authenticated()
+                        //admin
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/orders/{orderStatus}").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/orders").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/admin/orders/update").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/totalItemsSold").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/totalEarning").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin/orderStatistic").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/product/admin").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/product/admin/add").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/product/admin/remove/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/product/admin/update/{id}").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -69,7 +81,13 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:3000");
+
+        List<String> allowedOrigins = Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:4000"
+        );
+        configuration.setAllowedOrigins(allowedOrigins);
+
         configuration.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
@@ -83,9 +101,13 @@ public class SecurityConfiguration {
                 HttpMethod.PATCH.name()
         ));
         configuration.setMaxAge(3600L);
+
         source.registerCorsConfiguration("/**", configuration);
+
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
         bean.setOrder(-102);
         return bean;
     }
+
+
 }

@@ -1,14 +1,13 @@
 package com.LeBao.sales.services;
 
-import com.LeBao.sales.DTO.ReviewDTO;
+import com.LeBao.sales.entities.Category;
 import com.LeBao.sales.entities.Product;
-import com.LeBao.sales.entities.Review;
-import com.LeBao.sales.entities.User;
 import com.LeBao.sales.repositories.CategoryRepository;
 import com.LeBao.sales.repositories.ProductRepository;
-import com.LeBao.sales.repositories.ReviewRepository;
-import com.LeBao.sales.repositories.UserRepository;
+import com.LeBao.sales.requests.ProReq;
+import com.LeBao.sales.requests.SearchProReq;
 import com.LeBao.sales.responses.ProductResponse;
+import com.LeBao.sales.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,11 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -31,19 +25,15 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private final StorageService storageService;
-
     private final CategoryRepository categoryRepository;
 
-    private final UserRepository userRepository;
-
-    private final ReviewRepository reviewRepository;
+    private final StorageService service;
 
     public ProductResponse getProduct(Long productId) {
         if(productRepository.findById(productId).isPresent()) {
             Product product = productRepository.findById(productId).get();
 
-            ProductResponse response = ProductResponse.builder()
+            return ProductResponse.builder()
                     .id(product.getProductId())
                     .productName(product.getProductName())
                     .productDescription(product.getProductDescription())
@@ -55,8 +45,6 @@ public class ProductService {
                     .cartItems(product.getCartItems())
                     .orderDetails(product.getOrderDetails())
                     .reviews(product.getReviews()).build();
-
-            return response;
         }
         return null;
     }
@@ -83,80 +71,90 @@ public class ProductService {
         return toppickProducts;
     }
 
-//    public String addProduct(Product product) {
-//        List<Image>
-//        product.setImage("C:\\Users\\HELLO\\OneDrive\\Documents\\Projects\\sales\\sales\\src\\main\\resources\\images\\228a6b12-71df-4ab3-8951-5a7eab8ab06c.png");
-//        if(categoryRepository.findById(1L).isPresent()) {
-//            product.setCategory(categoryRepository.findById(1L).get());
-//            productRepository.save(product);
-//            categoryRepository.findById(1L).get().getProducts().add(product);
-//            categoryRepository.save(categoryRepository.findById(1L).get());
-//            return "Add successfully";
-//        }
-//        return "Add failed";
-//    }
+    public Page<Product> getAll(SearchProReq req) {
+        int pageSize = 10;
+        Pageable pageable = PageRequest.of(req.getPage() - 1, pageSize);
+        return DataUtils.isNullOrEmpty(req.getKeyword().trim()) ? productRepository.getAll(pageable) : productRepository.search(pageable, req.getKeyword().trim());
+    }
 
-    public void updateProduct(Long productId, Product product) {
-        if(productRepository.findById(productId).isPresent()) {
-            Product foundProduct = productRepository.findById(productId).get();
-            foundProduct.setProductName(product.getProductName());
-            foundProduct.setProductDescription(product.getProductDescription());
-            foundProduct.setPrice(product.getPrice());
-            foundProduct.setStock(product.getStock());
+    public Product addProduct(ProReq req, MultipartFile[] images) throws IOException {
+        Product product = Product.builder()
+                .productName(req.getName().trim())
+                .productDescription(req.getDesc().trim())
+                .price(DataUtils.safeToDouble(req.getPrice().trim()))
+                .stock(DataUtils.safeToInt(req.getStock().trim()))
+                .pieces(DataUtils.safeToInt(req.getPiece().trim()))
+                .images(images != null ? service.upload(images) : new ArrayList<>())
+                .category(categoryRepository.findByName(req.getCategory().trim()))
+                .build();
 
-            // Nếu sửa category thì sẽ xóa sản phẩm ở category cũ đi
-            // So sánh nếu categoryId cũ bằng mới thì sẽ ko đổi, ngược lại sẽ cập nhật
-            // foundProduct.getCategory().getCategoryId() != product.getCategory().getCategoryId()
-            if(foundProduct.getCategory().getCategoryId() == 1L) {
+        return productRepository.save(product);
+    }
 
-                // Xóa sản phảm đó khỏi danh sách trước khi set thuộc tính mới và lưu
-                categoryRepository.findById(foundProduct.getCategory().getCategoryId()).get().getProducts().remove(foundProduct);
+    public boolean updateProduct(Long id, ProReq req, MultipartFile[] images) throws IOException {
+        Optional<Product> foundProduct = productRepository.findById(id);
+        if (foundProduct.isEmpty()) {
+            return false;
+        }
 
-                // Set cho sản phẩm đó category mới và lưu
-                foundProduct.setCategory(categoryRepository.findById(2L).get());
-                productRepository.save(foundProduct);
+        Product product = foundProduct.get();
+        req.trim();
 
-                categoryRepository.findById(2L).get().getProducts().add(foundProduct);
-            }else {
-                productRepository.save(foundProduct);
+        if (!DataUtils.safeEquals(product.getProductName(), req.getName())) {
+            product.setProductName(req.getName());
+        }
+        if (!DataUtils.safeEquals(product.getPrice(), req.getPrice())) {
+            product.setPrice(DataUtils.safeToDouble(req.getPrice()));
+        }
+        if (!DataUtils.safeEquals(product.getStock(), req.getStock())) {
+            product.setStock(DataUtils.safeToInt(req.getStock()));
+        }
+        if (!DataUtils.safeEquals(product.getPieces(), req.getPiece())) {
+            product.setPieces(DataUtils.safeToInt(req.getPiece()));
+        }
+        if (!DataUtils.safeEquals(product.getProductDescription(), req.getDesc())) {
+            product.setProductDescription(req.getDesc());
+        }
+
+
+        if (!DataUtils.safeEquals(product.getCategory().getCategoryName(), req.getCategory())) {
+            Category newCategory = categoryRepository.findByName(req.getCategory());
+            if (newCategory != null && !newCategory.equals(product.getCategory())) {
+                product.getCategory().getProducts().remove(product);
+                newCategory.getProducts().add(product);
+                product.setCategory(newCategory);
             }
         }
-    }
 
-
-    // Khi xóa bất kỳ sản phẩm nào thì sẽ danh sách sản phẩm thuộc danh mục đó sẽ xóa đi sản phẩm tương ứng
-    public void deleteProduct(Long productId) {
-        Product foundProduct = productRepository.findById(productId).get();
-        Long categoryId = foundProduct.getCategory().getCategoryId();
-
-        categoryRepository.findById(categoryId).get().getProducts().remove(foundProduct);
-        categoryRepository.save(categoryRepository.findById(categoryId).get());
-
-        productRepository.deleteById(productId);
-    }
-
-    public List<String> imagesFileName(Long productId) {
-        List<String> imagesFileName = new ArrayList<>();
-        for (String filePath:productRepository.findById(productId).get().getImages()) {
-            imagesFileName.add(Paths.get(filePath).getFileName().toString());
+        if (images != null && images.length > 0) {
+            product.setImages(service.upload(images));
         }
-        return imagesFileName;
+
+        productRepository.save(product);
+        return true;
     }
 
-    public Product imageReviewsFileName(Product product) {
-        Set<Review> reviews = product.getReviews();
-        for (Review review:reviews) {
-            List<String> imageReviewsFilePath = review.getImageReviews();
-            List<String> imageReviewsFileName = new ArrayList<>();
-            for (String filePath:imageReviewsFilePath) {
-                Path path = FileSystems.getDefault().getPath(filePath);
-                imageReviewsFileName.add(path.getFileName().toString());
+
+    public boolean removeProduct(Long id) {
+        Optional<Product> foundProduct = productRepository.findById(id);
+
+        if (foundProduct.isPresent()) {
+            Product product = foundProduct.get();
+            if (product.getCategory() != null) {
+                Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getCategoryId());
+                optionalCategory.ifPresent(category -> {
+                    category.getProducts().remove(product);
+                    categoryRepository.save(category);
+                });
             }
-            review.setImageReviews(imageReviewsFileName);
+            productRepository.deleteById(id);
+            boolean stillExists = productRepository.findById(id).isPresent();
+            return !stillExists;
         }
-        product.setReviews(reviews);
-        return product;
+
+        return false;
     }
+
 
     public Page<Product> search(String keyword, int page, String sortValue) {
         int pageSize = 8;

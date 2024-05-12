@@ -14,4 +14,20 @@ public class DataResponse {
     private String message;
     private Object data;
     private String link;
+
+    public DataResponse(int code, Object data) {
+        this.code = code;
+        this.data = data;
+    }
+
+    public DataResponse(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
+    public DataResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

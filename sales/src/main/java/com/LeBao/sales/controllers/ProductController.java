@@ -1,11 +1,17 @@
 package com.LeBao.sales.controllers;
 
 import com.LeBao.sales.entities.Product;
+import com.LeBao.sales.requests.ProReq;
+import com.LeBao.sales.requests.SearchProReq;
+import com.LeBao.sales.responses.DataResponse;
 import com.LeBao.sales.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,39 +40,29 @@ public class ProductController {
         }
     }
 
-//    @PostMapping("/addProduct")
-//    public ResponseEntity<String> addProduct(@RequestBody Product product) {
-//        String status = productService.addProduct(product);
-//        return ResponseEntity.ok(status);
-//    }
-
-//    @PostMapping("/addImage")
-//    public ResponseEntity<List<String>> addImage(@RequestParam("files") MultipartFile[] files) throws IOException {
-//        return ResponseEntity.ok(storageService.uploadFileToFileSystem(files));
-//    }
-//
-//    @PostMapping("/addImageToProduct/{productId}")
-//    public ResponseEntity<String> addImageToProduct(@PathVariable Long productId) {
-//        return ResponseEntity.ok(productService.addImageToProduct(productId));
-//    }
-
-//    @GetMapping("/{productId}")
-//    public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable Long productId) throws IOException {
-//        byte[] imageData = storageService.downloadImageFromFileSystem(productId);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .contentType(MediaType.valueOf("image/png"))
-//                .body(imageData);
-//    }
-
-    @PostMapping("/updateProduct/{productId}")
-    public ResponseEntity<String> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
-        productService.updateProduct(productId, product);
-        return ResponseEntity.ok("Update successfully");
+    @GetMapping("/admin")
+    public ResponseEntity<?> getAll(SearchProReq req) {
+        return ResponseEntity.ok().body(productService.getAll(req));
     }
 
-    @PostMapping("/deleteProduct/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
-        productService.deleteProduct(productId);
-        return ResponseEntity.ok("Delete successfully");
+    @PostMapping("/admin/add")
+    public ResponseEntity<?> addProduct(ProReq req, MultipartFile[] images) throws IOException {
+        return ResponseEntity.ok().body(new DataResponse(200, "Thành công", productService.addProduct(req, images)));
+    }
+
+    @DeleteMapping("/admin/remove/{id}")
+    public ResponseEntity<?> removeProduct(@PathVariable Long id) {
+        if(productService.removeProduct(id)) {
+            return ResponseEntity.ok().body(new DataResponse(200, "Thành công"));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new DataResponse(400, "Lỗi khi xóa"));
+    }
+
+    @PutMapping("/admin/update/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, ProReq req, MultipartFile[] images) throws IOException {
+        if(productService.updateProduct(id, req, images)) {
+            return ResponseEntity.ok().body(new DataResponse(200, "Thành công"));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new DataResponse(400, "Lỗi khi cập nhật"));
     }
 }
