@@ -1,8 +1,10 @@
-FROM maven:3.8.6-openjdk-18 AS build
-COPY . .
-RUN mvn clean package -DskipTests
+#FROM maven:3.12.1-openjdk-18 AS build
+#COPY . .
+#RUN mvn clean package -DskipTests
 
 FROM openjdk:18-alpine
-COPY --from=build /target/spring-boot-docker.jar app.jar
-EXPOSE 8080
+#COPY --from=build /target/sales-0.0.1-SNAPSHOT.jar app.jar
+#EXPOSE 8080
+ARG JAR_FILE=target/*.jar
+COPY ./target/sales-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
