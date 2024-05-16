@@ -135,6 +135,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>sales</finalName>
 	</build>
 
 </project>
